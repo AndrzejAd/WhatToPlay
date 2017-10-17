@@ -1,0 +1,19 @@
+/* 
+    Created on : 2017-07-18, 11:52:02
+    Author     : Andrzej
+*/
+
+body {
+    background-image: url("images/background2.jpg");
+    background-size: cover; 
+}
+
+
+#header{
+    background-color: transparent; 
+}
+
+#details{
+    background-color: #333;
+    border-color: #080808;
+}

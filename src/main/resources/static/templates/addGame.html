@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/homePage.css">
+        <script src="js/addGame/addGame.js"></script>
+        <script src="js/common/common.js"></script>
+        <script src="js/addGame/services/addGameThroughHttpService.js"></script>
+        <script src="js/addGame/controllers/addGameCtrl.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="home.html">Game Store</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Page 1</a></li>
+                    <li><a href="#">Page 2</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-click="submit()"><a href="#" ><span class="glyphicon glyphicon-star"></span> Get Random Games </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href="addGame.html"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container" ng-app="addGame" >
+            <div class="form-group col-md-4 col-md-offset-4" ng-model="game" >
+                <div>
+                    <label for="gameName">Game Name:</label>
+                    <input type="text" class="form-control" id="gameName" ng-model="gameName" required>
+                </div>
+                <div>
+                    <label for="genre">Genre: </label>
+                    <input type="text" class="form-control" id="genre" ng-model="genre">
+                </div>
+                <div>
+                    <label for="producer">Producer:</label>
+                    <input type="text" class="form-control" id="producer" ng-model="producer" required>
+                </div>
+                <div>
+                    <label for="publisher">Publisher:</label>
+                    <input type="text" class="form-control" id="publisher" ng-model="publisher" required>
+                </div>
+                <div >
+                    <label for="datePublished">Date Published: </label>
+                    <input type="text" class="form-control" id="datePublished" ng-model="datePublished">
+                </div>
+                <div>
+                    <label for="price">Price: </label>
+                    <input type="text" class="form-control" id="price" ng-model="price" required>
+                </div>
+                <div ng-controller="submitGame">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="submit()">Submit</button>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
