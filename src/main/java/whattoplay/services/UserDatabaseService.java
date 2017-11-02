@@ -1,5 +1,7 @@
 package whattoplay.services;
 
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.exception.ConstraintViolationException;
 import whattoplay.domain.dto.UserDto;
 import whattoplay.domain.entities.UserEntity;
 import whattoplay.exceptions.NotValidPasswordException;
@@ -43,7 +45,7 @@ public class UserDatabaseService {
         }
     }
     
-    public UserEntity saveUser(UserDto user) throws NotValidPasswordException{
+    public UserEntity saveUser(UserDto user) throws NotValidPasswordException, ConstraintViolationException {
         if ( validatePassword(user.getPassword())){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userDatabaseRepository.save( userDtoToUserEntityConverter.convert(user) );
@@ -54,7 +56,7 @@ public class UserDatabaseService {
     }
     
     private boolean validatePassword(String password){
-        if ( password.matches(".*\\d+.*") && password.length() >= 8 && password.length() <= 32 ){
+        if ( password.matches(".*\\d+.*") && password.length() >= 6 && password.length() <= 32 ){
             return true;
         } 
         return false;

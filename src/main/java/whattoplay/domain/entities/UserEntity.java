@@ -32,7 +32,7 @@ public class UserEntity {
     
     @NotNull
     @Column(name ="Password", nullable = false)
-    @Size(min = 8, max = 64 )
+    @Size(min = 6, max = 64 )
     private String password;
     
     @NotNull

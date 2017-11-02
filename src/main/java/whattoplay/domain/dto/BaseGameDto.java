@@ -16,6 +16,9 @@ public class BaseGameDto implements GameDto{
     private String genre;
     private String imagePath;
 
+    public BaseGameDto() {
+    }
+
     public BaseGameDto(long gameId, String gameName, String producer, String publisher, Date datePublished, int price, String genre, String imagePath) {
         this.gameId = gameId;
         this.gameName = gameName;
@@ -86,7 +89,18 @@ public class BaseGameDto implements GameDto{
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "BaseGameDto{" +
+                "gameId=" + gameId +
+                ", gameName='" + gameName + '\'' +
+                ", producer='" + producer + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", datePublished=" + datePublished +
+                ", price=" + price +
+                ", genre='" + genre + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
+    }
 }

@@ -48,18 +48,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-                    .csrf().disable()
-                    .authorizeRequests()
-                        .antMatchers("/home", "/").permitAll()	
-                        .antMatchers("/login").permitAll()
-                        .antMatchers("/addGame").hasRole("USER")
-                    .and()
-                    .exceptionHandling()
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .formLogin()
-                        .successHandler(authenticationSuccessHandler)
-                        .failureHandler(authenticationFailureHandler);
+            .csrf().disable()
+            .authorizeRequests()
+                .antMatchers("/home", "/").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/addGame").hasRole("USER")
+            .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+            .and()
+                .formLogin()
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+            .and()
+                .logout();
             
 	}
      

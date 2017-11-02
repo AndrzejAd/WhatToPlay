@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../../assets/css/BasicTheme.css">
+    <script src="/app/shared/shared.js"></script>
+    <script src="/app/shared/games/GetGamesService.js"></script>
+    <script src="gameDetails.js"></script>
+    <script src="gameDetailsCtrl.js"></script>
+
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/app/components/home/home.html">Game Store</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/app/components/home/home.html">Home</a></li>
+                <li><a href="#">Page 1</a></li>
+                <li>
+                    <form class="navbar-form navbar-left" role="search">
+                        <select class="form-control" id="selectSearchCriteria" ng-model="selectSearchCriteria">
+                            <option value="id">By Id</option>
+                            <option value="name">By Name</option>
+                            <option value="genre">By Genre</option>
+                        </select>
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Search Game" ng-model="searchCriteria">
+                        </div>
+                        <button type="submit" class="btn btn-default" ng-click="searchForGame()">Search</button>
+                    </form>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/app/components/signUp/signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/app/components/login/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                <li><a href="/app/components/addGame/addGame.html"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
+            </ul>
+        </div>
+    </nav>
+    <body ng-app="gameDetails" ng-controller="gameDetails">
+        <div class="col-sm-3 col-md-6 col-md-offset-3" style="padding-bottom: 15px">
+            <div class="thumbnail">
+                <div class="caption">
+                    <img height="360" width="600" data-ng-src="{{x.gameImageUrl}}">
+                    <h3>{{ x.gameName }}</h3>
+                    <p>{{ x.genre }}</p>
+                    <p>{{ x.price }}USD</p>
+                    <p>{{ x.producer }}</p>
+                    <p>{{ x.publisher }}</p>
+                    <p>{{ x.datePublished | date }}</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

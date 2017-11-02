@@ -42,7 +42,7 @@ public class GetRandomGamesController {
     
     @RequestMapping( path="/getGamePhoto/{gamePath}", method= RequestMethod.GET)
     public ResponseEntity<byte[]> returnImage(@PathVariable("gamePath") String gamePath ) throws IOException {
-        final Resource fileResource = resourceLoader.getResource("classpath:static/css/images/gameImages/" + gamePath + ".jpg");
+        final Resource fileResource = resourceLoader.getResource("classpath:static/assets/img/gameImages/" + gamePath + ".jpg");
         File file = fileResource.getFile();
         byte[] image = Files.readAllBytes(file.toPath());
         HttpHeaders headers = new HttpHeaders();

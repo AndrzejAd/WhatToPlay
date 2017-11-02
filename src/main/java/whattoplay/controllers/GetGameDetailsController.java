@@ -30,7 +30,7 @@ public class GetGameDetailsController {
         try{
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("Server", "Tomcat");
-            return new ResponseEntity<GameDto>(productDatabaseService.getGameById(gameId), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<>(productDatabaseService.getGameById(gameId), responseHeaders, HttpStatus.CREATED);
         } catch( EmptyResultDataAccessException exc ){
             throw exc;
         }

@@ -1,6 +1,10 @@
 package whattoplay.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +20,7 @@ import java.io.FileOutputStream;
  * @author Andrzej
  */
 
-@Controller
+@RestController
 public class AddGameController {
     private ProductDatabaseService productDatabaseService;
     
@@ -25,15 +29,13 @@ public class AddGameController {
         this.productDatabaseService = productDatabaseService;
     }
     
-    @RequestMapping(path = "/addGame", method = RequestMethod.GET)
-    public String addGameController(){
-        return "/templates/addGame.html";
-    }
-    
     @RequestMapping(path = "/addGame", method = RequestMethod.POST)
-    public String addGameToDatabaseController(@RequestBody final GameDto game){
+    public ResponseEntity<String>  addGameToDatabaseController(@RequestBody final GameDto game){
+        System.out.println(game);
         productDatabaseService.saveGameToDatabase(game);
-        return "redirect:/templates/gameAddedSuccessfully.html";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+        return new ResponseEntity<>("Successfully added game to database", responseHeaders, HttpStatus.CREATED);
     }
     
     @RequestMapping(path = "/addGameImage", method = RequestMethod.POST)

@@ -1,5 +1,7 @@
 package whattoplay.controllers;
 
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.exception.ConstraintViolationException;
 import whattoplay.domain.dto.UserDto;
 import whattoplay.exceptions.NotValidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,15 @@ public class AddUserController {
     }
     
     @RequestMapping(path = "/addUser", method = RequestMethod.POST)
-    public ResponseEntity<String> addUserToDatabaseController(@RequestBody final UserDto user) throws NotValidPasswordException{
+    public ResponseEntity<String> addUserToDatabaseController(@RequestBody final UserDto user) throws NotValidPasswordException, ConstraintViolationException {
         try{
             userDatabaseService.saveUser(user);
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+            responseHeaders.setContentType(MediaType.TEXT_PLAIN);
             return new ResponseEntity<>("Successfully added user to database", responseHeaders, HttpStatus.CREATED);
         } catch( NotValidPasswordException exc ){
+            throw exc;
+        } catch (ConstraintViolationException exc ){
             throw exc;
         }
     }

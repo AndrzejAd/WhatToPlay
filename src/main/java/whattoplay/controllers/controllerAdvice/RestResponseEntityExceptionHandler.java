@@ -1,5 +1,7 @@
 package whattoplay.controllers.controllerAdvice;
 
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.exception.ConstraintViolationException;
 import whattoplay.exceptions.NotValidPasswordException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -35,5 +37,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);
         return handleExceptionInternal(ex, bodyOfResponse, responseHeaders, HttpStatus.CONFLICT, request);
     }
-    
+
+    @ExceptionHandler(value = { ConstraintViolationException.class})
+    protected ResponseEntity<Object> handleConstraintViolationConflict(RuntimeException ex, WebRequest request) {
+        String bodyOfResponse = "There is already a user with this username or email.";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+        return handleExceptionInternal(ex, bodyOfResponse, responseHeaders, HttpStatus.CONFLICT, request);
+    }
+
 }
