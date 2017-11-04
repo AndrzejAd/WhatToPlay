@@ -7,4 +7,13 @@
 angular.module('shared').service('LogoutService', function(){
 
 
+    this.logOut = function($http) {
+        $http.post("/logout").then(
+            function (response) {
+                return response.status;
+            },
+            function (response) {
+                return response.status;
+            });
+    }
 });

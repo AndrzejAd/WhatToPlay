@@ -1,7 +1,7 @@
 
 'use strict'
 
-angular.module('home').controller('HomeCtrl', function($scope, $http, $location, $window, GetGamesService ){
+angular.module('home').controller('HomeCtrl', function($scope, $http, $location, $window, GetGamesService, LogoutService ){
 
     GetGamesService.getRandomGames($http).then( function(randomGames) {
         angular.forEach( randomGames, function(game) {
@@ -59,5 +59,16 @@ angular.module('home').controller('HomeCtrl', function($scope, $http, $location,
             window.location.replace(completeUrl);
         });
     }; 
-    
+
+    $scope.logout = function(){
+        LogoutService.logOut($http).then( function( code ){
+            if ( code === 200 ){
+                var completeUrl = "/app/components/home/home.html";
+                window.location.replace(completeUrl);
+            } else{
+                console.log("Couldnt log out.");
+            }
+        });
+    }
+
 });

@@ -31,7 +31,6 @@ public class AddGameController {
     
     @RequestMapping(path = "/addGame", method = RequestMethod.POST)
     public ResponseEntity<String>  addGameToDatabaseController(@RequestBody final GameDto game){
-        System.out.println(game);
         productDatabaseService.saveGameToDatabase(game);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);

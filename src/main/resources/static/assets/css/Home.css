@@ -1,0 +1,46 @@
+
+
+
+.GameImageWrapper{
+    height: 200px;
+}
+
+.GameImage{
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    height: 190px;
+    width: 300px;
+    display: block;
+    margin: auto;
+}
+
+.GameImage:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    -moz-transform: scale(1.10);
+    -webkit-transform: scale(1.10);
+    -o-transform: scale(1.10);
+    -ms-transform: scale(1.10);
+    -webkit-transform: scale(1.10);
+    transform: scale(1.10);
+
+    -webkit-transition: transform 0.9s ease-in-out;
+    -moz-transition:transform 0.9s ease-in-out;
+    -ms-transition:transform 0.9s ease-in-out;
+}
+
+.thumbnail{
+    height: 450px;
+    color: #EEEEEE;
+}
+
+.jumbotron{
+    background-color: white;
+}
+
+#GameBlock{
+    background-color: grey;
+}
+
+#HeaderText{
+
+}

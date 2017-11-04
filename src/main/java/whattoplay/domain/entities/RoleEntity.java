@@ -8,7 +8,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "role")
+@Table(name = "Roles")
 public class RoleEntity {
     
     @Id
@@ -23,8 +23,16 @@ public class RoleEntity {
     private int roleNumber;
 
     @Column(name="[User Id]")
-    private String userId;
-    
+    private long userId;
+
+    @ManyToOne
+    @JoinColumn(name="[User Id]", insertable=false, updatable=false)
+    private UserEntity user;
+
+
+    public RoleEntity() {
+    }
+
     public int getRoleId() {
         return roleId;
     }
@@ -45,22 +53,20 @@ public class RoleEntity {
         this.roleNumber = roleNumber;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public RoleEntity(String roleName, int roleNumber, String userId) {
+    public RoleEntity(String roleName, int roleNumber, long userId) {
         this.roleName = roleName;
         this.roleNumber = roleNumber;
         this.userId = userId;
     }
 
-    
-    
     @Override
     public String toString() {
         return "RoleEntity{" + "roleId=" + roleId + ", roleName=" + roleName + ", roleNumber=" + roleNumber + ", userId=" + userId + '}';

@@ -13,9 +13,11 @@ and open the template in the editor.
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/assets/css/BasicTheme.css">
     <link rel="stylesheet" href="/assets/css/Navbar.css">
+    <link rel="stylesheet" href="/assets/css/Home.css">
     <script src="/app/components/home/home.js"></script>
     <script src="/app/shared/shared.js"></script>
     <script src="/app/shared/games/GetGamesService.js"></script>
+    <script src="/app/shared/logout/LogoutService.js"></script>
     <script src="/app/components/home/HomeCtrl.js"></script>
 <body ng-app="home" ng-controller="HomeCtrl">
     <nav class="navbar navbar-inverse">
@@ -44,36 +46,38 @@ and open the template in the editor.
                 <li ng-click="getRandomGames()"><a href="#" ><span class="glyphicon glyphicon-star"></span> Get Random Games </a></li>
                 <li><a href="/app/components/signUp/signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="/app/components/login/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                <li><a class="btn" ng-click="logout()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                 <li><a href="/app/components/addGame/addGame.html"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
             </ul>
         </div>
     </nav>
     <div class="container">
-        <section>
-            <div class="jumbotron" id="header" >
-                <div>
-                    <h1>Games</h1>
-                    <p>Games currently available in store</p>
+        <section id="MainHeader">
+            <div class="jumbotron" >
+                <div id="HeaderText">
+                    <h1>WhatToPlay</h1>
+                    <p>Here you can find all the games currently available in our store.</p>
                 </div>
             </div>
         </section>
-        <div id="randomGames">
+        <div>
             <div class="row">
-                <div > 
+                <div id="GameBlock">
                     <div ng-repeat="game in games track by $index">
                         <div class="col-sm-3 col-md-4" style="padding-bottom: 15px">
                             <div class="thumbnail">
                                 <div class="caption">
-                                    <h3>{{ game.gameName }}</h3>
-                                    <img height="200" width="330" data-ng-src="{{ game.gameImage }}">
-                                    <p>Genre: {{ game.genre }}</p>
-                                    <p>Price: {{ game.price }}$</p>
-                                    <p>
-                                        <a class="btn btn-primary" id="details" ng-click="goToTheGameDetails(game.gameId)" >
-                                            <span class="glyphicon-info-sign glyphicon" /></span> Details 
+                                    <h2 class="text-center">{{ game.gameName }}</h2>
+                                    <div class="GameImageWrapper" >
+                                        <img class="GameImage btn" ng-click="goToTheGameDetails(game.gameId)" data-ng-src="{{ game.gameImage }}">
+                                    </div>
+                                    <h3 class="text-center">Genre: {{ game.genre }}</h3>
+                                    <h3 class="text-center">Price: {{ game.price }}$</h3>
+                                    <h3 >
+                                        <a class="btn btn-primary center-block" id="details" ng-click="goToTheGameDetails(game.gameId)" >
+                                            <span class="glyphicon glyphicon-triangle-right" /></span> Details
                                         </a>
-                                    </p>
+                                    </h3>
                                 </div>
                             </div>
                         </div>

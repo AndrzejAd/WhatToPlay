@@ -1,5 +1,6 @@
 package whattoplay.domain.dto;
 
+import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,8 @@ public class MyUserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("USER"));
+        user.getRoles().forEach( role ->  authorityList.add( () -> ("ROLE_" + role.getRoleName().replace(" ", "")) ));
+        //authorityList.forEach( auth -> System.out.println(auth.getAuthority() + " ||||") );
         return authorityList; 
     }
 

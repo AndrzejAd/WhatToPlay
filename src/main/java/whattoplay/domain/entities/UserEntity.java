@@ -3,6 +3,7 @@ package whattoplay.domain.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -40,13 +41,16 @@ public class UserEntity {
     @Size(min = 3, max = 32 )
     private String email;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userId")
+    private Collection<RoleEntity> roles;
+
     @NotNull
     @Column(name ="Enabled", nullable = false)
     private boolean enabled;
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    /*@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Roles", joinColumns = @JoinColumn(name = "[User Id]"), inverseJoinColumns = @JoinColumn(name = "[Role Id]"))
-    private Set<RoleEntity> roles;
+    private Set<RoleEntity> roles;*/
     
     private UserEntity(){}
     
@@ -102,7 +106,7 @@ public class UserEntity {
         this.enabled = enabled;
     }
 
-    public Set<RoleEntity> getRoles() {
+    public Collection<RoleEntity> getRoles() {
         return roles;
     }
 
