@@ -1,5 +1,7 @@
 package whattoplay.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import whattoplay.domain.dto.GameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +25,7 @@ public class GetSearchedGamesController {
     }
     
     @RequestMapping("/getGameByGenre/{gameGenre}")
-    public List<GameDto> returnGamesByGenre(@PathVariable("gameGenre") String genre ){
-        return productDatabaseService.getGamesByGenre(genre);
+    public ResponseEntity<List<GameDto>> returnGamesByGenre(@PathVariable("gameGenre") String genre ){
+        return new ResponseEntity<>(productDatabaseService.getGamesByGenre(genre), HttpStatus.OK);
     }
 }

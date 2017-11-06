@@ -14,8 +14,6 @@ angular.module('addGame').controller('submitGame', function($scope, $location, $
         };
         PostGameThroughHttpService.sendGame(game);
 
-        /*var completeUrl = "";
-        window.location.replace(completeUrl);*/
     };
     
 });

@@ -16,6 +16,8 @@ angular.module('login').service('AuthUser', function( $http ){
         return $http.post(absUrl, login, config)
             .then(
                 function(response){
+                    sessionStorage.setItem("username", username );
+                    sessionStorage.setItem("password", password );
                     return response;
                 },
                 function(response){

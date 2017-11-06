@@ -36,8 +36,8 @@ public class GetRandomGamesController {
     }
     
     @RequestMapping( path = "/getGames", method = RequestMethod.GET, produces = "application/json")
-    public List<GameDto> returnRandomGames(){
-        return productDatabaseService.getRandomGames(9);
+    public ResponseEntity<List<GameDto>> returnRandomGames(){
+        return new ResponseEntity<>(productDatabaseService.getRandomGames(9), HttpStatus.OK);
     }
     
     @RequestMapping( path="/getGamePhoto/{gamePath}", method= RequestMethod.GET)

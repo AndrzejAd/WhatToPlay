@@ -1,5 +1,9 @@
 package whattoplay.domain.dto;
 
+import whattoplay.domain.entities.RoleEntity;
+
+import java.util.Collection;
+
 /**
  *
  * @author Andrzej

@@ -1,6 +1,9 @@
 package whattoplay.domain.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import whattoplay.domain.entities.RoleEntity;
+
+import java.util.Collection;
 
 /**
  *

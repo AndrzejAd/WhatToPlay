@@ -27,7 +27,6 @@ public class MyUserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
         user.getRoles().forEach( role ->  authorityList.add( () -> ("ROLE_" + role.getRoleName().replace(" ", "")) ));
-        //authorityList.forEach( auth -> System.out.println(auth.getAuthority() + " ||||") );
         return authorityList; 
     }
 

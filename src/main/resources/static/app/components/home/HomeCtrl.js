@@ -61,14 +61,12 @@ angular.module('home').controller('HomeCtrl', function($scope, $http, $location,
     }; 
 
     $scope.logout = function(){
-        LogoutService.logOut($http).then( function( code ){
-            if ( code === 200 ){
-                var completeUrl = "/app/components/home/home.html";
-                window.location.replace(completeUrl);
-            } else{
-                console.log("Couldnt log out.");
-            }
-        });
+        LogoutService.logOut($http).then( function(){
+            var completeUrl = "/app/components/home/home.html";
+            window.location.replace(completeUrl);
+        }, function(){
+            console.log("Couldnt log out...");
+        } );
     }
 
 });

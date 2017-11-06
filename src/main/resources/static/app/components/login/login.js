@@ -1,4 +1,4 @@
 
 'use strict';
 
-angular.module("login", ['ngRoute', 'shared']);
+angular.module("login", ['ngRoute']);

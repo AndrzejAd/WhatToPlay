@@ -45,7 +45,7 @@ angular.module('shared').service( 'GetGamesService', function() {
             randomGames = response.data;
             return randomGames;
         }, function errorCallback(response) {
-            window.alert("Fail!");
+            console.log(response.data);
         });
     };
 

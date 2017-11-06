@@ -53,8 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/home", "/").permitAll()
+                .antMatchers("/home", "/**").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/getGames").permitAll()
                 .antMatchers("/addGame/**").hasRole("ADMIN")
                 .antMatchers("/test").hasRole("USER")
             .and()
@@ -100,5 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder(11);
         }
-        
+
+
+
 }
