@@ -1,7 +1,8 @@
 
 'use strict'
 
-angular.module('home').controller('HomeCtrl', function($scope, $http, $location, $window, GetGamesService, LogoutService ){
+angular.module('home').controller('HomeCtrl', function($scope, $http, $location, $window, GetGamesService, LogoutService,
+                                                       CheckIfAuthenticatedService){
 
     GetGamesService.getRandomGames($http).then( function(randomGames) {
         angular.forEach( randomGames, function(game) {
@@ -67,6 +68,10 @@ angular.module('home').controller('HomeCtrl', function($scope, $http, $location,
         }, function(){
             console.log("Couldnt log out...");
         } );
+    }
+
+    $scope.isLogged = function(){
+        return CheckIfAuthenticatedService.isLogged();
     }
 
 });

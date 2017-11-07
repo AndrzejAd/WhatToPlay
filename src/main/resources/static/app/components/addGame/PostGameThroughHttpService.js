@@ -3,7 +3,7 @@
 angular.module('addGame').service( 'PostGameThroughHttpService', function($http, CheckIfAuthenticatedService) {
     
     this.sendGame = function( game ) {
-        if ( CheckIfAuthenticatedService.authenticateUser() ){
+        if ( CheckIfAuthenticatedService.isLogged() ){
             var url = "/addGame/";
             var config = {
                 headers : {

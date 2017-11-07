@@ -5,7 +5,7 @@
 
 angular.module('shared').service( 'CheckIfAuthenticatedService', function() {
 
-    this.authenticateUser = function(){
+    this.isLogged = function(){
         if ( sessionStorage.getItem("username" ) && sessionStorage.getItem("password" ) ){
             return true;
         } else{

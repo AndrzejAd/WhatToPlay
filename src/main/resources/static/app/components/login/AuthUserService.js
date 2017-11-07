@@ -3,7 +3,7 @@
 
 angular.module('login').service('AuthUser', function( $http ){
     
-    this.authenticateUser = function( username, password ){
+    this.isLogged = function(username, password ){
         var absUrl = "/login";
         var login = 'username=' + username + '&password=' + password;
         

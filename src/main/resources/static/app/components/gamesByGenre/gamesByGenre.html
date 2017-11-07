@@ -16,11 +16,12 @@ and open the template in the editor.
         <script src="/app/shared/shared.js"></script>
         <script src="/app/shared/games/GetGamesService.js"></script>
         <script src="/app/shared/authentication/AuthInterceptor.js"></script>
+        <script src="/app/shared/authentication/CheckIfAuthenticatedService.js"></script>
         <script src="gamesByGenre.js"></script>
         <script src="gamesByGenreCtrl.js"></script>
     </head>
     
-<body>
+<body ng-app="gamesByGenre" ng-controller="gamesByGenre" >
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -37,22 +38,22 @@ and open the template in the editor.
                             <option value="genre">By Genre</option>
                         </select>
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Search Game" ng-model="searchCriteria">
+                            <input type="text" class="form-control" placeholder="Search Game" ng-model="searchCriteria">
                         </div>
-                        <button type="submit" class="btn btn-default" ng-click="searchForGame()">Search</button>
+                        <button type="submit" class="btn btn-default" ng-click="searchForGame()" >Search</button>
                     </form>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/app/components/signUp/signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="/app/components/login/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-                <li><a href="/app/components/addGame/addGame.html"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in" ng-show="isLogged()"></span> Logout</a></li>
+                <li><a href="/app/components/addGame/addGame.html" ng-show="isLogged()"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
             </ul>
         </div>
     </nav>
-    <div class="container">
-        <div class="row" ng-app="gamesByGenre" ng-controller="gamesByGenre">
+    <div  class="container" >
+        <div class="row" >
             <div>
                 <div ng-repeat="x in gamesListByGenre track by $index">
                     <div class="col-sm-3 col-md-4" style="padding-bottom: 15px">

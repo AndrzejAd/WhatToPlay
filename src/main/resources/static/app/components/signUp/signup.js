@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module("signup", ['ngRoute']);
+angular.module("signup", ['ngRoute', 'shared']);

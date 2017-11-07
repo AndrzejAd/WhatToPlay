@@ -11,12 +11,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/assets/css/BasicTheme.css">
     <link rel="stylesheet" href="/assets/css/login.css">
+    <script src="/app/shared/shared.js"></script>
+    <script src="/app/shared/authentication/AuthInterceptor.js"></script>
+    <script src="/app/shared/authentication/CheckIfAuthenticatedService.js"></script>
     <script src="login.js"></script>
     <script src="LoginCtrl.js"></script>
     <script src="AuthUserService.js"></script>
 </head>
 
-<body>
+<body ng-app="login">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -42,12 +45,12 @@
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/app/components/signUp/signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
             <li><a href="/app/components/login/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-            <li><a href="/app/components/addGame/addGame.html"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
+            <li><a class="btn" ng-show="isLogged()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            <li><a href="/app/components/addGame/addGame.html" ng-show="isLogged()"><span class="glyphicon glyphicon-plus"></span> Add Some Games</a></li>
         </ul>
     </div>
 </nav>
-    <div class="container" id="login-panel" ng-app="login">
+    <div class="container" id="login-panel">
     	<div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-login">
