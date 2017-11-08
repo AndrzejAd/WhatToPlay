@@ -22,4 +22,6 @@ public interface UserDto {
     String getEmail();
     void setEmail(String email);
     long getUserId();
+    @Override String toString();
+
 }

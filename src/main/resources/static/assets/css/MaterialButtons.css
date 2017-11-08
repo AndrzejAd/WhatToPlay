@@ -1,0 +1,77 @@
+.material-btn {
+    margin: 10px auto;
+    position: relative;
+    height: 300px;
+    width: 300px;
+    overflow: hidden;
+
+    border-width: 0;
+    outline: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+
+    background-color: #2ecc71;
+    color: #ecf0f1;
+
+    transition: background-color .3s;
+
+    font-size: x-large;
+    font-weight: 400;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+#button {
+    position: absolute;
+    top: 50%;
+}
+
+.material-btn:hover, .material-btn:focus {
+    background-color: #27ae60;
+}
+
+.material-btn:before {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: block;
+    width: 0;
+    padding-top: 0;
+
+    border-radius: 100%;
+
+    background-color: rgba(236, 240, 241, .3);
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.material-btn:active:before {
+    width: 120%;
+    padding-top: 120%;
+
+    transition: width .2s ease-out, padding-top .2s ease-out;
+}
+
+.material-btn.orange {
+    background-color: #e67e22;
+}
+
+.material-btn.orange:hover, .btn.orange:focus {
+    background-color: #d35400;
+}
+
+.material-btn.red {
+    background-color: #e74c3c;
+}
+
+.material-btn.red:hover, .btn.red:focus {
+    background-color: #c0392b;
+}

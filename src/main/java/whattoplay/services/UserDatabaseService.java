@@ -54,7 +54,11 @@ public class UserDatabaseService {
         }
         
     }
-    
+
+    public void deleteUser(UserDto userDto ){
+        userDatabaseRepository.delete( userDtoToUserEntityConverter.convert(userDto));
+    }
+
     private boolean validatePassword(String password){
         if ( password.matches(".*\\d+.*") && password.length() >= 6 && password.length() <= 32 ){
             return true;

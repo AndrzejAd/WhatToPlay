@@ -1,8 +1,6 @@
 package whattoplay.domain.dto;
 
-import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import whattoplay.domain.entities.UserEntity;
 
@@ -15,11 +13,11 @@ import java.util.logging.Logger;
  *
  * @author Andrzej
  */
-public class MyUserPrincipal implements UserDetails {
+public class SecurityUser implements UserDetails {
     private final UserEntity user;
-    private static final Logger LOG = Logger.getLogger(MyUserPrincipal.class.getName());
+    private static final Logger LOG = Logger.getLogger(SecurityUser.class.getName());
     
-    public MyUserPrincipal(UserEntity user) {
+    public SecurityUser(UserEntity user) {
         this.user = user;
     }
 

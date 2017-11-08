@@ -1,6 +1,6 @@
 package whattoplay.services;
 
-import whattoplay.domain.dto.MyUserPrincipal;
+import whattoplay.domain.dto.SecurityUser;
 import whattoplay.domain.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +31,7 @@ public class UserAuthService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        MyUserPrincipal u = new MyUserPrincipal(user);
+        SecurityUser u = new SecurityUser(user);
         return u;
     }
     
