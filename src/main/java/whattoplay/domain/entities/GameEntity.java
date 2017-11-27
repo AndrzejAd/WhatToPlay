@@ -2,6 +2,7 @@ package whattoplay.domain.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "Games")
-public class GameEntity {
+public class GameEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -43,24 +44,8 @@ public class GameEntity {
     
     public GameEntity() { }
 
-    public GameEntity(String gameName, String producer, String publisher, Date datePublished, int price) {
-        this.gameName = gameName;
-        this.producer = producer;
-        this.publisher = publisher;
-        this.datePublished = datePublished;
-        this.price = price;
-    }
-
-    public GameEntity(String gameName, String producer, String publisher, Date datePublished, int price, String genre) {
-        this.gameName = gameName;
-        this.producer = producer;
-        this.publisher = publisher;
-        this.datePublished = datePublished;
-        this.price = price;
-        this.genre = genre;
-    }
-
-    public GameEntity(String gameName, String producer, String publisher, Date datePublished, int price, String genre, String imagePath) {
+    public GameEntity(long id, String gameName, String producer, String publisher, Date datePublished, int price, String genre, String imagePath) {
+        this.gameId = id;
         this.gameName = gameName;
         this.producer = producer;
         this.publisher = publisher;

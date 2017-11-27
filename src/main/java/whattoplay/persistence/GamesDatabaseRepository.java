@@ -20,4 +20,5 @@ public interface GamesDatabaseRepository {
     GameEntity getGameById(long gameId);
     List<GameEntity> getGamesByGenre(String genre);
     List<Long> getRandomIdsFromDatabase(int numbOfGames);
+    GameEntity updateGame(GameEntity updatedGameEntity);
 }

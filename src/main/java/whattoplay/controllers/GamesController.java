@@ -36,7 +36,7 @@ public class GamesController {
     }
 
     @RequestMapping(path = "/getGame/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<GameDto> getGameDetailsById(@PathVariable("gameId") long gameId) throws EmptyResultDataAccessException {
+    public ResponseEntity<GameDto> getGameDetailsById(@PathVariable("gameId")final long gameId) throws EmptyResultDataAccessException {
         try{
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("Server", "Tomcat");
@@ -52,7 +52,7 @@ public class GamesController {
     }
 
     @RequestMapping( path="/getGamePhoto/{gamePath}", method= RequestMethod.GET)
-    public ResponseEntity<byte[]> getGameImageByImagePath(@PathVariable("gamePath") String gamePath ) throws IOException {
+    public ResponseEntity<byte[]> getGameImageByImagePath(@PathVariable("gamePath") final String gamePath ) throws IOException {
         final Resource fileResource = resourceLoader.getResource("classpath:static/assets/img/gameImages/" + gamePath + ".jpg");
         File file = fileResource.getFile();
         byte[] image = Files.readAllBytes(file.toPath());
@@ -63,7 +63,7 @@ public class GamesController {
     }
 
     @RequestMapping(path="/getGameByGenre/{gameGenre}", method= RequestMethod.GET)
-    public ResponseEntity<List<GameDto>> getGamesByGenre(@PathVariable("gameGenre") String genre ){
+    public ResponseEntity<List<GameDto>> getGamesByGenre(@PathVariable("gameGenre") final String genre ){
         return new ResponseEntity<>(productDatabaseService.getGamesByGenre(genre), HttpStatus.OK);
     }
 
@@ -76,8 +76,7 @@ public class GamesController {
     }
 
     @RequestMapping(path = "/addGameImage", method = RequestMethod.POST)
-    public @ResponseBody
-    String addImageOfTheGame(@RequestParam("file") MultipartFile file){
+    public @ResponseBody String addImageOfTheGame(@RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
@@ -93,5 +92,12 @@ public class GamesController {
         }
     }
 
+    @RequestMapping(path = "/updateGame", method = RequestMethod.POST)
+    public ResponseEntity<String> updateGame(@RequestBody final GameDto game){
+        productDatabaseService.updateGame(game);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+        return new ResponseEntity<>("Successfully updated game!", responseHeaders, HttpStatus.OK);
+    }
 
 }

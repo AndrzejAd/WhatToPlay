@@ -4,6 +4,7 @@ import whattoplay.domain.dto.GameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import whattoplay.domain.entities.GameEntity;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToGameEntityConverter;
@@ -30,11 +31,11 @@ public class ProductDatabaseService {
         this.gameDtoToGameEntityConverter = gameDtoToGameEntityConverter;
     }
 
-    public void saveGameToDatabase(GameDto game){
+    public void saveGameToDatabase(final GameDto game){
         databaseRepository.insertGame(gameDtoToGameEntityConverter.convert(game));
     }
     
-    public GameDto getGameById(long gameId){
+    public GameDto getGameById(final long gameId){
         try {
             return gameToGameDtoConverter.convert( databaseRepository.getGameById( gameId ) );
         } catch( EmptyResultDataAccessException exc ){
@@ -42,7 +43,7 @@ public class ProductDatabaseService {
         }
     }
     
-    public List<GameDto> getRandomGames(int gameId){
+    public List<GameDto> getRandomGames(final int gameId){
         return gameToGameDtoConverter.
                         convertAll( databaseRepository
                                     .getRandomGames(gameId) )
@@ -50,13 +51,16 @@ public class ProductDatabaseService {
                                     .collect(Collectors.toList());
     }
     
-    public List<GameDto> getGamesByGenre(String gameGenre){
+    public List<GameDto> getGamesByGenre(final String gameGenre){
         return gameToGameDtoConverter.
                         convertAll( databaseRepository
                                     .getGamesByGenre(gameGenre) )
                                     .stream()
                                     .collect(Collectors.toList());
     }
-    
+
+    public GameEntity updateGame(final GameDto gameDto ){
+        return databaseRepository.updateGame( gameDtoToGameEntityConverter.convert(gameDto) );
+    }
     
 }

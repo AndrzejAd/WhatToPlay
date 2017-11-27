@@ -1,6 +1,7 @@
 package whattoplay.domain.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  *
@@ -9,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Roles")
-public class RoleEntity {
+public class RoleEntity implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

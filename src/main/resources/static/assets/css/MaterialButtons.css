@@ -75,3 +75,8 @@
 .material-btn.red:hover, .btn.red:focus {
     background-color: #c0392b;
 }
+
+.material-btn.small {
+    height: 100px;
+    widht: 100px;
+}

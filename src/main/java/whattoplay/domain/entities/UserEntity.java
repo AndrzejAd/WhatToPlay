@@ -3,6 +3,7 @@ package whattoplay.domain.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -12,18 +13,18 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "Users")
-public class UserEntity {
+public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name ="[User Id]", nullable = false)
     private long userId;
     
     @Column(name ="[First Name]", nullable = true)
-    @Size(min = 0, max = 64 )
+    @Size(min = 3, max = 64 )
     private String firstName;
     
     @Column(name ="[Last Name]", nullable = true)
-    @Size(min = 0, max = 64 )
+    @Size(min = 3, max = 64 )
     private String lastName;
     
     @NotNull
@@ -48,12 +49,8 @@ public class UserEntity {
     @Column(name ="Enabled", nullable = false)
     private boolean enabled;
     
-    /*@ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Roles", joinColumns = @JoinColumn(name = "[User Id]"), inverseJoinColumns = @JoinColumn(name = "[Role Id]"))
-    private Set<RoleEntity> roles;*/
-    
     private UserEntity(){}
-    
+
     public String getFirstName() {
         return firstName;
     }

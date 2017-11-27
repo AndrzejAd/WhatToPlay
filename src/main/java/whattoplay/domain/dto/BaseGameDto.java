@@ -90,6 +90,10 @@ public class BaseGameDto implements GameDto{
         this.imagePath = imagePath;
     }
 
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
+    }
+
     @Override
     public String toString() {
         return "BaseGameDto{" +

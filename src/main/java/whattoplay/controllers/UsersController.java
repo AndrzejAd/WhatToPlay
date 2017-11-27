@@ -13,7 +13,6 @@ import whattoplay.exceptions.NotValidPasswordException;
 import whattoplay.services.UserDatabaseService;
 
 /**
- *
  * @author Andrzej
  */
 
@@ -21,14 +20,14 @@ import whattoplay.services.UserDatabaseService;
 @RestController
 public class UsersController {
     private UserDatabaseService userDatabaseService;
-    
+
     @Autowired
     public UsersController(UserDatabaseService userDatabaseService) {
         this.userDatabaseService = userDatabaseService;
     }
-    
+
     @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public ResponseEntity<UserEntity> getUserByName(@RequestParam(value="username", required = true) String username){
+    public ResponseEntity<UserEntity> getUserByName(@RequestParam(value = "username", required = true) final String username) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("OK", "200");
         return new ResponseEntity<>(userDatabaseService.getUserByUsername(username), responseHeaders, HttpStatus.OK);
@@ -36,21 +35,20 @@ public class UsersController {
 
     @RequestMapping(path = "/addUser", method = RequestMethod.POST)
     public ResponseEntity<String> postUserToDatabaseController(@RequestBody final UserDto user) throws NotValidPasswordException, ConstraintViolationException {
-        try{
+        try {
             userDatabaseService.saveUser(user);
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.setContentType(MediaType.TEXT_PLAIN);
             return new ResponseEntity<>("Successfully added user to database", responseHeaders, HttpStatus.CREATED);
-        } catch( NotValidPasswordException exc ){
+        } catch (NotValidPasswordException exc) {
             throw exc;
-        } catch (ConstraintViolationException exc ){
+        } catch (ConstraintViolationException exc) {
             throw exc;
         }
     }
 
-
     @RequestMapping(path = "/deleteUser", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteUserFromDatabase(@RequestBody final UserDto user){
+    public ResponseEntity<String> deleteUserFromDatabase(@RequestBody final UserDto user) {
         //TODO
         System.out.println(user);
         //userDatabaseService.deleteUser(user);

@@ -11,6 +11,7 @@ import java.util.Date;
 @JsonDeserialize( as = BaseGameDto.class)
 public interface GameDto {
     long getGameId();
+    void setGameId(long gameId);
     String getGameName();
     void setGameName(String gameName);
     String getProducer();

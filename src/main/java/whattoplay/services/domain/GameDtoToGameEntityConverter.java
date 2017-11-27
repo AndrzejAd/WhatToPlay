@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class GameDtoToGameEntityConverter {
     public GameEntity convert(GameDto game){
-        return new GameEntity(game.getGameName(), game.getProducer(),
+        return new GameEntity(game.getGameId(), game.getGameName(), game.getProducer(),
                               game.getPublisher(), game.getDatePublished(), 
                               game.getPrice(), game.getGenre(), game.getImagePath());
     }

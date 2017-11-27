@@ -102,6 +102,16 @@ public class MSSqlGameStoreDatabase implements GamesDatabaseRepository {
         List<Long> list = Arrays.stream(arr).boxed().collect(Collectors.toList());
         return list;
     }
-    
-    
+
+    @Override
+    public GameEntity updateGame(GameEntity updatedGameEntity) {
+        System.out.println(updatedGameEntity);
+        GameEntity game = entityManager.find(GameEntity.class, updatedGameEntity.getGameId());
+        System.out.println(game);
+       /* entityManager.remove(updatedGameEntity);
+        person.setName("Mary");
+
+        Person mergedPerson = (Person) session.merge(person);*/
+        return null;
+    }
 }
