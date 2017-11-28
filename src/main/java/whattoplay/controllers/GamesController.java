@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import whattoplay.domain.dto.GameDto;
-import whattoplay.services.ProductDatabaseService;
+import whattoplay.services.GameDatabaseService;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,12 +27,12 @@ import java.util.List;
 @RestController
 public class GamesController {
     private ResourceLoader resourceLoader;
-    private ProductDatabaseService productDatabaseService;
+    private GameDatabaseService gameDatabaseService;
 
     @Autowired
-    public GamesController(ResourceLoader resourceLoader, ProductDatabaseService productDatabaseService) {
+    public GamesController(ResourceLoader resourceLoader, GameDatabaseService gameDatabaseService) {
         this.resourceLoader = resourceLoader;
-        this.productDatabaseService = productDatabaseService;
+        this.gameDatabaseService = gameDatabaseService;
     }
 
     @RequestMapping(path = "/getGame/{gameId}", method = RequestMethod.GET)
@@ -40,7 +40,7 @@ public class GamesController {
         try{
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("Server", "Tomcat");
-            return new ResponseEntity<>(productDatabaseService.getGameById(gameId), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<>(gameDatabaseService.getGameById(gameId), responseHeaders, HttpStatus.CREATED);
         } catch( EmptyResultDataAccessException exc ){
             throw exc;
         }
@@ -48,7 +48,7 @@ public class GamesController {
 
     @RequestMapping( path = "/getGames", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<GameDto>> getRandomGames(){
-        return new ResponseEntity<>(productDatabaseService.getRandomGames(9), HttpStatus.OK);
+        return new ResponseEntity<>(gameDatabaseService.getRandomGames(9), HttpStatus.OK);
     }
 
     @RequestMapping( path="/getGamePhoto/{gamePath}", method= RequestMethod.GET)
@@ -64,15 +64,26 @@ public class GamesController {
 
     @RequestMapping(path="/getGameByGenre/{gameGenre}", method= RequestMethod.GET)
     public ResponseEntity<List<GameDto>> getGamesByGenre(@PathVariable("gameGenre") final String genre ){
-        return new ResponseEntity<>(productDatabaseService.getGamesByGenre(genre), HttpStatus.OK);
+        return new ResponseEntity<>(gameDatabaseService.getGamesByGenre(genre), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/getGamesByGameName/{gameName}", method = RequestMethod.GET)
+    public ResponseEntity<List<GameDto>> getGamesByGameName(@PathVariable("gameName") final String gameName){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return new ResponseEntity<>(gameDatabaseService.getGamesByGameName(gameName), responseHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/addGame", method = RequestMethod.POST)
     public ResponseEntity<String>  addGameToDatabaseController(@RequestBody final GameDto game){
-        productDatabaseService.saveGameToDatabase(game);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>("Successfully added game to database", responseHeaders, HttpStatus.CREATED);
+        if ( gameDatabaseService.saveGameToDatabase(game) ) {
+            return new ResponseEntity<>("Successfully added game to database.", responseHeaders, HttpStatus.CREATED);
+        } else{
+            return new ResponseEntity<>("Game is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
+        }
+
     }
 
     @RequestMapping(path = "/addGameImage", method = RequestMethod.POST)
@@ -94,10 +105,13 @@ public class GamesController {
 
     @RequestMapping(path = "/updateGame", method = RequestMethod.POST)
     public ResponseEntity<String> updateGame(@RequestBody final GameDto game){
-        productDatabaseService.updateGame(game);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>("Successfully updated game!", responseHeaders, HttpStatus.OK);
+        if ( gameDatabaseService.updateGame(game) != null ){
+            return new ResponseEntity<>("Successfully updated game!", responseHeaders, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>("Couldn't update game...", responseHeaders, HttpStatus.NOT_MODIFIED);
+        }
     }
 
 }

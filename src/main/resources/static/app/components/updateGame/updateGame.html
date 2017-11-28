@@ -13,13 +13,14 @@
     <link rel="stylesheet" href="/assets/css/Home.css">
     <link rel="stylesheet" href="/assets/css/Input.css">
     <link rel="stylesheet" href="/assets/css/MaterialButtons.css">
-    <script src="/app/components/home/home.js"></script>
     <script src="/app/shared/shared.js"></script>
-    <script src="/app/shared/games/GetGamesService.js"></script>
     <script src="/app/shared/authentication/AuthInterceptor.js"></script>
     <script src="/app/shared/authentication/CheckIfAuthenticatedService.js"></script>
     <script src="/app/shared/logout/LogoutService.js"></script>
-    <script src="/app/components/home/HomeCtrl.js"></script>
+    <script src="updateGame.js"></script>
+    <script src="updateGameCtrls.js"></script>
+    <script src="UpdateGameThroughHttpService.js"> </script>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -45,10 +46,8 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/app/components/signUp/signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="/app/components/login/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            <li><a class="btn" ng-click="logout()" ng-show="isLogged()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-            <li><a href="../adminPanel/adminPanel.html" ng-show="isLogged()"><span class="glyphicon glyphicon-plus"></span> Admin Panel</a></li>
+            <li><a class="btn" ng-click="logout()" ><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            <li><a href="../adminPanel/adminPanel.html" ><span class="glyphicon glyphicon-plus"></span> Admin Panel</a></li>
         </ul>
     </div>
 </nav>
@@ -56,12 +55,19 @@
     <div class="container" ng-app="updateGame" >
         <div >
             <div>
-                <div class="form-style-8">
+                <div class="form-style-8" ng-controller="searchForGameCtrl">
                     <h2>Update Game</h2>
                     <form>
-                        <div>
+                        <div >
                             <label for="searchForGame">Search For Game:</label>
-                            <input type="text" id="searchForGame" placeholder="" ng-model="searchedGameTitle" required>
+                            <input type="text" id="searchForGame" placeholder="Search" ng-change="searchForGame()"  ng-model="searchQuery"  >
+                            <div class="dropdown" ng-show="showDropdown">
+                                <div id="myDropdown" class="dropdown-content" >
+                                    <div ng-repeat="name in gameNames track by $index | limitTo:10">
+                                        <a ng-click="updateInputWithGameData(name)" ng-model="name">{{ name }}</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label for="gameId">Game Id:</label>
@@ -93,10 +99,10 @@
                         </div>
                         <div>
                             <label for="price">Image Path: </label>
-                            <input type="text" id="imagePath" placeholder="Image Path" ng-model="price" >
+                            <input type="text" id="imagePath" placeholder="Image Path" ng-model="imagePath" >
                         </div>
-                        <div id="update-button-div">
-                            <button id="update-button" type="button" class="btn btn-primary material-btn orange small" ng-click="submit()" ng-controller="updateGame">
+                        <div id="update-button-div" ng-controller="updateGame">
+                            <button id="update-button" type="button" class="btn btn-primary material-btn orange small" ng-click="updateGame()" >
                                 Update Game
                             </button>
                         </div>
@@ -108,3 +114,21 @@
         </div>
     </div>
 </html>
+
+<script>
+
+    function filterFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        div = document.getElementById("myDropdown");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
+</script>

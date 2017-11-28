@@ -17,6 +17,7 @@ body {
     background-color: #5d4037;
     font-size: medium;
     font-weight: 400;
+    border-radius: 0;
 }
 
 #header{

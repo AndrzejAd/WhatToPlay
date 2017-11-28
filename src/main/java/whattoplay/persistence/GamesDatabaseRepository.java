@@ -14,11 +14,12 @@ import java.util.List;
  * @author Andrzej
  */
 public interface GamesDatabaseRepository {
-    void insertGame(GameEntity game);
-    List<GameEntity> getRandomGames(int numberOfGames);
+    void persistGame(GameEntity game);
     long getNumberOfRows();
     GameEntity getGameById(long gameId);
-    List<GameEntity> getGamesByGenre(String genre);
-    List<Long> getRandomIdsFromDatabase(int numbOfGames);
     GameEntity updateGame(GameEntity updatedGameEntity);
+    List<Long> getRandomIdsFromGameTable(int numbOfGames);
+    List<GameEntity> getRandomGames(int numberOfGames);
+    List<GameEntity> getGamesByGenre(String genre);
+    List<GameEntity> searchGamesByName(String gameName);
 }

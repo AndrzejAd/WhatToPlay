@@ -35,15 +35,12 @@ angular.module('shared').service( 'GetGamesService', function() {
     };
 
     this.getRandomGames = function( $http){
-        var randomGames;
-
         return $http( {
             method: 'GET',
             url: '/getGames',
             accept: "application/json"
         }).then(function successCallback(response) {
-            randomGames = response.data;
-            return randomGames;
+            return response.data;
         }, function errorCallback(response) {
             console.log(response.data);
         });

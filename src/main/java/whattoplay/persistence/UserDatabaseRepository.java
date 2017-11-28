@@ -13,8 +13,8 @@ import java.util.List;
 
 @Repository("userRepository")
 public interface UserDatabaseRepository extends JpaRepository<UserEntity, Long> {
-    UserEntity findByUsername(String username);
-    @Override List<UserEntity> findAll();
     @Override UserEntity save(UserEntity user);
     @Override void delete(UserEntity userEntity);
+    @Override List<UserEntity> findAll();
+    UserEntity findByUsername(String username);
 }
