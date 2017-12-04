@@ -16,6 +16,7 @@ import java.util.List;
 public interface GamesDatabaseRepository {
     void persistGame(GameEntity game);
     long getNumberOfRows();
+    GameEntity deleteGameByGameName(String gameName);
     GameEntity getGameById(long gameId);
     GameEntity updateGame(GameEntity updatedGameEntity);
     List<Long> getRandomIdsFromGameTable(int numbOfGames);

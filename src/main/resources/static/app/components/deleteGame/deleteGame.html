@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="/assets/css/Navbar.css">
     <link rel="stylesheet" href="/assets/css/Home.css">
     <link rel="stylesheet" href="/assets/css/MaterialButtons.css">
-    <script src="/app/components/home/home.js"></script>
+    <link rel="stylesheet" href="/assets/css/Input.css">
     <script src="/app/shared/shared.js"></script>
     <script src="/app/shared/games/GetGamesService.js"></script>
     <script src="/app/shared/authentication/AuthInterceptor.js"></script>
     <script src="/app/shared/authentication/CheckIfAuthenticatedService.js"></script>
-    <script src="/app/shared/logout/LogoutService.js"></script>
-    <script src="/app/components/home/HomeCtrl.js"></script>
+    <script src="deleteGame.js"></script>
+    <script src="DeleteGameCtrl.js"></script>
+    <script src="DeleteGameThroughHttpService.js"> </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -44,43 +45,33 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/app/components/signUp/signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="/app/components/login/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             <li><a class="btn" ng-click="logout()" ng-show="isLogged()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-            <li><a href="#" ng-show="isLogged()"><span class="glyphicon glyphicon-plus"></span> Admin Panel</a></li>
+            <li><a href="../adminPanel/adminPanel.html" ng-show="isLogged()"><span class="glyphicon glyphicon-plus"></span> Admin Panel</a></li>
         </ul>
     </div>
 </nav>
-<div class="container" id="admin-panel-body">
-    <div id="buttons" class="wrapper" >
-        <div class ="row" id="first-row">
-            <div >
-                <a href="/app/components/addGame/addGame.html">
-                    <button type="button" class="btn btn-primary material-btn orange ">
-                            <span class="glyphicon glyphicon-plus"></span>Add Game
+<div class="container" ng-app="deleteGame">
+    <div>
+        <div class="form-style-8" ng-controller="DeleteGameCtrl">
+            <h2>Delete Game</h2>
+            <form>
+                <div >
+                    <label for="searchForGame">Search For Game:</label>
+                    <input type="text" id="searchForGame" placeholder="Search" ng-change="searchForGame()"  ng-model="searchQuery"  >
+                    <div class="dropdown" ng-show="showDropdown">
+                        <div id="myDropdown" class="dropdown-content" >
+                            <div ng-repeat="name in gameNames track by $index | limitTo:10">
+                                <a ng-click="updateInputWithGameData(name)" ng-model="name">{{ name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="update-button-div" >
+                    <button id="update-button" type="button" class="btn btn-primary material-btn orange small" ng-click="deleteGame()" >
+                        Delete Game
                     </button>
-                </a>
-                <a href="/app/components/updateGame/updateGame.html">
-                    <button type="button" class="btn btn-primary material-btn orange">
-                        <span class="glyphicon glyphicon-zoom-in"></span> Update Game
-                    </button>
-                </a>
-                <a href="/app/components/deleteGame/deleteGame.html">
-                    <button type="button" class="btn btn-primary material-btn orange">
-                        <span class="glyphicon glyphicon glyphicon-trash"></span> Delete Game
-                    </button>
-                </a>
-            </div>
-        </div>
-        <div class ="row" id="second-row">
-            <div >
-                <button type="button" class="material-btn orange ">
-                    <span class="glyphicon glyphicon-user"></span> Add User</button>
-                <button type="button" class="material-btn orange">
-                    <span class="glyphicon glyphicon-question-sign"></span> Update User</button>
-                <button type="button" class=" material-btn orange">
-                    <span class="glyphicon glyphicon-remove-sign"></span> Delete User</button>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

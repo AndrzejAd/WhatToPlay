@@ -36,6 +36,7 @@ angular.module('updateGame').controller('searchForGameCtrl', function($scope, $l
                 return;
             }
         });
+        $scope.showDropdown = false;
     }
 
 });

@@ -41,6 +41,10 @@ public class GameDatabaseService {
         }
     }
 
+    public boolean deleteGameFromDatabase(String gameName){
+        return Optional.ofNullable(databaseRepository.deleteGameByGameName(gameName)).map( x -> true ).orElse(false);
+    }
+
     public GameDto getGameById(final long gameId) {
         try {
             return gameToGameDtoConverter.convert(databaseRepository.getGameById(gameId));

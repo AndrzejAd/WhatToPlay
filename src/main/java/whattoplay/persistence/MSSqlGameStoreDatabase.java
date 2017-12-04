@@ -24,12 +24,18 @@ import java.util.stream.Collectors;
 @Repository
 @Transactional
 public class MSSqlGameStoreDatabase implements GamesDatabaseRepository {
-
     @PersistenceContext
     private EntityManager entityManager;
 
+    CriteriaBuilder builder;
+    CriteriaQuery<GameEntity> query;
+    Root<GameEntity> game;
+
     public MSSqlGameStoreDatabase(EntityManager entityManager) {
         this.entityManager = entityManager;
+        builder = entityManager.getCriteriaBuilder();
+        query = builder.createQuery(GameEntity.class);
+        game = query.from(GameEntity.class);
     }
 
     public void setEntityManager(EntityManager entityManager) {
@@ -51,10 +57,17 @@ public class MSSqlGameStoreDatabase implements GamesDatabaseRepository {
     }
 
     @Override
+    public GameEntity deleteGameByGameName(String gameName) {
+        query.select(game).
+                where(builder.equal(game.get("gameName"), gameName));
+        TypedQuery<GameEntity> tq = entityManager.createQuery(query);
+        GameEntity searchedGame = tq.getSingleResult();
+        Optional.ofNullable( searchedGame ).ifPresent( entityManager::remove );
+        return searchedGame;
+    }
+
+    @Override
     public GameEntity getGameById(long gameId) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GameEntity> query = builder.createQuery(GameEntity.class);
-        Root<GameEntity> game = query.from(GameEntity.class);
         query.select(game).
                 where(builder.equal(game.get("gameId"), gameId));
         TypedQuery<GameEntity> tq = entityManager.createQuery(query);
@@ -96,9 +109,6 @@ public class MSSqlGameStoreDatabase implements GamesDatabaseRepository {
 
     @Override
     public List<GameEntity> getGamesByGenre(String genre) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GameEntity> query = builder.createQuery(GameEntity.class);
-        Root<GameEntity> game = query.from(GameEntity.class);
         query.select(game).
                 where(builder.equal(game.get("genre"), genre));
         TypedQuery<GameEntity> tq = entityManager.createQuery(query);
@@ -107,9 +117,6 @@ public class MSSqlGameStoreDatabase implements GamesDatabaseRepository {
 
     @Override
     public List<GameEntity> searchGamesByName(String gameName) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GameEntity> query = builder.createQuery(GameEntity.class);
-        Root<GameEntity> game = query.from(GameEntity.class);
         query.select(game)
                 .where( builder.like(game.get("gameName"), gameName + "%" ));
         TypedQuery<GameEntity> tq = entityManager.createQuery(query);

@@ -1,6 +1,6 @@
 package whattoplay.services;
 
-import whattoplay.domain.dto.SecurityUser;
+import whattoplay.domain.SecurityUser;
 import whattoplay.domain.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

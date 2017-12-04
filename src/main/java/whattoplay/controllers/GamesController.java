@@ -36,7 +36,7 @@ public class GamesController {
     }
 
     @RequestMapping(path = "/getGame/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<GameDto> getGameDetailsById(@PathVariable("gameId")final long gameId) throws EmptyResultDataAccessException {
+    public ResponseEntity<GameDto> getGameDetailsById(@PathVariable("gameId") final long gameId) throws EmptyResultDataAccessException {
         try{
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("Server", "Tomcat");
@@ -83,23 +83,16 @@ public class GamesController {
         } else{
             return new ResponseEntity<>("Game is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
         }
-
     }
 
-    @RequestMapping(path = "/addGameImage", method = RequestMethod.POST)
-    public @ResponseBody String addImageOfTheGame(@RequestParam("file") MultipartFile file){
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("test")));
-                stream.write(bytes);
-                stream.close();
-                return "You successfully uploaded " + "!";
-            } catch (Exception e) {
-                return "You failed to upload " + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + " because the file was empty.";
+    @RequestMapping(path = "/deleteGame/{gameName}", method = RequestMethod.DELETE)
+    public ResponseEntity<String>  deleteGameFromDatabase(@PathVariable("gameName") final String gameName){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+        if ( gameDatabaseService.deleteGameFromDatabase(gameName) ) {
+            return new ResponseEntity<>("Successfully deleted game from database.", responseHeaders, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>("There is no such game in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
         }
     }
 
