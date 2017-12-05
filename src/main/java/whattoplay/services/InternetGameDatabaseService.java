@@ -1,28 +1,81 @@
 package whattoplay.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.ObjectMapper;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.stereotype.Service;
+import whattoplay.domain.entities.GameJsonDto;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Andrzej on 2017-11-21.
  */
 @Service
 public class InternetGameDatabaseService {
-    private final String token = "Bearer T1RLAQKE/yKcuq/qI1iolCdA5nAnYH5nbBBqI+rL1LuPptZ7Dxa5aqj4AADAlVylMTrrj1bK7yTJEbBTBeAhfk1vxt1XEA+2OP5xuYFQ+creg+xXjCbqh7EmIhkA4H/JRqoWcg9BoiQ3zVGEK9dNQeijoDsqBh6wC6X+Kd62AFTpSRecYptdeiISmVWfbOsrhCaUtAs1/tEf7k7JXsSU2xB+ItjVlp7pwc8qW4BI+DpTFR8q8ykG0BznQTIaZITECDk9B2DCY/0/rTaSbvaUGAonoYv1GDpYBkdnQqllX9N2j3MfQfmjfd1Jh0X5";
-    private final String requestUrl = "https://api.test.sabre.com/v1/lists/utilities/geocode/locations";
+    private static final String token = "8dcd2a959fef891fbac266d5046e0414";
 
-    public void test(){
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPost request = new HttpPost(requestUrl);
-        HttpResponse response;
+    public InternetGameDatabaseService() {
+        Unirest.setObjectMapper(new ObjectMapper() {
+            private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
+                    = new com.fasterxml.jackson.databind.ObjectMapper();
 
+            public <T> T readValue(String value, Class<T> valueType) {
+                try {
+                    return jacksonObjectMapper.readValue(value, valueType);
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            public String writeValue(Object value) {
+                try {
+                    return jacksonObjectMapper.writeValueAsString(value);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
+
+    public void getAllGames() throws UnirestException {
+        String params = "id," +
+                "name," +
+                "slug," +
+                "url," +
+                "created_at," +
+                "updated_at," +
+                "summary," +
+                "storyline," +
+                "first_release_date," +
+                "hypes," +
+                "popularity," +
+                "rating," +
+                "rating_count," +
+                "aggregated_rating," +
+                "aggregated_rating_count," +
+                "total_rating," +
+                "total_rating_count";
+        HttpResponse<GameJsonDto[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", params)
+                .queryString("limit", "50")
+                .asObject(GameJsonDto[].class);
+
+        ArrayList<GameJsonDto> gameJsonDtos = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
+
+        System.out.println(gameJsonDtos.stream()
+                .map(GameJsonDto::getId)
+                .count());
+    }
+
+
+
 
 }

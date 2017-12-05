@@ -1,5 +1,6 @@
 package whattoplay.controllers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -9,13 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import whattoplay.domain.dto.GameDto;
 import whattoplay.services.GameDatabaseService;
+import whattoplay.services.InternetGameDatabaseService;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
@@ -81,7 +80,7 @@ public class GamesController {
         if ( gameDatabaseService.saveGameToDatabase(game) ) {
             return new ResponseEntity<>("Successfully added game to database.", responseHeaders, HttpStatus.CREATED);
         } else{
-            return new ResponseEntity<>("Game is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<>("GameJsonDto is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
         }
     }
 
@@ -104,6 +103,16 @@ public class GamesController {
             return new ResponseEntity<>("Successfully updated game!", responseHeaders, HttpStatus.OK);
         } else{
             return new ResponseEntity<>("Couldn't update game...", responseHeaders, HttpStatus.NOT_MODIFIED);
+        }
+    }
+
+    @RequestMapping(path = "/test", method = RequestMethod.GET)
+    public void test(){
+        InternetGameDatabaseService internetGameDatabaseService = new InternetGameDatabaseService();
+        try {
+            internetGameDatabaseService.getAllGames();
+        } catch (UnirestException e) {
+            e.printStackTrace();
         }
     }
 
