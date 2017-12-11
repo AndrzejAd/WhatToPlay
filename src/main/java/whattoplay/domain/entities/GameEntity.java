@@ -15,11 +15,11 @@ public class GameEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    @Column(name ="[GameJsonDto Id]", nullable = false )
+    @Column(name ="[Game Id]", nullable = false )
     private long gameId;
 
     @NotNull
-    @Column(name ="[GameJsonDto Name]", nullable = false)
+    @Column(name ="[Game Name]", nullable = false)
     private String gameName;
 
     @NotNull
@@ -58,7 +58,7 @@ public class GameEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "GameJsonDto{" + "gameId=" + gameId + ", gameName=" + gameName + ", "
+        return "Game{" + "gameId=" + gameId + ", gameName=" + gameName + ", "
                 + "producer=" + producer + ", publisher=" + publisher + ", datePublished=" + datePublished + ", "
                 + "price=" + price + ", genre=" + genre + ", imagePath=" + imagePath + "}";
     }

@@ -68,7 +68,7 @@ angular.module('home').controller('HomeCtrl', function($scope, $http, $location,
         }, function(){
             console.log("Couldnt log out...");
         } );
-    }
+    };
 
     $scope.isLogged = function(){
         return CheckIfAuthenticatedService.isLogged();

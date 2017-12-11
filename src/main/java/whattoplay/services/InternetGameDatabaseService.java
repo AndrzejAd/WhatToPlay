@@ -7,10 +7,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.GameJsonDto;
+import whattoplay.domain.entities.Pegi;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Created by Andrzej on 2017-11-21.
@@ -60,7 +62,18 @@ public class InternetGameDatabaseService {
                 "aggregated_rating," +
                 "aggregated_rating_count," +
                 "total_rating," +
-                "total_rating_count";
+                "total_rating_count," +
+                "collection," +
+                "franchise," +
+                "time_to_beat," +
+                "developers," +
+                "status," +
+                "esrb," +
+                "pegi," +
+                "websites," +
+                "external," +
+                "cover," +
+                "screenshots";
         HttpResponse<GameJsonDto[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
                 .header("accept", "application/json")
                 .header("user-key", token)
@@ -70,9 +83,57 @@ public class InternetGameDatabaseService {
 
         ArrayList<GameJsonDto> gameJsonDtos = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
 
-        System.out.println(gameJsonDtos.stream()
-                .map(GameJsonDto::getId)
-                .count());
+        /*gameJsonDtos.stream()
+                .map(GameJsonDto::getTimeToBeat)
+                .forEach( x -> Optional.ofNullable(x).ifPresent(System.out::println));*/
+
+        /*gameJsonDtos.stream()
+                .map(GameJsonDto::getPlayerPerspectivesIds)
+                .forEach( x ->
+                {
+                    System.out.println("-----------");
+                    x.forEach( System.out::println );
+                });*/
+
+        /*gameJsonDtos.stream()
+                .map(GameJsonDto::getStatus)
+                .forEach( x -> {
+                    Optional.ofNullable(x).ifPresent(y -> {
+                        System.out.println("-----------");
+                        System.out.println(y);
+                    });
+                });*/
+
+        /*
+        gameJsonDtos.stream()
+                .map(GameJsonDto::getEsrb)
+                .forEach( x -> {
+                    Optional.ofNullable(x).ifPresent(y -> {
+                        System.out.println("-----------");
+                        System.out.println(y);
+                    });
+                });
+        */
+
+        /*gameJsonDtos.stream()
+                .forEach( x ->{
+                    System.out.println(x.getName() + " " + Optional.ofNullable(x.getPegi()).map( Pegi::getRating ) + " " + Optional.ofNullable(x.getPegi()).map( Pegi::getSynopsis ) );
+                } );*/
+
+        /*gameJsonDtos.stream()
+                .forEach( x ->{
+                    x.getWebsites().forEach( y ->{
+                        System.out.println(y.getCategory() + " " + y.getUrl()) ;
+                    } );
+                } );*/
+
+        gameJsonDtos.stream()
+                .forEach( x ->{
+                    x.getScreenshots().forEach( y ->{
+                        System.out.println(y.getUrl() + " "  + y.getCloudinaryId());
+                    } );
+                } );
+
     }
 
 
