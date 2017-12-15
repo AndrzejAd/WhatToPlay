@@ -5,17 +5,17 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.GameJsonDto;
 import whattoplay.domain.entities.GameMode;
 import whattoplay.domain.entities.Genre;
-import whattoplay.domain.entities.Pegi;
 import whattoplay.persistence.GamesDatabaseRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Created by Andrzej on 2017-11-21.
@@ -23,6 +23,7 @@ import java.util.Optional;
 @Service
 public class InternetGameDatabaseService {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
+    private static Logger logger = LogManager.getLogger();
     private GamesDatabaseRepository gamesDatabaseRepository;
 
     @Autowired
@@ -111,7 +112,7 @@ public class InternetGameDatabaseService {
 
         ArrayList<Genre> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
         genres.forEach( x -> {
-            System.out.println("Persisting " + x.getName() + ": " + x.getUrl());
+            logger.info("Persisting " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
             gamesDatabaseRepository.persistGenre(x);
         } );
     }
@@ -131,8 +132,8 @@ public class InternetGameDatabaseService {
 
         ArrayList<GameMode> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
         genres.forEach( x -> {
-            System.out.println("Persisting " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gamesDatabaseRepository.persistGameMode(x);
+            logger.info("Persisting " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            //gamesDatabaseRepository.persistGameMode(x);
         } );
     }
 
