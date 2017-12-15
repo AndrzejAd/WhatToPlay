@@ -5,10 +5,13 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.GameJsonDto;
+import whattoplay.domain.entities.GameMode;
+import whattoplay.domain.entities.Genre;
 import whattoplay.domain.entities.Pegi;
-
+import whattoplay.persistence.GamesDatabaseRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +23,10 @@ import java.util.Optional;
 @Service
 public class InternetGameDatabaseService {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
+    private GamesDatabaseRepository gamesDatabaseRepository;
 
-    public InternetGameDatabaseService() {
+    @Autowired
+    public InternetGameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
                     = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -43,10 +48,11 @@ public class InternetGameDatabaseService {
                 }
             }
         });
+        this.gamesDatabaseRepository = gamesDatabaseRepository;
     }
 
     public void getAllGames() throws UnirestException {
-        String params = "id," +
+        final String gamesFields = "id," +
                 "name," +
                 "slug," +
                 "url," +
@@ -74,69 +80,60 @@ public class InternetGameDatabaseService {
                 "external," +
                 "cover," +
                 "screenshots";
-        HttpResponse<GameJsonDto[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .queryString("fields", params)
-                .queryString("limit", "50")
-                .asObject(GameJsonDto[].class);
+        for ( int i = 0; i < 2; i++ ) {
+            HttpResponse<GameJsonDto[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
+                    .header("accept", "application/json")
+                    .header("user-key", token)
+                    .queryString("fields", gamesFields)
+                    .queryString("limit", "50")
+                    .asObject(GameJsonDto[].class);
 
-        ArrayList<GameJsonDto> gameJsonDtos = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
+            ArrayList<GameJsonDto> gameJsonDtos = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
 
-        /*gameJsonDtos.stream()
-                .map(GameJsonDto::getTimeToBeat)
-                .forEach( x -> Optional.ofNullable(x).ifPresent(System.out::println));*/
-
-        /*gameJsonDtos.stream()
-                .map(GameJsonDto::getPlayerPerspectivesIds)
-                .forEach( x ->
-                {
-                    System.out.println("-----------");
-                    x.forEach( System.out::println );
-                });*/
-
-        /*gameJsonDtos.stream()
-                .map(GameJsonDto::getStatus)
-                .forEach( x -> {
-                    Optional.ofNullable(x).ifPresent(y -> {
-                        System.out.println("-----------");
-                        System.out.println(y);
-                    });
-                });*/
-
-        /*
-        gameJsonDtos.stream()
-                .map(GameJsonDto::getEsrb)
-                .forEach( x -> {
-                    Optional.ofNullable(x).ifPresent(y -> {
-                        System.out.println("-----------");
-                        System.out.println(y);
-                    });
-                });
-        */
-
-        /*gameJsonDtos.stream()
-                .forEach( x ->{
-                    System.out.println(x.getName() + " " + Optional.ofNullable(x.getPegi()).map( Pegi::getRating ) + " " + Optional.ofNullable(x.getPegi()).map( Pegi::getSynopsis ) );
-                } );*/
-
-        /*gameJsonDtos.stream()
-                .forEach( x ->{
-                    x.getWebsites().forEach( y ->{
-                        System.out.println(y.getCategory() + " " + y.getUrl()) ;
-                    } );
-                } );*/
-
-        gameJsonDtos.stream()
-                .forEach( x ->{
-                    x.getScreenshots().forEach( y ->{
-                        System.out.println(y.getUrl() + " "  + y.getCloudinaryId());
-                    } );
-                } );
+            gameJsonDtos.forEach(System.out::println);
+            System.out.println("-----------------");
+        }
 
     }
 
+    public void saveAllGenres() throws UnirestException{
+        final String genresFields = "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+        HttpResponse<Genre[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/genres/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", genresFields)
+                .queryString("limit", "50")
+                .asObject(Genre[].class);
 
+        ArrayList<Genre> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
+        genres.forEach( x -> {
+            System.out.println("Persisting " + x.getName() + ": " + x.getUrl());
+            gamesDatabaseRepository.persistGenre(x);
+        } );
+    }
 
+    public void saveAllGameModes() throws UnirestException{
+        final String gameModesFields = "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+        HttpResponse<GameMode[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/game_modes/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", gameModesFields)
+                .queryString("limit", "50")
+                .asObject(GameMode[].class);
+
+        ArrayList<GameMode> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
+        genres.forEach( x -> {
+            System.out.println("Persisting " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            gamesDatabaseRepository.persistGameMode(x);
+        } );
+    }
 
 }
