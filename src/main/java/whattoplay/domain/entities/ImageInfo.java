@@ -3,15 +3,28 @@ package whattoplay.domain.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Andrzej on 2017-12-11.
  */
-public class GameCover {
+
+public class ImageInfo {
+    private long id;
+    private long gameId;
     private String url;
     private String cloudinaryId;
     private int width;
     private int height;
 
+    public long getId() {
+        return id;
+    }
+
+    public long getGameId() {
+        return gameId;
+    }
 
     public String getUrl() {
         return url;
@@ -49,7 +62,7 @@ public class GameCover {
 
     @Override
     public String toString() {
-        return "GameCover{" +
+        return "ImageInfo{" +
                 "url='" + url + '\'' +
                 ", cloudinaryId='" + cloudinaryId + '\'' +
                 ", width=" + width +

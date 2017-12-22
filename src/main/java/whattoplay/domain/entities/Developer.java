@@ -3,19 +3,51 @@ package whattoplay.domain.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  * Created by Andrzej on 2017-12-12.
  */
+@Entity
+@Table(name = "Developers")
 public class Developer {
+    @Id
+    @Column(name ="id", nullable = false)
     private long id;
+
+    @Column(name ="name", nullable = false)
     private String name;
+
+    @Column(name ="url", nullable = true )
     private String url;
-    private GameCover logo;
+
+    @Column(name ="description", nullable = true )
     private String description;
+
+    @Column(name ="website", nullable = true )
     private String website;
+
+    @Column(name ="start_date", nullable = true )
     private LocalDate startDate;
+
+    @Column(name ="image_url", nullable = true )
+    private String developerImageUrl;
+
+    @Column(name ="image_cloudinary_id", nullable = true )
+    private String developerImageCloudinaryId;
+
+    @Column(name ="image_width", nullable = true )
+    private int developerImageWidth;
+
+    @Column(name ="image_height", nullable = true )
+    private int developerImageHeight;
+
 
     public Developer() {
     }
@@ -44,14 +76,6 @@ public class Developer {
         this.url = url;
     }
 
-    public GameCover getLogo() {
-        return logo;
-    }
-
-    public void setLogo(GameCover logo) {
-        this.logo = logo;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -74,37 +98,52 @@ public class Developer {
     }
 
     @JsonSetter("start_date")
+    public void setStartDate(long startDate) {
+        this.startDate = Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public String getDeveloperImageUrl() {
+        return developerImageUrl;
+    }
+
+    @JsonSetter("logo")
+    public void setDeveloperImageUrl(ImageInfo developerImageUrl) {
+        this.developerImageUrl = developerImageUrl.getUrl();
+        this.developerImageCloudinaryId = developerImageUrl.getCloudinaryId();
+        this.developerImageWidth = developerImageUrl.getWidth();
+        this.developerImageHeight = developerImageUrl.getHeight();
+    }
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Developer)) return false;
-
-        Developer developer = (Developer) o;
-
-        if (id != developer.id) return false;
-        if (!name.equals(developer.name)) return false;
-        if (url != null ? !url.equals(developer.url) : developer.url != null) return false;
-        if (logo != null ? !logo.equals(developer.logo) : developer.logo != null) return false;
-        if (description != null ? !description.equals(developer.description) : developer.description != null)
-            return false;
-        if (website != null ? !website.equals(developer.website) : developer.website != null) return false;
-        return startDate != null ? startDate.equals(developer.startDate) : developer.startDate == null;
+    public void setDeveloperImageUrl(String developerImageUrl) {
+        this.developerImageUrl = developerImageUrl;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (logo != null ? logo.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (website != null ? website.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        return result;
+    public String getDeveloperImageCloudinaryId() {
+        return developerImageCloudinaryId;
+    }
+
+    public void setDeveloperImageCloudinaryId(String developerImageCloudinaryId) {
+        this.developerImageCloudinaryId = developerImageCloudinaryId;
+    }
+
+    public int getDeveloperImageWidth() {
+        return developerImageWidth;
+    }
+
+    public void setDeveloperImageWidth(int developerImageWidth) {
+        this.developerImageWidth = developerImageWidth;
+    }
+
+    public int getDeveloperImageHeight() {
+        return developerImageHeight;
+    }
+
+    public void setDeveloperImageHeight(int developerImageHeight) {
+        this.developerImageHeight = developerImageHeight;
     }
 
     @Override
@@ -113,10 +152,13 @@ public class Developer {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
-                ", logo=" + logo +
                 ", description='" + description + '\'' +
                 ", website='" + website + '\'' +
                 ", startDate=" + startDate +
+                ", developerImageUrl='" + developerImageUrl + '\'' +
+                ", developerImageCloudinaryId='" + developerImageCloudinaryId + '\'' +
+                ", developerImageWidth=" + developerImageWidth +
+                ", developerImageHeight=" + developerImageHeight +
                 '}';
     }
 }

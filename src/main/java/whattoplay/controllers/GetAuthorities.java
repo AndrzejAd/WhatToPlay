@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 public class GetAuthorities {
     @Autowired
-    UserDatabaseRepository userDatabaseRepository;
+    private UserDatabaseRepository userDatabaseRepository;
 
     @RequestMapping(path = "/getAuthorities", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getAndrzejAuthorities(){

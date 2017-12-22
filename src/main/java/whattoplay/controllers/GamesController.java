@@ -27,7 +27,7 @@ import java.util.List;
 public class GamesController {
     private ResourceLoader resourceLoader;
     private GameDatabaseService gameDatabaseService;
-    InternetGameDatabaseService internetGameDatabaseService;
+    private InternetGameDatabaseService internetGameDatabaseService;
 
     @Autowired
     public GamesController(ResourceLoader resourceLoader, GameDatabaseService gameDatabaseService, InternetGameDatabaseService internetGameDatabaseService) {
@@ -110,12 +110,13 @@ public class GamesController {
 
     @RequestMapping(path = "/test", method = RequestMethod.GET)
     public void test(){
-        try {
-            internetGameDatabaseService.saveAllGameModes();
+            //internetGameDatabaseService.saveAllGameModes();
             //internetGameDatabaseService.saveAllGenres();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+            //internetGameDatabaseService.saveAllPlayerPerspectives();
+            //internetGameDatabaseService.saveDevelopers()
+
+
+
     }
 
 }

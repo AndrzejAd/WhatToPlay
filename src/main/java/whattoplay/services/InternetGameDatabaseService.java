@@ -9,13 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import whattoplay.domain.entities.GameJsonDto;
-import whattoplay.domain.entities.GameMode;
-import whattoplay.domain.entities.Genre;
+import whattoplay.domain.entities.*;
 import whattoplay.persistence.GamesDatabaseRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Created by Andrzej on 2017-11-21.
@@ -112,7 +111,7 @@ public class InternetGameDatabaseService {
 
         ArrayList<Genre> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
         genres.forEach( x -> {
-            logger.info("Persisting " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            logger.info("Persisting genre:" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
             gamesDatabaseRepository.persistGenre(x);
         } );
     }
@@ -132,9 +131,97 @@ public class InternetGameDatabaseService {
 
         ArrayList<GameMode> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
         genres.forEach( x -> {
-            logger.info("Persisting " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            logger.info("Persisting Game Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
             //gamesDatabaseRepository.persistGameMode(x);
         } );
+    }
+
+    public void saveAllPlayerPerspectives() throws UnirestException{
+        final String playerPerspectivesFields = "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+        HttpResponse<PlayerPerspective[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/player_perspectives/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", playerPerspectivesFields)
+                .queryString("limit", "50")
+                .asObject(PlayerPerspective[].class);
+
+        ArrayList<PlayerPerspective> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
+        genres.forEach( x -> {
+            logger.info("Persisting Player Perspective: " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            gamesDatabaseRepository.persistPlayerPerspective(x);
+        } );
+    }
+
+    public boolean saveDevelopers()  {
+        logger.info(" ===================== Persisting developers starts. ===================== ");
+        final String urlForScroll = "https://api-2445582011268.apicast.io/companies/";
+        final String scrollUrlForDevelopers;
+        final long requiredRequestsNumb;
+        final HttpResponse<Developer[]> jsonResponse;
+        try {
+            jsonResponse = getScrollForDevelopers(urlForScroll);
+            scrollUrlForDevelopers = jsonResponse.getHeaders().get("X-Next-Page").get(0);
+            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
+            logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForDevelopers).toString());
+            logger.info(new StringBuilder().append(" Persisting ").append(requiredRequestsNumb).append(" developers. ").toString());
+            for ( int i = 0; i <= requiredRequestsNumb + 1; i++ ){
+                saveSetOfDevelopers(scrollUrlForDevelopers);
+            }
+            return true;
+        } catch (UnirestException e) {
+            logger.error(new StringBuilder().append(" Couldnt get the scroll for Developers ").append(e.getMessage()).toString() );
+        }
+        return false;
+    }
+
+    protected void saveSetOfDevelopers(String scrollUrlForDevelopers){
+        ArrayList<Developer> developers;
+        try {
+            developers = new ArrayList<>(Arrays.asList(getDevelopers( scrollUrlForDevelopers).getBody()));
+            developers.forEach(x -> {
+                if ( x.getName().length() >= 100) x.setName(x.getName().substring(0, 98));
+                Optional.ofNullable(x.getUrl()).ifPresent( y ->{
+                    if ( y.length() >= 100 ) x.setUrl(x.getUrl().substring(0, 98));
+                });
+                Optional.ofNullable(x.getDeveloperImageCloudinaryId()).ifPresent( y ->{
+                    if ( y.length() >= 100 ) x.setDeveloperImageCloudinaryId((x.getDeveloperImageCloudinaryId().substring(0, 98)));
+                });
+                logger.info(new StringBuilder().append("Persisting Developer: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getStartDate()).toString());
+                gamesDatabaseRepository.persistDeveloper(x);
+            });
+        } catch (UnirestException e) {
+            logger.info(new StringBuilder().append(" Got to the end of the scroll! ").toString());
+        }
+    }
+
+    protected HttpResponse<Developer[]>  getScrollForDevelopers(String url) throws UnirestException {
+        final String developersFields = "id," +
+                "logo," +
+                "name," +
+                "url," +
+                "description," +
+                "website," +
+                "start_date";
+        HttpResponse<Developer[]> jsonResponse = Unirest.get(url)
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", developersFields)
+                .queryString("limit", "50")
+                .queryString("scroll", 1)
+                .asObject(Developer[].class);
+        return jsonResponse;
+    }
+
+    protected HttpResponse<Developer[]>  getDevelopers(String url) throws UnirestException {
+        HttpResponse<Developer[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/" + url)
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .asObject(Developer[].class);
+        return jsonResponse;
     }
 
 }

@@ -12,7 +12,7 @@ import java.time.ZoneId;
  * Created by Andrzej on 2017-12-12.
  */
 @Entity
-@Table(name = "Genre")
+@Table(name = "Genres")
 public class Genre {
     @Id
     @Column(name ="[Genre Id]", nullable = false)

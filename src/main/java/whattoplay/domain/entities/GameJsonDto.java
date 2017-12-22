@@ -38,13 +38,13 @@ public class GameJsonDto implements Serializable {
     private Pegi pegi;
     private Status status;
     private External external;
-    private GameCover cover;
+    private ImageInfo cover;
     private List<Long> developersIds;
     private List<Long> playerPerspectivesIds;
     private List<Long> gameModesIds;
     private List<Long> genresIds;
     private List<Website> websites;
-    private List<GameCover> screenshots;
+    private List<ImageInfo> screenshots;
 
     public GameJsonDto() {
         developersIds = new ArrayList<>();
@@ -349,19 +349,19 @@ public class GameJsonDto implements Serializable {
         this.external = external;
     }
 
-    public GameCover getCover() {
+    public ImageInfo getCover() {
         return cover;
     }
 
-    public void setCover(GameCover cover) {
+    public void setCover(ImageInfo cover) {
         this.cover = cover;
     }
 
-    public List<GameCover> getScreenshots() {
+    public List<ImageInfo> getScreenshots() {
         return screenshots;
     }
 
-    public void setScreenshots(List<GameCover> screenshots) {
+    public void setScreenshots(List<ImageInfo> screenshots) {
         this.screenshots = screenshots;
     }
 }

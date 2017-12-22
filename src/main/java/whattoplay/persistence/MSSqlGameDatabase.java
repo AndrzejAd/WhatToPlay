@@ -5,11 +5,9 @@
  */
 package whattoplay.persistence;
 
-import whattoplay.domain.entities.GameEntity;
+import whattoplay.domain.entities.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import whattoplay.domain.entities.GameMode;
-import whattoplay.domain.entities.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,6 +54,16 @@ public class MSSqlGameDatabase implements GamesDatabaseRepository {
     @Override
     public void persistGameMode(GameMode gameMode) {
         entityManager.persist(gameMode);
+    }
+
+    @Override
+    public void persistPlayerPerspective(PlayerPerspective playerPerspective) {
+        entityManager.persist(playerPerspective);
+    }
+
+    @Override
+    public void persistDeveloper(Developer developer) {
+        entityManager.persist(developer);
     }
 
     @Override

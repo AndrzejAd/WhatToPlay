@@ -5,9 +5,7 @@
  */
 package whattoplay.persistence;
 
-import whattoplay.domain.entities.GameEntity;
-import whattoplay.domain.entities.GameMode;
-import whattoplay.domain.entities.Genre;
+import whattoplay.domain.entities.*;
 
 import java.util.List;
 
@@ -19,6 +17,8 @@ public interface GamesDatabaseRepository {
     void persistGame(GameEntity game);
     void persistGenre(Genre genre);
     void persistGameMode(GameMode gameMode);
+    void persistPlayerPerspective(PlayerPerspective playerPerspective);
+    void persistDeveloper(Developer developer);
     long getNumberOfRows();
     GameEntity deleteGameByGameName(String gameName);
     GameEntity getGameById(long gameId);
