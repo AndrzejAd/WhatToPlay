@@ -22,4 +22,6 @@ public class WhattoplayApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(WhattoplayApplication.class, args);
 	}
+
+
 }

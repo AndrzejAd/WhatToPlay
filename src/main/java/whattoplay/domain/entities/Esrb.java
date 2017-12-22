@@ -35,6 +35,10 @@ public class Esrb {
         this.rating = EsrbRating.UNKNOWN;
     }
 
+    public void setRating(EsrbRating rating) {
+        this.rating = rating;
+    }
+
     public String getSynopsis() {
         return synopsis;
     }

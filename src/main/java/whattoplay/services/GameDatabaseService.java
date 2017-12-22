@@ -74,7 +74,7 @@ public class GameDatabaseService {
     public List<GameDto> getGamesByGameName(final String gameName) {
         return (new ArrayList<>(gameToGameDtoConverter
                 .convertAll(databaseRepository
-                        .searchGamesByName(gameName))));
+                        .getGamesByName(gameName))));
     }
 
 }

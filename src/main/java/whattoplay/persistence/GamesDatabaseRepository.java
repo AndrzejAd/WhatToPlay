@@ -26,5 +26,5 @@ public interface GamesDatabaseRepository {
     List<Long> getRandomIdsFromGameTable(int numbOfGames);
     List<GameEntity> getRandomGames(int numberOfGames);
     List<GameEntity> getGamesByGenre(String genre);
-    List<GameEntity> searchGamesByName(String gameName);
+    List<GameEntity> getGamesByName(String gameName);
 }

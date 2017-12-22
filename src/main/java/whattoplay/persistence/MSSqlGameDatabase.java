@@ -135,7 +135,7 @@ public class MSSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public List<GameEntity> searchGamesByName(String gameName) {
+    public List<GameEntity> getGamesByName(String gameName) {
         gameEntityQuery.select(gameEntityGame)
                 .where( gameEntityBuilder.like(gameEntityGame.get("gameName"), gameName + "%" ));
         TypedQuery<GameEntity> tq = entityManager.createQuery(gameEntityQuery);

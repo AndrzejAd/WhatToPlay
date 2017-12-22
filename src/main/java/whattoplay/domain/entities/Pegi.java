@@ -29,6 +29,10 @@ public class Pegi {
         this.synopsis = synopsis;
     }
 
+    public void setRating(PegiRating rating) {
+        this.rating = rating;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -18,19 +18,19 @@ import java.time.ZoneId;
 @Table(name = "[Game Modes]")
 public class GameMode {
     @Id
-    @Column(name ="[Game Mode Id]", nullable = false)
+    @Column(name ="id", nullable = false)
     private long id;
 
-    @Column(name ="[Game Mode Name]", nullable = false)
+    @Column(name ="name", nullable = false)
     private String name;
 
     @Column(name ="url", nullable = true)
     private String url;
 
-    @Column(name ="created_At", nullable = true)
+    @Column(name ="created_at", nullable = true)
     private LocalDate createdAt;
 
-    @Column(name ="updated_At", nullable = true)
+    @Column(name ="updated_at", nullable = true)
     private LocalDate updatedAt;
 
     public long getId() {

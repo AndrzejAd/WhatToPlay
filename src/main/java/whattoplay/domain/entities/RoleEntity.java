@@ -27,7 +27,7 @@ public class RoleEntity implements Serializable {
     private long userId;
 
     @ManyToOne
-    @JoinColumn(name="[User Id]", insertable=false, updatable=false)
+    @JoinColumn(referencedColumnName = "[User Id]", insertable=false, updatable=false)
     private UserEntity user;
 
 
