@@ -2,6 +2,7 @@ package whattoplay.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import whattoplay.domain.dto.Status;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Andrzej on 2017-12-05.
  */
-public class GameJsonDto implements Serializable {
+public class GameJson implements Serializable {
     private long id;
     private String name;
     private String slug;
@@ -46,7 +47,7 @@ public class GameJsonDto implements Serializable {
     private List<Website> websites;
     private List<ImageInfo> screenshots;
 
-    public GameJsonDto() {
+    public GameJson() {
         developersIds = new ArrayList<>();
         playerPerspectivesIds = new ArrayList<>();
         gameModesIds = new ArrayList<>();
@@ -58,7 +59,7 @@ public class GameJsonDto implements Serializable {
 
     @Override
     public String toString() {
-        return "GameJsonDto{" +
+        return "GameJson{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", slug='" + slug + '\'' +

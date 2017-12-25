@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,68 @@ public class InternetGameDatabaseService {
         this.gamesDatabaseRepository = gamesDatabaseRepository;
     }
 
+    protected HttpRequest getScroll(String url, String fields) throws UnirestException{
+        return Unirest.get(url)
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", fields)
+                .queryString("limit", "50")
+                .queryString("scroll", 1);
+    }
+
+    public void saveAllGenres() throws UnirestException{
+        final String genresFields = "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+        HttpResponse<Genre[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/genres/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", genresFields)
+                .queryString("limit", "50")
+                .asObject(Genre[].class);
+        Arrays.asList(genresJson.getBody()).forEach( x -> {
+            logger.info("Persisting genre:" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            gamesDatabaseRepository.persistGenre(x);
+        } );
+    }
+
+    public void saveAllGameModes() throws UnirestException{
+        final String gameModesFields = "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+        HttpResponse<GameMode[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/game_modes/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", gameModesFields)
+                .queryString("limit", "50")
+                .asObject(GameMode[].class);
+        Arrays.asList(genresJson.getBody()).forEach( x -> {
+            logger.info("Persisting Game Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+        } );
+    }
+
+    public void saveAllPlayerPerspectives() throws UnirestException{
+        final String playerPerspectivesFields = "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+        HttpResponse<PlayerPerspective[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/player_perspectives/")
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .queryString("fields", playerPerspectivesFields)
+                .queryString("limit", "50")
+                .asObject(PlayerPerspective[].class);
+        Arrays.asList(genresJson.getBody()).forEach( x -> {
+            logger.info("Persisting Player Perspective: " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            gamesDatabaseRepository.persistPlayerPerspective(x);
+        } );
+    }
+
     public void getAllGames() throws UnirestException {
         final String gamesFields = "id," +
                 "name," +
@@ -80,90 +143,27 @@ public class InternetGameDatabaseService {
                 "external," +
                 "cover," +
                 "screenshots";
-        for ( int i = 0; i < 2; i++ ) {
-            HttpResponse<GameJsonDto[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
-                    .header("accept", "application/json")
-                    .header("user-key", token)
-                    .queryString("fields", gamesFields)
-                    .queryString("limit", "50")
-                    .asObject(GameJsonDto[].class);
-
-            ArrayList<GameJsonDto> gameJsonDtos = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
-
-            gameJsonDtos.forEach(System.out::println);
-            System.out.println("-----------------");
-        }
-
-    }
-
-    public void saveAllGenres() throws UnirestException{
-        final String genresFields = "id," +
-                "name," +
-                "url," +
-                "created_at," +
-                "updated_at";
-        HttpResponse<Genre[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/genres/")
+        HttpResponse<GameJson[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
                 .header("accept", "application/json")
                 .header("user-key", token)
-                .queryString("fields", genresFields)
+                .queryString("fields", gamesFields)
                 .queryString("limit", "50")
-                .asObject(Genre[].class);
+                .asObject(GameJson[].class);
 
-        ArrayList<Genre> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
-        genres.forEach( x -> {
-            logger.info("Persisting genre:" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gamesDatabaseRepository.persistGenre(x);
-        } );
+        ArrayList<GameJson> gameJsons = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
+
+        gameJsons.forEach(System.out::println);
+        System.out.println("-----------------");
     }
 
-    public void saveAllGameModes() throws UnirestException{
-        final String gameModesFields = "id," +
-                "name," +
-                "url," +
-                "created_at," +
-                "updated_at";
-        HttpResponse<GameMode[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/game_modes/")
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .queryString("fields", gameModesFields)
-                .queryString("limit", "50")
-                .asObject(GameMode[].class);
-
-        ArrayList<GameMode> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
-        genres.forEach( x -> {
-            logger.info("Persisting Game Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            //gamesDatabaseRepository.persistGameMode(x);
-        } );
-    }
-
-    public void saveAllPlayerPerspectives() throws UnirestException{
-        final String playerPerspectivesFields = "id," +
-                "name," +
-                "url," +
-                "created_at," +
-                "updated_at";
-        HttpResponse<PlayerPerspective[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/player_perspectives/")
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .queryString("fields", playerPerspectivesFields)
-                .queryString("limit", "50")
-                .asObject(PlayerPerspective[].class);
-
-        ArrayList<PlayerPerspective> genres = new ArrayList<>(Arrays.asList(genresJson.getBody()));
-        genres.forEach( x -> {
-            logger.info("Persisting Player Perspective: " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gamesDatabaseRepository.persistPlayerPerspective(x);
-        } );
-    }
-
-    public boolean saveDevelopers()  {
+    public boolean getAllDevelopers()  {
         logger.info(" ===================== Persisting developers starts. ===================== ");
         final String urlForScroll = "https://api-2445582011268.apicast.io/companies/";
         final String scrollUrlForDevelopers;
         final long requiredRequestsNumb;
         final HttpResponse<Developer[]> jsonResponse;
         try {
-            jsonResponse = getScrollForDevelopers(urlForScroll);
+            jsonResponse = getScroll(urlForScroll, getDeveloperFields()).asObject(Developer[].class);
             scrollUrlForDevelopers = jsonResponse.getHeaders().get("X-Next-Page").get(0);
             requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
             logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForDevelopers).toString());
@@ -176,6 +176,13 @@ public class InternetGameDatabaseService {
             logger.error(new StringBuilder().append(" Couldnt get the scroll for Developers ").append(e.getMessage()).toString() );
         }
         return false;
+    }
+
+    protected HttpResponse<Developer[]>  getDevelopers(String url) throws UnirestException {
+        return Unirest.get("https://api-2445582011268.apicast.io/" + url)
+                .header("accept", "application/json")
+                .header("user-key", token)
+                .asObject(Developer[].class);
     }
 
     protected void saveSetOfDevelopers(String scrollUrlForDevelopers){
@@ -198,30 +205,14 @@ public class InternetGameDatabaseService {
         }
     }
 
-    protected HttpResponse<Developer[]>  getScrollForDevelopers(String url) throws UnirestException {
-        final String developersFields = "id," +
+    protected String getDeveloperFields(){
+        return "id," +
                 "logo," +
                 "name," +
                 "url," +
                 "description," +
                 "website," +
                 "start_date";
-        HttpResponse<Developer[]> jsonResponse = Unirest.get(url)
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .queryString("fields", developersFields)
-                .queryString("limit", "50")
-                .queryString("scroll", 1)
-                .asObject(Developer[].class);
-        return jsonResponse;
-    }
-
-    protected HttpResponse<Developer[]>  getDevelopers(String url) throws UnirestException {
-        HttpResponse<Developer[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/" + url)
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .asObject(Developer[].class);
-        return jsonResponse;
     }
 
 }

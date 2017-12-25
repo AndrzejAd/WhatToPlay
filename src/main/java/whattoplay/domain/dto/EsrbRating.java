@@ -1,4 +1,4 @@
-package whattoplay.domain.entities;
+package whattoplay.domain.dto;
 
 /**
  * Created by Andrzej on 2017-12-11.

@@ -1,8 +1,10 @@
 package whattoplay.persistence;
 
 import org.springframework.stereotype.Repository;
+import whattoplay.domain.entities.Developer;
 import whattoplay.domain.entities.GameEntity;
 import whattoplay.domain.entities.GameMode;
+import whattoplay.domain.entities.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +29,17 @@ public class MsSqlGameFieldsDatabaseRepository implements GameFieldsDatabaseRepo
     public List<GameMode> getAllGameModes() {
         Query query = entityManager.createQuery("SELECT a FROM GameMode a");
         return (ArrayList<GameMode>) query.getResultList();
+    }
+
+    @Override
+    public List<Genre> getAllGenres() {
+        Query query = entityManager.createQuery("SELECT a FROM Genre a");
+        return (ArrayList<Genre>) query.getResultList();
+    }
+
+    @Override
+    public List<Developer> getAllDevelopers() {
+        Query query = entityManager.createQuery("SELECT a FROM Developer a");
+        return (ArrayList<Developer>) query.getResultList();
     }
 }

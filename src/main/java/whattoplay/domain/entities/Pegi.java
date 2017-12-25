@@ -1,5 +1,7 @@
 package whattoplay.domain.entities;
 
+import whattoplay.domain.dto.PegiRating;
+
 /**
  * Created by Andrzej on 2017-12-11.
  */

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @Transactional
-public class MSSqlGameDatabase implements GamesDatabaseRepository {
+public class MsSqlGameDatabase implements GamesDatabaseRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -30,7 +30,7 @@ public class MSSqlGameDatabase implements GamesDatabaseRepository {
     private CriteriaQuery<GameEntity> gameEntityQuery;
     private Root<GameEntity> gameEntityGame;
 
-    public MSSqlGameDatabase(EntityManager entityManager) {
+    public MsSqlGameDatabase(EntityManager entityManager) {
         this.entityManager = entityManager;
         gameEntityBuilder = entityManager.getCriteriaBuilder();
         gameEntityQuery = gameEntityBuilder.createQuery(GameEntity.class);

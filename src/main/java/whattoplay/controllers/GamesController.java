@@ -27,13 +27,11 @@ import java.util.List;
 public class GamesController {
     private ResourceLoader resourceLoader;
     private GameDatabaseService gameDatabaseService;
-    private InternetGameDatabaseService internetGameDatabaseService;
 
     @Autowired
-    public GamesController(ResourceLoader resourceLoader, GameDatabaseService gameDatabaseService, InternetGameDatabaseService internetGameDatabaseService) {
+    public GamesController(ResourceLoader resourceLoader, GameDatabaseService gameDatabaseService) {
         this.resourceLoader = resourceLoader;
         this.gameDatabaseService = gameDatabaseService;
-        this.internetGameDatabaseService = internetGameDatabaseService;
     }
 
     @RequestMapping(path = "/getGame/{gameId}", method = RequestMethod.GET)
@@ -82,7 +80,7 @@ public class GamesController {
         if ( gameDatabaseService.saveGameToDatabase(game) ) {
             return new ResponseEntity<>("Successfully added game to database.", responseHeaders, HttpStatus.CREATED);
         } else{
-            return new ResponseEntity<>("GameJsonDto is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<>("GameJson is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);
         }
     }
 
@@ -108,14 +106,5 @@ public class GamesController {
         }
     }
 
-    @RequestMapping(path = "/test", method = RequestMethod.GET)
-    public void test(){
-            //internetGameDatabaseService.saveAllGameModes();
-            //internetGameDatabaseService.saveAllGenres();
-            //internetGameDatabaseService.saveAllPlayerPerspectives();
-            //internetGameDatabaseService.saveDevelopers()
-
-
-    }
 
 }

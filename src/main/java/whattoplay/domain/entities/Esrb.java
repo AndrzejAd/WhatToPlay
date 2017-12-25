@@ -1,5 +1,7 @@
 package whattoplay.domain.entities;
 
+import whattoplay.domain.dto.EsrbRating;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -10,8 +12,6 @@ import javax.validation.constraints.NotNull;
 @Table(name = "Esrb")
 public class Esrb {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name ="id", nullable = false )
     private long id;
 
