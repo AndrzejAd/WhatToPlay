@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.time.Duration;
 import java.util.Optional;
 
-/**
- * Created by Andrzej on 2017-12-11.
- */
-
-
+//
 public class TimeToBeat {
     private Duration hastly;
     private Duration normally;

@@ -7,10 +7,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-/**
- *
- * @author Andrzej
- */
 @Entity
 @Table(name = "Users")
 public class UserEntity implements Serializable {

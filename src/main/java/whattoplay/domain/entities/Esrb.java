@@ -8,17 +8,10 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by Andrzej on 2017-12-11.
  */
-@Entity
-@Table(name = "Esrb")
+
 public class Esrb {
-    @Id
-    @Column(name ="id", nullable = false )
     private long id;
-
-    @Column(name ="rating", nullable = false )
     private EsrbRating rating;
-
-    @Column(name ="synopsis", nullable = true )
     private String synopsis;
 
     public EsrbRating getRating() {
@@ -46,7 +39,6 @@ public class Esrb {
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
     }
-
 
     @Override
     public String toString() {

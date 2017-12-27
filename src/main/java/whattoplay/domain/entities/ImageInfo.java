@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by Andrzej on 2017-12-11.
- */
-
+//
 public class ImageInfo {
     private long id;
     private long gameId;

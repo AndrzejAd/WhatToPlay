@@ -3,10 +3,6 @@ package whattoplay.domain.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- *
- * @author Andrzej
- */
 
 @Entity
 @Table(name = "Roles")

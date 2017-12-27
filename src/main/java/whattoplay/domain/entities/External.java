@@ -3,6 +3,7 @@ package whattoplay.domain.entities;
 /**
  * Created by Andrzej on 2017-12-11.
  */
+//
 public class External{
     private String steam;
 
