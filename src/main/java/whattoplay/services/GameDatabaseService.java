@@ -4,7 +4,7 @@ import whattoplay.domain.dto.GameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import whattoplay.domain.entities.GameEntity;
+import whattoplay.domain.entities.Game;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToGameEntityConverter;
@@ -53,7 +53,7 @@ public class GameDatabaseService {
         }
     }
 
-    public GameEntity updateGame(final GameDto gameDto) {
+    public Game updateGame(final GameDto gameDto) {
         return databaseRepository.updateGame(gameDtoToGameEntityConverter.convert(gameDto));
     }
 

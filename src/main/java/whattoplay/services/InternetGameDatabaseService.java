@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.*;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.persistence.GamesDatabaseRepository;
+import whattoplay.services.domain.GameJsonToGameConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -192,9 +193,8 @@ public class InternetGameDatabaseService {
                 .asObject(GameJson[].class);
 
         ArrayList<GameJson> gameJsons = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
-
-        gameJsons.forEach(System.out::println);
-        System.out.println("-----------------");
+        GameJsonToGameConverter gameJsonToGameConverter = new GameJsonToGameConverter();
+        gameJsons.forEach( x -> gamesDatabaseRepository.persistGame(gameJsonToGameConverter.convert(x) ) );
     }
 
     protected void saveSetOfDevelopers(Iterable<Developer> developers ){

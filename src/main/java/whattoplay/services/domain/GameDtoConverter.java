@@ -1,7 +1,7 @@
 package whattoplay.services.domain;
 
 import whattoplay.domain.dto.GameDto;
-import whattoplay.domain.entities.GameEntity;
+import whattoplay.domain.entities.Game;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 @FunctionalInterface
 public interface GameDtoConverter {
-    public GameDto convert(GameEntity from);
+    public GameDto convert(Game from);
  
-    default public Collection<GameDto> convertAll(Collection<GameEntity> fElements){
+    default public Collection<GameDto> convertAll(Collection<Game> fElements){
         Collection<GameDto> convertedElement =
                 fElements.stream()
                         .map(element -> convert(element))

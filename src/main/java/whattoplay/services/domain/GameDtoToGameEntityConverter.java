@@ -2,7 +2,7 @@ package whattoplay.services.domain;
 
 
 import whattoplay.domain.dto.GameDto;
-import whattoplay.domain.entities.GameEntity;
+import whattoplay.domain.entities.Game;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -13,15 +13,14 @@ import java.util.stream.Collectors;
  * @author Andrzej
  */
 @Service
+/** TODO **/
 public class GameDtoToGameEntityConverter {
-    public GameEntity convert(GameDto game){
-        return new GameEntity(game.getGameId(), game.getGameName(), game.getProducer(),
-                              game.getPublisher(), game.getDatePublished(), 
-                              game.getPrice(), game.getGenre(), game.getImagePath());
+    public Game convert(GameDto game){
+        return new Game();
     }
     
-    public Collection<GameEntity> convertAll(Collection<GameDto> fElements){
-        Collection<GameEntity> convertedElement =
+    public Collection<Game> convertAll(Collection<GameDto> fElements){
+        Collection<Game> convertedElement =
                 fElements.stream()
                         .map(element -> convert(element))
                         .collect(Collectors.toList());
