@@ -11,7 +11,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.*;
+import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.persistence.GamesDatabaseRepository;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,9 +27,10 @@ public class InternetGameDatabaseService {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
     private static Logger logger = LogManager.getLogger();
     private GamesDatabaseRepository gamesDatabaseRepository;
+    private GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
 
     @Autowired
-    public InternetGameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository) {
+    public InternetGameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository, GameFieldsDatabaseRepository gameFieldsDatabaseRepository) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
                     = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -50,9 +53,10 @@ public class InternetGameDatabaseService {
             }
         });
         this.gamesDatabaseRepository = gamesDatabaseRepository;
+        this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
     }
 
-    protected HttpRequest getScroll(String url, String fields) throws UnirestException{
+    protected HttpRequest getScrollFromIGDB(String url, String fields) {
         return Unirest.get(url)
                 .header("accept", "application/json")
                 .header("user-key", token)
@@ -61,60 +65,97 @@ public class InternetGameDatabaseService {
                 .queryString("scroll", 1);
     }
 
-    public void saveAllGenres() throws UnirestException{
-        final String genresFields = "id," +
-                "name," +
-                "url," +
-                "created_at," +
-                "updated_at";
+    protected HttpRequest getSetOfObjectsFromIGDB(String url) {
+        return Unirest.get("https://api-2445582011268.apicast.io/" + url)
+                .header("accept", "application/json")
+                .header("user-key", token);
+    }
+
+    public void saveAllGenres() throws UnirestException {
         HttpResponse<Genre[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/genres/")
                 .header("accept", "application/json")
                 .header("user-key", token)
-                .queryString("fields", genresFields)
+                .queryString("fields", getBasicFields())
                 .queryString("limit", "50")
                 .asObject(Genre[].class);
-        Arrays.asList(genresJson.getBody()).forEach( x -> {
+        Arrays.asList(genresJson.getBody()).forEach(x -> {
             logger.info("Persisting genre:" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gamesDatabaseRepository.persistGenre(x);
-        } );
+            gameFieldsDatabaseRepository.persistGenre(x);
+        });
     }
 
-    public void saveAllGameModes() throws UnirestException{
-        final String gameModesFields = "id," +
-                "name," +
-                "url," +
-                "created_at," +
-                "updated_at";
+    public void saveAllGameModes() throws UnirestException {
         HttpResponse<GameMode[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/game_modes/")
                 .header("accept", "application/json")
                 .header("user-key", token)
-                .queryString("fields", gameModesFields)
+                .queryString("fields", getBasicFields())
                 .queryString("limit", "50")
                 .asObject(GameMode[].class);
-        Arrays.asList(genresJson.getBody()).forEach( x -> {
+        Arrays.asList(genresJson.getBody()).forEach(x -> {
             logger.info("Persisting Game Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-        } );
+        });
     }
 
-    public void saveAllPlayerPerspectives() throws UnirestException{
-        final String playerPerspectivesFields = "id," +
-                "name," +
-                "url," +
-                "created_at," +
-                "updated_at";
+    public void saveAllPlayerPerspectives() throws UnirestException {
         HttpResponse<PlayerPerspective[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/player_perspectives/")
                 .header("accept", "application/json")
                 .header("user-key", token)
-                .queryString("fields", playerPerspectivesFields)
+                .queryString("fields", getBasicFields())
                 .queryString("limit", "50")
                 .asObject(PlayerPerspective[].class);
-        Arrays.asList(genresJson.getBody()).forEach( x -> {
+        Arrays.asList(genresJson.getBody()).forEach(x -> {
             logger.info("Persisting Player Perspective: " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gamesDatabaseRepository.persistPlayerPerspective(x);
-        } );
+            gameFieldsDatabaseRepository.persistPlayerPerspective(x);
+        });
     }
 
-    public void getAllGames() throws UnirestException {
+    public void saveAllFranchises() {
+        logger.info(" ===================== Persisting Franchises starts. ===================== ");
+        final String urlForScroll = "https://api-2445582011268.apicast.io/franchises/";
+        final String scrollUrlFranchises;
+        final long requiredRequestsNumb;
+        final HttpResponse<Franchise[]> jsonResponse;
+        try {
+            jsonResponse = getScrollFromIGDB(urlForScroll, getBasicFields()).asObject(Franchise[].class);
+            scrollUrlFranchises = jsonResponse.getHeaders().get("X-Next-Page").get(0);
+            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
+            saveSetOfFranchises(Arrays.asList(jsonResponse.getBody()));
+            logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlFranchises).toString());
+            logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" franchsises. ").toString());
+            logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());
+            for ( int i = 0; i <= requiredRequestsNumb + 1; i++ ){
+                saveSetOfFranchises(scrollUrlFranchises);
+            }
+        } catch (UnirestException e) {
+            logger.error(new StringBuilder().append(" Couldnt get the scroll for Franchises ").append(e.getMessage()).toString() );
+        }
+    }
+
+    public boolean saveAllDevelopers() {
+        logger.info(" ===================== Persisting developers starts. ===================== ");
+        final String urlForScroll = "https://api-2445582011268.apicast.io/companies/";
+        final String scrollUrlForDevelopers;
+        final long requiredRequestsNumb;
+        final HttpResponse<Developer[]> jsonResponse;
+        try {
+            jsonResponse = getScrollFromIGDB(urlForScroll, getDeveloperFields()).asObject(Developer[].class);
+            scrollUrlForDevelopers = jsonResponse.getHeaders().get("X-Next-Page").get(0);
+            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
+            logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForDevelopers).toString());
+            logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" developers. ").toString());
+            logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());
+            saveSetOfDevelopers(Arrays.asList(jsonResponse.getBody()));
+            for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
+                saveSetOfDevelopers(scrollUrlForDevelopers);
+            }
+            return true;
+        } catch (UnirestException e) {
+            logger.error(new StringBuilder().append(" Couldnt get the scroll for Developers ").append(e.getMessage()).toString());
+        }
+        return false;
+    }
+
+    public void saveAllGames() throws UnirestException {
         final String gamesFields = "id," +
                 "name," +
                 "slug," +
@@ -147,7 +188,7 @@ public class InternetGameDatabaseService {
                 .header("accept", "application/json")
                 .header("user-key", token)
                 .queryString("fields", gamesFields)
-                .queryString("limit", "50")
+                .queryString("limit", "1")
                 .asObject(GameJson[].class);
 
         ArrayList<GameJson> gameJsons = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
@@ -156,56 +197,49 @@ public class InternetGameDatabaseService {
         System.out.println("-----------------");
     }
 
-    public boolean getAllDevelopers()  {
-        logger.info(" ===================== Persisting developers starts. ===================== ");
-        final String urlForScroll = "https://api-2445582011268.apicast.io/companies/";
-        final String scrollUrlForDevelopers;
-        final long requiredRequestsNumb;
-        final HttpResponse<Developer[]> jsonResponse;
-        try {
-            jsonResponse = getScroll(urlForScroll, getDeveloperFields()).asObject(Developer[].class);
-            scrollUrlForDevelopers = jsonResponse.getHeaders().get("X-Next-Page").get(0);
-            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
-            logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForDevelopers).toString());
-            logger.info(new StringBuilder().append(" Persisting ").append(requiredRequestsNumb).append(" developers. ").toString());
-            for ( int i = 0; i <= requiredRequestsNumb + 1; i++ ){
-                saveSetOfDevelopers(scrollUrlForDevelopers);
-            }
-            return true;
-        } catch (UnirestException e) {
-            logger.error(new StringBuilder().append(" Couldnt get the scroll for Developers ").append(e.getMessage()).toString() );
-        }
-        return false;
-    }
-
-    protected HttpResponse<Developer[]>  getDevelopers(String url) throws UnirestException {
-        return Unirest.get("https://api-2445582011268.apicast.io/" + url)
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .asObject(Developer[].class);
-    }
-
-    protected void saveSetOfDevelopers(String scrollUrlForDevelopers){
-        ArrayList<Developer> developers;
-        try {
-            developers = new ArrayList<>(Arrays.asList(getDevelopers( scrollUrlForDevelopers).getBody()));
-            developers.forEach(x -> {
-                if ( x.getName().length() >= 100) x.setName(x.getName().substring(0, 98));
-                Optional.ofNullable(x.getUrl()).ifPresent( y ->{
-                    if ( y.length() >= 100 ) x.setUrl(x.getUrl().substring(0, 98));
-                });
-                Optional.ofNullable(x.getDeveloperImageCloudinaryId()).ifPresent( y ->{
-                    if ( y.length() >= 100 ) x.setDeveloperImageCloudinaryId((x.getDeveloperImageCloudinaryId().substring(0, 98)));
-                });
-                logger.info(new StringBuilder().append("Persisting Developer: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getStartDate()).toString());
-                gamesDatabaseRepository.persistDeveloper(x);
+    protected void saveSetOfDevelopers(Iterable<Developer> developers ){
+        developers.forEach( x -> {
+            if (x.getName().length() >= 100) x.setName(x.getName().substring(0, 98));
+            Optional.ofNullable(x.getUrl()).ifPresent(y -> {
+                if (y.length() >= 100) x.setUrl(x.getUrl().substring(0, 98));
             });
+            Optional.ofNullable(x.getDeveloperImageCloudinaryId()).ifPresent(y -> {
+                if (y.length() >= 100)
+                    x.setDeveloperImageCloudinaryId((x.getDeveloperImageCloudinaryId().substring(0, 98)));
+            });
+            logger.info(new StringBuilder().append("Persisting Developer: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getStartDate()).toString());
+            gameFieldsDatabaseRepository.persistDeveloper(x);
+        });
+    }
+
+    protected void saveSetOfDevelopers(String scrollUrlForDevelopers) {
+        try {
+            saveSetOfDevelopers( Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForDevelopers).asObject(Developer[].class).getBody()) );
         } catch (UnirestException e) {
             logger.info(new StringBuilder().append(" Got to the end of the scroll! ").toString());
         }
     }
 
-    protected String getDeveloperFields(){
+    protected void saveSetOfFranchises(Iterable<Franchise> franchises) {
+        franchises.forEach(x -> {
+            if (x.getName().length() >= 150) x.setName(x.getName().substring(0, 148));
+            Optional.ofNullable(x.getUrl()).ifPresent(y -> {
+                if (y.length() >= 100) x.setUrl(x.getUrl().substring(0, 98));
+            });
+            logger.info(new StringBuilder().append("Persisting Franchise: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getCreatedAt()).toString());
+            gameFieldsDatabaseRepository.persistFranchise(x);
+        });
+    }
+
+    protected void saveSetOfFranchises(String scrollUrlForFranchises) {
+        try {
+            saveSetOfFranchises(  Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForFranchises).asObject(Franchise[].class).getBody()));
+        } catch (UnirestException e) {
+            logger.info(new StringBuilder().append(" Got to the end of the franchises scroll! ").toString());
+        }
+    }
+
+    protected String getDeveloperFields() {
         return "id," +
                 "logo," +
                 "name," +
@@ -215,4 +249,15 @@ public class InternetGameDatabaseService {
                 "start_date";
     }
 
+    protected String getBasicFields() {
+        return "id," +
+                "name," +
+                "url," +
+                "created_at," +
+                "updated_at";
+    }
+
+    public static String getToken() {
+        return token;
+    }
 }

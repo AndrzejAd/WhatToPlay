@@ -1,6 +1,7 @@
 package whattoplay.controllers;
 
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,19 @@ public class IGDBParserController {
 
     @RequestMapping(path = "/parseDevelopers", method = RequestMethod.POST)
     public ResponseEntity<String> parseDevelopers(){
+        internetGameDatabaseService.saveAllDevelopers();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/parseGames", method = RequestMethod.POST)
     public ResponseEntity<String> parseGames(){
-        //internetGameDatabaseService.getAllGames();
+//        try {
+//            internetGameDatabaseService.saveAllGames();
+//
+//        } catch (UnirestException e) {
+//            e.printStackTrace();
+//        }
+        internetGameDatabaseService.saveAllFranchises();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 

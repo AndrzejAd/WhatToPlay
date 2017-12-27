@@ -15,10 +15,6 @@ import java.util.List;
  */
 public interface GamesDatabaseRepository {
     void persistGame(GameEntity game);
-    void persistGenre(Genre genre);
-    void persistGameMode(GameMode gameMode);
-    void persistPlayerPerspective(PlayerPerspective playerPerspective);
-    void persistDeveloper(Developer developer);
     long getNumberOfRows();
     GameEntity deleteGameByGameName(String gameName);
     GameEntity getGameById(long gameId);

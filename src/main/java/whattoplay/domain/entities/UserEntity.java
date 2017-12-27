@@ -16,8 +16,8 @@ import java.util.Set;
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name ="[User Id]",  nullable = false)
-    private long userId;
+    @Column(name ="id",  nullable = false)
+    private long id;
     
     @Column(name ="[First Name]", nullable = true)
     @Size(min = 3, max = 64 )
@@ -92,7 +92,7 @@ public class UserEntity implements Serializable {
     }
 
     public long getUserId() {
-        return userId;
+        return id;
     }
 
     public boolean isEnabled() {
@@ -122,7 +122,7 @@ public class UserEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "UserEntity{" + "userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username + ", password=" + password + ", email=" + email + '}';
+        return "UserEntity{" + "userId=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username + ", password=" + password + ", email=" + email + '}';
     }
     
     

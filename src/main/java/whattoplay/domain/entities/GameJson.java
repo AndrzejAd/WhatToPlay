@@ -64,9 +64,6 @@ public class GameJson implements Serializable {
                 ", name='" + name + '\'' +
                 ", slug='" + slug + '\'' +
                 ", url='" + url + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", firstReleaseDate=" + firstReleaseDate +
                 ", summary='" + summary + '\'' +
                 ", storyline='" + storyline + '\'' +
                 ", hypes=" + hypes +
@@ -77,6 +74,23 @@ public class GameJson implements Serializable {
                 ", aggregatedRatingCount=" + aggregatedRatingCount +
                 ", totalRating=" + totalRating +
                 ", totalRatingCount=" + totalRatingCount +
+                ", collectionId=" + collectionId +
+                ", franchiseId=" + franchiseId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", firstReleaseDate=" + firstReleaseDate +
+                ", timeToBeat=" + timeToBeat +
+                ", esrb=" + esrb +
+                ", pegi=" + pegi +
+                ", status=" + status +
+                ", external=" + external +
+                ", cover=" + cover +
+                ", developersIds=" + developersIds.size() +
+                ", playerPerspectivesIds=" + playerPerspectivesIds.size() +
+                ", gameModesIds=" + gameModesIds.size() +
+                ", genresIds=" + genresIds.size() +
+                ", websites=" + websites +
+                ", screenshots=" + screenshots +
                 '}';
     }
 

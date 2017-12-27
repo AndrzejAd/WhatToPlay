@@ -47,26 +47,6 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public void persistGenre(Genre genre) {
-        entityManager.persist(genre);
-    }
-
-    @Override
-    public void persistGameMode(GameMode gameMode) {
-        entityManager.persist(gameMode);
-    }
-
-    @Override
-    public void persistPlayerPerspective(PlayerPerspective playerPerspective) {
-        entityManager.persist(playerPerspective);
-    }
-
-    @Override
-    public void persistDeveloper(Developer developer) {
-        entityManager.persist(developer);
-    }
-
-    @Override
     public long getNumberOfRows() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);

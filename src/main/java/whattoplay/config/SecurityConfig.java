@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/getGames").permitAll()
                 .antMatchers("/addGame/**").hasRole("ADMIN")
-                .antMatchers("/getAllGames").hasRole("USER")
+                .antMatchers("/saveAllGames").hasRole("USER")
             .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)

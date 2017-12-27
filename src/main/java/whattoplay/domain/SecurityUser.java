@@ -30,14 +30,12 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        String newString = user.getPassword().replaceAll(" " , "");
-        return newString;
+        return user.getPassword().replaceAll(" " , "");
     }
 
     @Override
     public String getUsername() {
-        String newString = user.getUsername().replaceAll(" " , "");
-        return newString;
+        return user.getUsername().replaceAll(" " , "");
     }
 
     @Override
