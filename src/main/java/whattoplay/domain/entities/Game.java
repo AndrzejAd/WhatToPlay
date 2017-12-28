@@ -5,6 +5,7 @@ import whattoplay.domain.dto.Status;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "Games")
@@ -84,6 +85,9 @@ public class Game implements Serializable {
 
     @Embedded
     private ImageInfo cover;
+
+    @OneToMany(mappedBy="game")
+    private Set<GameDeveloper> gameDevelopers;
 
     public Game() {
     }
@@ -318,5 +322,9 @@ public class Game implements Serializable {
 
     public void setCover(ImageInfo cover) {
         this.cover = cover;
+    }
+
+    public Set<GameDeveloper> getGameDevelopers() {
+        return gameDevelopers;
     }
 }

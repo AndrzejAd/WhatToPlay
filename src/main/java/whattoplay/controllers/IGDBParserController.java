@@ -8,28 +8,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import whattoplay.services.InternetGameDatabaseService;
+import whattoplay.services.InternetGameDatabaseCacher;
 
 
 @RestController
 public class IGDBParserController {
-    InternetGameDatabaseService internetGameDatabaseService;
+    InternetGameDatabaseCacher internetGameDatabaseCacher;
 
     @Autowired
-    public IGDBParserController(InternetGameDatabaseService internetGameDatabaseService) {
-        this.internetGameDatabaseService = internetGameDatabaseService;
+    public IGDBParserController(InternetGameDatabaseCacher internetGameDatabaseCacher) {
+        this.internetGameDatabaseCacher = internetGameDatabaseCacher;
     }
 
     @RequestMapping(path = "/parseDevelopers", method = RequestMethod.POST)
     public ResponseEntity<String> parseDevelopers(){
-        internetGameDatabaseService.saveAllDevelopers();
+        internetGameDatabaseCacher.saveAllDevelopers();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/parseGames", method = RequestMethod.POST)
     public ResponseEntity<String> parseGames(){
         try {
-            internetGameDatabaseService.saveAllGames();
+            internetGameDatabaseCacher.saveAllGames();
         } catch (UnirestException e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class IGDBParserController {
 
     @RequestMapping(path = "/parseCollections", method = RequestMethod.POST)
     public ResponseEntity<String> parseCollections(){
-        internetGameDatabaseService.saveAllCollections();
+        internetGameDatabaseCacher.saveAllCollections();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 

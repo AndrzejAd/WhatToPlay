@@ -1,24 +1,41 @@
 package whattoplay.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import whattoplay.domain.dto.WebsiteCategory;
 
-//
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Website {
-    private WebsiteCategory category;
+    private WebsiteCategory websiteCategory;
     private String url;
 
-    public WebsiteCategory getCategory() {
-        return category;
+    public Website(WebsiteCategory websiteCategory, String url) {
+        this.websiteCategory = websiteCategory;
+        this.url = url;
     }
 
-    public void setCategory(int category) {
+    public Website(int websiteCategory, String url) {
+        setWebsiteCategory(websiteCategory);
+        this.url = url;
+    }
+
+    public Website() {
+    }
+
+    public WebsiteCategory getWebsiteCategory() {
+        return websiteCategory;
+    }
+
+    @JsonSetter("category")
+    public void setWebsiteCategory(int websiteCategory) {
         for ( WebsiteCategory e : WebsiteCategory.values()){
-            if ( e.getCategory() == category){
-                this.category = e;
+            if ( e.getCategory() == websiteCategory){
+                this.websiteCategory = e;
                 return;
             }
         }
-        this.category = WebsiteCategory.OFFICIAL;
+        this.websiteCategory = WebsiteCategory.OFFICIAL;
     }
 
     public String getUrl() {
@@ -32,7 +49,7 @@ public class Website {
     @Override
     public String toString() {
         return "Website{" +
-                "category=" + category +
+                "websiteCategory=" + websiteCategory +
                 ", url='" + url + '\'' +
                 '}';
     }

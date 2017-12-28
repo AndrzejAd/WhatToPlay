@@ -4,6 +4,7 @@ import whattoplay.domain.entities.Game;
 import whattoplay.domain.entities.GameJson;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameJsonToGameConverter {

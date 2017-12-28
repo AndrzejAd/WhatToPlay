@@ -62,6 +62,31 @@ public class MsSqlGameFieldsDatabaseRepository implements GameFieldsDatabaseRepo
     }
 
     @Override
+    public void persistGameDeveloper(GameDeveloper gameDeveloper) {
+        entityManager.persist(gameDeveloper);
+    }
+
+    @Override
+    public void persistGameGameModes(GameGameModes gameGameModes) {
+        entityManager.persist(gameGameModes);
+    }
+
+    @Override
+    public void persistGamePlayerPerspectives(GamePlayerPerspectives gamePlayerPerspectives) {
+        entityManager.persist(gamePlayerPerspectives);
+    }
+
+    @Override
+    public void persistGameGenres(GameGenres gameGenres) {
+        entityManager.persist(gameGenres);
+    }
+
+    @Override
+    public void persistGameWebsites(GameWebsites gameWebsites) {
+        entityManager.persist(gameWebsites);
+    }
+
+    @Override
     public List<GameMode> getAllGameModes() {
         return (ArrayList<GameMode>) entityManager
                 .createQuery("SELECT a FROM GameMode a")

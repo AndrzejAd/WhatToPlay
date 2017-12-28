@@ -24,14 +24,17 @@ import java.util.Optional;
  * Created by Andrzej on 2017-11-21.
  */
 @Service
-public class InternetGameDatabaseService {
+public class InternetGameDatabaseCacher {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
     private static Logger logger = LogManager.getLogger();
     private GamesDatabaseRepository gamesDatabaseRepository;
     private GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
+    private GameJsonRationializer gameJsonRationializer;
 
     @Autowired
-    public InternetGameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository, GameFieldsDatabaseRepository gameFieldsDatabaseRepository) {
+    public InternetGameDatabaseCacher(GamesDatabaseRepository gamesDatabaseRepository,
+                                      GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
+                                      GameJsonRationializer gameJsonRationializer) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
                     = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -55,6 +58,7 @@ public class InternetGameDatabaseService {
         });
         this.gamesDatabaseRepository = gamesDatabaseRepository;
         this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
+        this.gameJsonRationializer = gameJsonRationializer;
     }
 
     protected HttpRequest getScrollFromIGDB(String url, String fields) {
@@ -202,6 +206,10 @@ public class InternetGameDatabaseService {
                 "franchise," +
                 "time_to_beat," +
                 "developers," +
+                "game_modes," +
+                "genres," +
+                "player_perspectives," +
+                "websites," +
                 "status," +
                 "esrb," +
                 "pegi," +
@@ -213,12 +221,15 @@ public class InternetGameDatabaseService {
                 .header("accept", "application/json")
                 .header("user-key", token)
                 .queryString("fields", gamesFields)
-                .queryString("limit", "1")
+                .queryString("limit", "50")
                 .asObject(GameJson[].class);
 
         ArrayList<GameJson> gameJsons = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
         GameJsonToGameConverter gameJsonToGameConverter = new GameJsonToGameConverter();
-        gameJsons.forEach( x -> gamesDatabaseRepository.persistGame(gameJsonToGameConverter.convert(x) ) );
+        gameJsons.forEach( x ->{
+            gamesDatabaseRepository.persistGame(gameJsonToGameConverter.convert(x) );
+            gameJsonRationializer.rationalizeGameJson(x);
+        }  );
     }
 
     protected void saveSetOfDevelopers(Iterable<Developer> developers ){

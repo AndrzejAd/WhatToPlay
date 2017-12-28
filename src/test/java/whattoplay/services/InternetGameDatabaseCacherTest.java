@@ -1,13 +1,10 @@
 package whattoplay.services;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import whattoplay.domain.entities.Developer;
-import whattoplay.domain.entities.Franchise;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.persistence.GamesDatabaseRepository;
 
@@ -24,17 +21,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 
 
-class InternetGameDatabaseServiceTest {
-    static InternetGameDatabaseService internetGameDatabaseService;
+class InternetGameDatabaseCacherTest {
+    static InternetGameDatabaseCacher internetGameDatabaseCacher;
     @Mock
     static GamesDatabaseRepository databaseMock;
 
     @Mock
     static GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
 
+    @Mock
+    static GameJsonRationializer gameJsonRationializer;
+
     @BeforeAll
     static void setInternetGameDatabaseService(){
-        internetGameDatabaseService = new InternetGameDatabaseService(databaseMock, gameFieldsDatabaseRepository);
+        internetGameDatabaseCacher = new InternetGameDatabaseCacher(databaseMock, gameFieldsDatabaseRepository, gameJsonRationializer);
     }
 
     @Test
@@ -47,7 +47,7 @@ class InternetGameDatabaseServiceTest {
                 "website," +
                 "start_date";
         try {
-            assertEquals( internetGameDatabaseService.getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", developersFields  ).asObject(Developer[].class).getStatus(), 200);
+            assertEquals( internetGameDatabaseCacher.getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", developersFields  ).asObject(Developer[].class).getStatus(), 200);
         } catch (UnirestException e) {
             assertTrue(false);
         }
@@ -57,7 +57,7 @@ class InternetGameDatabaseServiceTest {
     void shouldBeAbleToCastDevelopers(){
         ArrayList<Developer> developers;
         try {
-            developers = new ArrayList<>( Arrays.asList( (internetGameDatabaseService
+            developers = new ArrayList<>( Arrays.asList( (internetGameDatabaseCacher
                     .getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", "id," +
                             "logo," +
                             "name," +

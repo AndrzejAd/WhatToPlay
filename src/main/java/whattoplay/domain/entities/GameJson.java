@@ -41,17 +41,17 @@ public class GameJson implements Serializable {
     private External external;
     private ImageInfo cover;
     private List<Long> developersIds;
-    private List<Long> playerPerspectivesIds;
-    private List<Long> gameModesIds;
-    private List<Long> genresIds;
+    private List<Short> playerPerspectivesIds;
+    private List<Short> gameModesIds;
+    private List<Short> genresIds;
     private List<Website> websites;
     private List<ImageInfo> screenshots;
 
     public GameJson() {
         developersIds = new ArrayList<>();
-        playerPerspectivesIds = new ArrayList<>();
-        gameModesIds = new ArrayList<>();
-        genresIds = new ArrayList<>();
+        playerPerspectivesIds = new ArrayList<Short>();
+        gameModesIds = new ArrayList<Short>();
+        genresIds = new ArrayList<Short>();
         websites = new ArrayList<>();
         screenshots = new ArrayList<>();
         status = Status.RELEASED;
@@ -287,32 +287,32 @@ public class GameJson implements Serializable {
     }
 
     @JsonGetter("player_perspectives")
-    public List<Long> getPlayerPerspectivesIds() {
+    public List<Short> getPlayerPerspectivesIds() {
         return playerPerspectivesIds;
     }
 
     @JsonSetter("player_perspectives")
-    public void setPlayerPerspectivesIds(List<Long> playerPerspectivesIds) {
+    public void setPlayerPerspectivesIds(List<Short> playerPerspectivesIds) {
         this.playerPerspectivesIds = playerPerspectivesIds;
     }
 
     @JsonGetter("game_modes")
-    public List<Long> getGameModesIds() {
+    public List<Short> getGameModesIds() {
         return gameModesIds;
     }
 
     @JsonSetter("game_modes")
-    public void setGameModesIds(List<Long> gameModesIds) {
+    public void setGameModesIds(List<Short> gameModesIds) {
         this.gameModesIds = gameModesIds;
     }
 
     @JsonGetter("genres")
-    public List<Long> getGenresIds() {
+    public List<Short> getGenresIds() {
         return genresIds;
     }
 
     @JsonSetter("genres")
-    public void setGenresIds(List<Long> genresIds) {
+    public void setGenresIds(List<Short> genresIds) {
         this.genresIds = genresIds;
     }
 
