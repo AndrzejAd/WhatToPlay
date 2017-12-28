@@ -108,7 +108,7 @@ public class Developer {
 
     @JsonSetter("logo")
     public void setDeveloperImageUrl(ImageInfo developerImageUrl) {
-        this.developerImageUrl = developerImageUrl.getUrl();
+        this.developerImageUrl = developerImageUrl.getImageUrl();
         this.developerImageCloudinaryId = developerImageUrl.getCloudinaryId();
         this.developerImageWidth = developerImageUrl.getWidth();
         this.developerImageHeight = developerImageUrl.getHeight();

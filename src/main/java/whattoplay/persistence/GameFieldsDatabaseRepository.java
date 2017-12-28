@@ -14,6 +14,7 @@ public interface GameFieldsDatabaseRepository {
     void persistDeveloper(Developer developer);
     void persistGenre(Genre genre);
     void persistFranchise(Franchise franchise);
+    void persistCollection(Collection collection);
     long getFranchiseTableSize();
     long getDevelopersTableSize();
 }

@@ -4,31 +4,21 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-//
+@Embeddable
 public class ImageInfo {
-    private long id;
-    private long gameId;
-    private String url;
+    private String imageUrl;
     private String cloudinaryId;
     private int width;
     private int height;
 
-    public long getId() {
-        return id;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public long getGameId() {
-        return gameId;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    @JsonSetter("url")
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @JsonGetter("cloudinary_id")
@@ -60,7 +50,7 @@ public class ImageInfo {
     @Override
     public String toString() {
         return "ImageInfo{" +
-                "url='" + url + '\'' +
+                "imageUrl='" + imageUrl + '\'' +
                 ", cloudinaryId='" + cloudinaryId + '\'' +
                 ", width=" + width +
                 ", height=" + height +

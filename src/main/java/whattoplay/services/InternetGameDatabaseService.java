@@ -156,6 +156,30 @@ public class InternetGameDatabaseService {
         return false;
     }
 
+    public boolean saveAllCollections() {
+        logger.info(" ===================== Persisting collections starts. ===================== ");
+        final String urlForScroll = "https://api-2445582011268.apicast.io/collections/";
+        final String scrollUrlForDevelopers;
+        final long requiredRequestsNumb;
+        final HttpResponse<Collection[]> jsonResponse;
+        try {
+            jsonResponse = getScrollFromIGDB(urlForScroll, getBasicFields()).asObject(Collection[].class);
+            scrollUrlForDevelopers = jsonResponse.getHeaders().get("X-Next-Page").get(0);
+            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
+            logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForDevelopers).toString());
+            logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" collections. ").toString());
+            logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());
+            saveSetOfCollections(Arrays.asList(jsonResponse.getBody()));
+            for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
+                saveSetOfCollections(scrollUrlForDevelopers);
+            }
+            return true;
+        } catch (UnirestException e) {
+            logger.error(new StringBuilder().append(" Couldnt get the scroll for collections ").append(e.getMessage()).toString());
+        }
+        return false;
+    }
+
     public void saveAllGames() throws UnirestException {
         final String gamesFields = "id," +
                 "name," +
@@ -239,7 +263,26 @@ public class InternetGameDatabaseService {
         }
     }
 
-    protected String getDeveloperFields() {
+    protected void saveSetOfCollections(Iterable<Collection> collections) {
+        collections.forEach(x -> {
+            if (x.getName().length() >= 150) x.setName(x.getName().substring(0, 148));
+            Optional.ofNullable(x.getUrl()).ifPresent(y -> {
+                if (y.length() >= 100) x.setUrl(x.getUrl().substring(0, 98));
+            });
+            logger.info(new StringBuilder().append("Persisting Collection: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getCreatedAt()).toString());
+            gameFieldsDatabaseRepository.persistCollection(x);
+        });
+    }
+
+    protected void saveSetOfCollections(String scrollUrlForCollections) {
+        try {
+            saveSetOfCollections(  Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForCollections).asObject(Collection[].class).getBody()));
+        } catch (UnirestException e) {
+            logger.info(new StringBuilder().append(" Got to the end of the collection scroll! ").toString());
+        }
+    }
+
+    private String getDeveloperFields() {
         return "id," +
                 "logo," +
                 "name," +
@@ -249,7 +292,7 @@ public class InternetGameDatabaseService {
                 "start_date";
     }
 
-    protected String getBasicFields() {
+    private String getBasicFields() {
         return "id," +
                 "name," +
                 "url," +

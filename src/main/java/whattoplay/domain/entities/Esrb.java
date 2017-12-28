@@ -1,50 +1,48 @@
 package whattoplay.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import whattoplay.domain.dto.EsrbRating;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-/**
- * Created by Andrzej on 2017-12-11.
- */
-
+@Embeddable
 public class Esrb {
-    private long id;
-    private EsrbRating rating;
-    private String synopsis;
+    private EsrbRating esrbRating;
+    private String esrbSynopsis;
 
-    public EsrbRating getRating() {
-        return rating;
+    public EsrbRating getEsrbRating() {
+        return esrbRating;
     }
 
-    public void setRating(int rating) {
+    @JsonSetter("rating")
+    public void setEsrbRating(int esrbRating) {
         for ( EsrbRating e : EsrbRating.values()){
-            if ( e.getEsrbRating() == rating){
-                this.rating = e;
+            if ( e.getEsrbRating() == esrbRating){
+                this.esrbRating = e;
                 return;
             }
         }
-        this.rating = EsrbRating.UNKNOWN;
+        this.esrbRating = EsrbRating.UNKNOWN;
     }
 
     public void setRating(EsrbRating rating) {
-        this.rating = rating;
+        this.esrbRating = rating;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public String getEsrbSynopsis() {
+        return esrbSynopsis;
     }
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
+    @JsonSetter("synopsis")
+    public void setEsrbSynopsis(String esrbSynopsis) {
+        this.esrbSynopsis = esrbSynopsis;
     }
 
     @Override
     public String toString() {
         return "Esrb{" +
-                "rating=" + rating +
-                ", synopsis='" + synopsis + '\'' +
+                "esrbRating=" + esrbRating +
+                ", esrbSynopsis='" + esrbSynopsis + '\'' +
                 '}';
     }
 
@@ -55,14 +53,14 @@ public class Esrb {
 
         Esrb esrb = (Esrb) o;
 
-        if (rating != esrb.rating) return false;
-        return synopsis != null ? synopsis.equals(esrb.synopsis) : esrb.synopsis == null;
+        if (esrbRating != esrb.esrbRating) return false;
+        return esrbSynopsis != null ? esrbSynopsis.equals(esrb.esrbSynopsis) : esrb.esrbSynopsis == null;
     }
 
     @Override
     public int hashCode() {
-        int result = rating != null ? rating.hashCode() : 0;
-        result = 31 * result + (synopsis != null ? synopsis.hashCode() : 0);
+        int result = esrbRating != null ? esrbRating.hashCode() : 0;
+        result = 31 * result + (esrbSynopsis != null ? esrbSynopsis.hashCode() : 0);
         return result;
     }
 }

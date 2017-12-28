@@ -11,7 +11,8 @@ public class GameJsonToGameConverter {
         return new Game(from.getId(), from.getName(), from.getSlug(), from.getUrl(), from.getSummary(), from.getStoryline(),
                 from.getHypes(), from.getPopularity(), from.getRating(), from.getRatingCount(), from.getAggregatedRating(),
                 from.getAggregatedRatingCount(), from.getTotalRating(), from.getTotalRatingCount(), from.getCollectionId(),
-                from.getFranchiseId(), from.getCreatedAt(), from.getUpdatedAt(), from.getFirstReleaseDate() );
+                from.getFranchiseId(), from.getCreatedAt(), from.getUpdatedAt(), from.getFirstReleaseDate(), from.getStatus(),
+                from.getTimeToBeat(), from.getEsrb(), from.getPegi(), from.getExternal(), from.getCover());
     }
 
     public Collection<Game> convertAll(Collection<GameJson> fElements){

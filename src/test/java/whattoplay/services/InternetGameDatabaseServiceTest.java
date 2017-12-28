@@ -58,7 +58,13 @@ class InternetGameDatabaseServiceTest {
         ArrayList<Developer> developers;
         try {
             developers = new ArrayList<>( Arrays.asList( (internetGameDatabaseService
-                    .getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", internetGameDatabaseService.getDeveloperFields()  )
+                    .getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", "id," +
+                            "logo," +
+                            "name," +
+                            "url," +
+                            "description," +
+                            "website," +
+                            "start_date"  )
                     .asObject(Developer[].class).getBody())));
             assertTrue( developers.size() != 0  );
         } catch (UnirestException e) {

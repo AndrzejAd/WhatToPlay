@@ -8,13 +8,8 @@ import whattoplay.domain.entities.*;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -59,6 +54,11 @@ public class MsSqlGameFieldsDatabaseRepository implements GameFieldsDatabaseRepo
     @Override
     public void persistFranchise(Franchise franchise) {
         entityManager.persist(franchise);
+    }
+
+    @Override
+    public void persistCollection(Collection collection) {
+        entityManager.persist(collection);
     }
 
     @Override

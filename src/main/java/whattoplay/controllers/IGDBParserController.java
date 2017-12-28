@@ -33,7 +33,12 @@ public class IGDBParserController {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-        //internetGameDatabaseService.saveAllFranchises();
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/parseCollections", method = RequestMethod.POST)
+    public ResponseEntity<String> parseCollections(){
+        internetGameDatabaseService.saveAllCollections();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 

@@ -1,36 +1,41 @@
 package whattoplay.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import whattoplay.domain.dto.PegiRating;
 
-//
-public class Pegi {
-    private PegiRating rating;
-    private String synopsis;
+import javax.persistence.Embeddable;
 
-    public PegiRating getRating() {
-        return rating;
+@Embeddable
+public class Pegi {
+    private PegiRating pegiRating;
+    private String pegiSynopsis;
+
+    public PegiRating getPegiRating() {
+        return pegiRating;
     }
 
-    public void setRating(int rating) {
+    @JsonSetter("rating")
+    public void setPegiRating(int pegiRating) {
         for ( PegiRating e : PegiRating.values()){
-            if ( e.getPegiRating() == rating){
-                this.rating = e;
+            if ( e.getPegiRating() == pegiRating){
+                this.pegiRating = e;
                 return;
             }
         }
-        this.rating = PegiRating.EIGHTEEN;
+        this.pegiRating = PegiRating.EIGHTEEN;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public String getPegiSynopsis() {
+        return pegiSynopsis;
     }
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
+    @JsonSetter("synopsis")
+    public void setPegiSynopsis(String pegiSynopsis) {
+        this.pegiSynopsis = pegiSynopsis;
     }
 
     public void setRating(PegiRating rating) {
-        this.rating = rating;
+        this.pegiRating = rating;
     }
 
     @Override
@@ -40,22 +45,22 @@ public class Pegi {
 
         Pegi pegi = (Pegi) o;
 
-        if (rating != pegi.rating) return false;
-        return synopsis != null ? synopsis.equals(pegi.synopsis) : pegi.synopsis == null;
+        if (pegiRating != pegi.pegiRating) return false;
+        return pegiSynopsis != null ? pegiSynopsis.equals(pegi.pegiSynopsis) : pegi.pegiSynopsis == null;
     }
 
     @Override
     public int hashCode() {
-        int result = rating != null ? rating.hashCode() : 0;
-        result = 31 * result + (synopsis != null ? synopsis.hashCode() : 0);
+        int result = pegiRating != null ? pegiRating.hashCode() : 0;
+        result = 31 * result + (pegiSynopsis != null ? pegiSynopsis.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Pegi{" +
-                "rating=" + rating +
-                ", synopsis='" + synopsis + '\'' +
+                "pegiRating=" + pegiRating +
+                ", pegiSynopsis='" + pegiSynopsis + '\'' +
                 '}';
     }
 }

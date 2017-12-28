@@ -1,5 +1,7 @@
 package whattoplay.domain.entities;
 
+import whattoplay.domain.dto.Status;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -65,13 +67,32 @@ public class Game implements Serializable {
     @Column( name="first_release_date", nullable = true)
     private LocalDate firstReleaseDate;
 
+    @Column( name="status", nullable = true)
+    private Status status;
+
+    @Embedded
+    private TimeToBeat timeToBeat;
+
+    @Embedded
+    private Esrb esrb;
+
+    @Embedded
+    private Pegi pegi;
+
+    @Embedded
+    private External external;
+
+    @Embedded
+    private ImageInfo cover;
+
     public Game() {
     }
 
     public Game(long id, String name, String slug, String url, String summary, String storyline, int hypes,
                 double popularity, double rating, int ratingCount, double aggregatedRating, int aggregatedRatingCount,
                 double totalRating, int totalRatingCount, long collectionId, long franchiseId, LocalDate createdAt,
-                LocalDate updatedAt, LocalDate firstReleaseDate) {
+                LocalDate updatedAt, LocalDate firstReleaseDate, Status status, TimeToBeat timeToBeat, Esrb esrb,
+                Pegi pegi, External external, ImageInfo cover) {
         this.id = id;
         this.name = name;
         this.slug = slug;
@@ -91,6 +112,12 @@ public class Game implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.firstReleaseDate = firstReleaseDate;
+        this.status = status;
+        this.timeToBeat = timeToBeat;
+        this.esrb = esrb;
+        this.pegi = pegi;
+        this.external = external;
+        this.cover = cover;
     }
 
     public long getId() {
@@ -243,5 +270,53 @@ public class Game implements Serializable {
 
     public void setFirstReleaseDate(LocalDate firstReleaseDate) {
         this.firstReleaseDate = firstReleaseDate;
+    }
+
+    public TimeToBeat getTimeToBeat() {
+        return timeToBeat;
+    }
+
+    public void setTimeToBeat(TimeToBeat timeToBeat) {
+        this.timeToBeat = timeToBeat;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Esrb getEsrb() {
+        return esrb;
+    }
+
+    public void setEsrb(Esrb esrb) {
+        this.esrb = esrb;
+    }
+
+    public Pegi getPegi() {
+        return pegi;
+    }
+
+    public void setPegi(Pegi pegi) {
+        this.pegi = pegi;
+    }
+
+    public External getExternal() {
+        return external;
+    }
+
+    public void setExternal(External external) {
+        this.external = external;
+    }
+
+    public ImageInfo getCover() {
+        return cover;
+    }
+
+    public void setCover(ImageInfo cover) {
+        this.cover = cover;
     }
 }

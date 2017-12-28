@@ -2,10 +2,11 @@ package whattoplay.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import javax.persistence.Embeddable;
 import java.time.Duration;
 import java.util.Optional;
 
-//
+@Embeddable
 public class TimeToBeat {
     private Duration hastly;
     private Duration normally;
