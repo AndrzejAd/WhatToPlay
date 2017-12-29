@@ -75,7 +75,7 @@ public class GamesController {
     public ResponseEntity<String>  addGameToDatabaseController(@RequestBody final GameDto game){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-        if ( gameDatabaseService.saveGameToDatabase(game) ) {
+        if ( gameDatabaseService.persistGame(game) ) {
             return new ResponseEntity<>("Successfully added game to database.", responseHeaders, HttpStatus.CREATED);
         } else{
             return new ResponseEntity<>("GameJson is already in database. ", responseHeaders, HttpStatus.NOT_MODIFIED);

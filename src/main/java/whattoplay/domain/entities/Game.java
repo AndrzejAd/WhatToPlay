@@ -5,6 +5,7 @@ import whattoplay.domain.dto.Status;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -69,6 +70,7 @@ public class Game implements Serializable {
     private LocalDate firstReleaseDate;
 
     @Column( name="status", nullable = true)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Embedded
@@ -85,9 +87,6 @@ public class Game implements Serializable {
 
     @Embedded
     private ImageInfo cover;
-
-    @OneToMany(mappedBy="game")
-    private Set<GameDeveloper> gameDevelopers;
 
     public Game() {
     }
@@ -324,7 +323,72 @@ public class Game implements Serializable {
         this.cover = cover;
     }
 
-    public Set<GameDeveloper> getGameDevelopers() {
-        return gameDevelopers;
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", slug='" + slug + '\'' +
+                ", url='" + url + '\'' +
+                ", summary='" + summary + '\'' +
+                ", storyline='" + storyline + '\'' +
+                ", hypes=" + hypes +
+                ", popularity=" + popularity +
+                ", rating=" + rating +
+                ", ratingCount=" + ratingCount +
+                ", aggregatedRating=" + aggregatedRating +
+                ", aggregatedRatingCount=" + aggregatedRatingCount +
+                ", totalRating=" + totalRating +
+                ", totalRatingCount=" + totalRatingCount +
+                ", collectionId=" + collectionId +
+                ", franchiseId=" + franchiseId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", firstReleaseDate=" + firstReleaseDate +
+                ", status=" + status +
+                ", timeToBeat=" + timeToBeat +
+                ", esrb=" + esrb +
+                ", pegi=" + pegi +
+                ", external=" + external +
+                ", cover=" + cover +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game)) return false;
+        Game game = (Game) o;
+        return id == game.id &&
+                hypes == game.hypes &&
+                Double.compare(game.popularity, popularity) == 0 &&
+                Double.compare(game.rating, rating) == 0 &&
+                ratingCount == game.ratingCount &&
+                Double.compare(game.aggregatedRating, aggregatedRating) == 0 &&
+                aggregatedRatingCount == game.aggregatedRatingCount &&
+                Double.compare(game.totalRating, totalRating) == 0 &&
+                totalRatingCount == game.totalRatingCount &&
+                collectionId == game.collectionId &&
+                franchiseId == game.franchiseId &&
+                Objects.equals(name, game.name) &&
+                Objects.equals(slug, game.slug) &&
+                Objects.equals(url, game.url) &&
+                Objects.equals(summary, game.summary) &&
+                Objects.equals(storyline, game.storyline) &&
+                Objects.equals(createdAt, game.createdAt) &&
+                Objects.equals(updatedAt, game.updatedAt) &&
+                Objects.equals(firstReleaseDate, game.firstReleaseDate) &&
+                status == game.status &&
+                Objects.equals(timeToBeat, game.timeToBeat) &&
+                Objects.equals(esrb, game.esrb) &&
+                Objects.equals(pegi, game.pegi) &&
+                Objects.equals(external, game.external) &&
+                Objects.equals(cover, game.cover);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, slug, url, summary, storyline, hypes, popularity, rating, ratingCount, aggregatedRating, aggregatedRatingCount, totalRating, totalRatingCount, collectionId, franchiseId, createdAt, updatedAt, firstReleaseDate, status, timeToBeat, esrb, pegi, external, cover);
     }
 }

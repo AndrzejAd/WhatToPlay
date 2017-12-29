@@ -14,7 +14,8 @@ public class GameWebsites {
     @Embedded
     private Website website;
 
-
+    public GameWebsites() {
+    }
 
     public GameWebsites(long gameId, Website website) {
         this.gameId = gameId;

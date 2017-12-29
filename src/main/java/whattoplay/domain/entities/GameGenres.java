@@ -12,6 +12,9 @@ public class GameGenres {
     private long gameId;
     private short genreId;
 
+    public GameGenres() {
+    }
+
     public GameGenres(long gameId, short genreId) {
         this.gameId = gameId;
         this.genreId = genreId;

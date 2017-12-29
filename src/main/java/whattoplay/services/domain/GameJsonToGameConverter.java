@@ -1,14 +1,14 @@
 package whattoplay.services.domain;
 
+import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.Game;
 import whattoplay.domain.entities.GameJson;
-
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class GameJsonToGameConverter {
-    public Game convert(GameJson from){
+    public Game convertRelationalFields(GameJson from){
         return new Game(from.getId(), from.getName(), from.getSlug(), from.getUrl(), from.getSummary(), from.getStoryline(),
                 from.getHypes(), from.getPopularity(), from.getRating(), from.getRatingCount(), from.getAggregatedRating(),
                 from.getAggregatedRatingCount(), from.getTotalRating(), from.getTotalRatingCount(), from.getCollectionId(),
@@ -18,7 +18,7 @@ public class GameJsonToGameConverter {
 
     public Collection<Game> convertAll(Collection<GameJson> fElements){
         return fElements.stream()
-                .map(element -> convert(element))
+                .map(element -> convertRelationalFields(element))
                 .collect(Collectors.toList());
     }
 }

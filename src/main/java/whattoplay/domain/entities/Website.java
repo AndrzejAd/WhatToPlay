@@ -4,9 +4,13 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import whattoplay.domain.dto.WebsiteCategory;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Embeddable
 public class Website {
+
+    @Enumerated(EnumType.STRING)
     private WebsiteCategory websiteCategory;
     private String url;
 

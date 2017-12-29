@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 @Embeddable
 public class Esrb {
+
+    @Enumerated(EnumType.STRING)
     private EsrbRating esrbRating;
     private String esrbSynopsis;
 

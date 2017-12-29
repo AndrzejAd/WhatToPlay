@@ -30,11 +30,11 @@ class InternetGameDatabaseCacherTest {
     static GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
 
     @Mock
-    static GameJsonRationializer gameJsonRationializer;
+    static GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
 
     @BeforeAll
     static void setInternetGameDatabaseService(){
-        internetGameDatabaseCacher = new InternetGameDatabaseCacher(databaseMock, gameFieldsDatabaseRepository, gameJsonRationializer);
+        //internetGameDatabaseCacher = new InternetGameDatabaseCacher(databaseMock, gameFieldsDatabaseRepository, gameJsonToNormalFormCacher);
     }
 
     @Test

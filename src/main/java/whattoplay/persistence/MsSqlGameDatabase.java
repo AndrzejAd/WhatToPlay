@@ -5,14 +5,12 @@
  */
 package whattoplay.persistence;
 
+import org.hibernate.exception.ConstraintViolationException;
 import whattoplay.domain.entities.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -25,7 +23,6 @@ import java.util.stream.Collectors;
 public class MsSqlGameDatabase implements GamesDatabaseRepository {
     @PersistenceContext
     private EntityManager entityManager;
-
     private CriteriaBuilder gameEntityBuilder;
     private CriteriaQuery<Game> gameEntityQuery;
     private Root<Game> gameEntityGame;
@@ -43,7 +40,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
 
     @Override
     public void persistGame(Game game) {
-        entityManager.persist(game);
+            entityManager.persist(game);
     }
 
     @Override
@@ -52,7 +49,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         criteria.select(builder.count(criteria.from(Game.class)));
         Long value = entityManager.createQuery(criteria).getSingleResult();
-        return value;
+        return 1;
     }
 
     @Override
@@ -67,10 +64,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
 
     @Override
     public Game getGameById(long gameId) {
-        gameEntityQuery.select(gameEntityGame).
-                where(gameEntityBuilder.equal(gameEntityGame.get("gameId"), gameId));
-        TypedQuery<Game> tq = entityManager.createQuery(gameEntityQuery);
-        return tq.getSingleResult();
+        return entityManager.find(Game.class, gameId);
     }
 
     /** TODO **/

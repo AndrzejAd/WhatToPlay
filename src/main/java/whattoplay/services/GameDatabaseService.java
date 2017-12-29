@@ -20,46 +20,54 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameDatabaseService {
-    private GamesDatabaseRepository databaseRepository;
-    private GameDtoConverter gameToGameDtoConverter;
-    private GameDtoToGameEntityConverter gameDtoToGameEntityConverter;
+    protected GamesDatabaseRepository gamesDatabaseRepository;
+    protected GameDtoConverter gameToGameDtoConverter;
+    protected GameDtoToGameEntityConverter gameDtoToGameEntityConverter;
 
     @Autowired
-    public GameDatabaseService(GamesDatabaseRepository databaseRepository, GameDtoConverter gameToGameDtoConverter,
+    public GameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository, GameDtoConverter gameToGameDtoConverter,
                                GameDtoToGameEntityConverter gameDtoToGameEntityConverter) {
-        this.databaseRepository = databaseRepository;
+        this.gamesDatabaseRepository = gamesDatabaseRepository;
         this.gameToGameDtoConverter = gameToGameDtoConverter;
         this.gameDtoToGameEntityConverter = gameDtoToGameEntityConverter;
     }
 
-    public boolean saveGameToDatabase(final GameDto game) {
-        if ( databaseRepository.getGameById(game.getGameId()) != null ){
+    public boolean persistGame(final GameDto game) {
+        if ( gamesDatabaseRepository.getGameById(game.getGameId()) != null ){
             return false;
         } else{
-            databaseRepository.persistGame(gameDtoToGameEntityConverter.convert(game));
+            gamesDatabaseRepository.persistGame(gameDtoToGameEntityConverter.convert(game));
             return true;
         }
     }
 
+    public void persistGame(Game game) {
+        gamesDatabaseRepository.persistGame(game);
+    }
+
+    public void persistSetOfGames(Iterable<Game> games){
+        games.forEach( x -> gamesDatabaseRepository.persistGame(x));
+    }
+
     public boolean deleteGameFromDatabase(String gameName){
-        return Optional.ofNullable(databaseRepository.deleteGameByGameName(gameName)).map( x -> true ).orElse(false);
+        return Optional.ofNullable(gamesDatabaseRepository.deleteGameByGameName(gameName)).map(x -> true ).orElse(false);
     }
 
     public GameDto getGameById(final long gameId) {
         try {
-            return gameToGameDtoConverter.convert(databaseRepository.getGameById(gameId));
+            return gameToGameDtoConverter.convert(gamesDatabaseRepository.getGameById(gameId));
         } catch (EmptyResultDataAccessException exc) {
             throw exc;
         }
     }
 
     public Game updateGame(final GameDto gameDto) {
-        return databaseRepository.updateGame(gameDtoToGameEntityConverter.convert(gameDto));
+        return gamesDatabaseRepository.updateGame(gameDtoToGameEntityConverter.convert(gameDto));
     }
 
     public List<GameDto> getRandomGames(final int gameId) {
         return gameToGameDtoConverter.
-                convertAll(databaseRepository
+                convertAll(gamesDatabaseRepository
                         .getRandomGames(gameId))
                 .stream()
                 .collect(Collectors.toList());
@@ -67,13 +75,13 @@ public class GameDatabaseService {
 
     public List<GameDto> getGamesByGenre(final String gameGenre) {
         return new ArrayList<>(gameToGameDtoConverter
-                .convertAll(databaseRepository
+                .convertAll(gamesDatabaseRepository
                         .getGamesByGenre(gameGenre)));
     }
 
     public List<GameDto> getGamesByGameName(final String gameName) {
         return (new ArrayList<>(gameToGameDtoConverter
-                .convertAll(databaseRepository
+                .convertAll(gamesDatabaseRepository
                         .getGamesByName(gameName))));
     }
 

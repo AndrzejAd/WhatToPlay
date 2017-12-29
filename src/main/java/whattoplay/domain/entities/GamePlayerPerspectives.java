@@ -12,6 +12,9 @@ public class GamePlayerPerspectives {
     private long gameId;
     private short player_perspective_id;
 
+    public GamePlayerPerspectives() {
+    }
+
     public GamePlayerPerspectives(long gameId, short player_perspective_id) {
         this.gameId = gameId;
         this.player_perspective_id = player_perspective_id;

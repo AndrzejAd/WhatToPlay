@@ -13,11 +13,8 @@ public class GameDeveloper {
     private long gameId;
     private long developerId;
 
-    @ManyToOne
-    //@JoinColumns({
-            @JoinColumn (name = "id", insertable=false, updatable=false)
-    //} )
-    private Game game;
+    public GameDeveloper() {
+    }
 
     public GameDeveloper(long gameId, long developerId) {
         this.gameId = gameId;

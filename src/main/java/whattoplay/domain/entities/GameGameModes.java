@@ -12,6 +12,9 @@ public class GameGameModes {
     private long gameId;
     private short gameModeId;
 
+    public GameGameModes() {
+    }
+
     public GameGameModes(long gameId, short gameModeId) {
         this.gameId = gameId;
         this.gameModeId = gameModeId;

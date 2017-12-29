@@ -12,29 +12,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.*;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
-import whattoplay.persistence.GamesDatabaseRepository;
-import whattoplay.services.domain.GameJsonToGameConverter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * Created by Andrzej on 2017-11-21.
+ * Through REST requests this class caches Internet Game Database on local rational database.
+ * @see <a href="https://igdb.github.io/api">Internet Game Database</a>
  */
+
 @Service
 public class InternetGameDatabaseCacher {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
     private static Logger logger = LogManager.getLogger();
-    private GamesDatabaseRepository gamesDatabaseRepository;
     private GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
-    private GameJsonRationializer gameJsonRationializer;
+    private GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
 
     @Autowired
-    public InternetGameDatabaseCacher(GamesDatabaseRepository gamesDatabaseRepository,
-                                      GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
-                                      GameJsonRationializer gameJsonRationializer) {
+    public InternetGameDatabaseCacher(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
+                                      GameJsonToNormalFormCacher gameJsonToNormalFormCacher) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
                     = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -56,11 +53,19 @@ public class InternetGameDatabaseCacher {
                 }
             }
         });
-        this.gamesDatabaseRepository = gamesDatabaseRepository;
         this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
-        this.gameJsonRationializer = gameJsonRationializer;
+        this.gameJsonToNormalFormCacher = gameJsonToNormalFormCacher;
     }
 
+
+    /**
+     * This method returns scroll url to allow pagination of IGDB responses.
+     * Without it, its not possible to cache all reponses.
+     * @see <a href="https://igdb.github.io/api/references/pagination/">IGDB Pagination Page</a>
+     * @param url and url to the endpoint
+     * @param fields fields of the needed object
+     * @return HttpRequest containing set of non-casted objects
+     */
     protected HttpRequest getScrollFromIGDB(String url, String fields) {
         return Unirest.get(url)
                 .header("accept", "application/json")
@@ -185,64 +190,49 @@ public class InternetGameDatabaseCacher {
     }
 
     public void saveAllGames() throws UnirestException {
-        final String gamesFields = "id," +
-                "name," +
-                "slug," +
-                "url," +
-                "created_at," +
-                "updated_at," +
-                "summary," +
-                "storyline," +
-                "first_release_date," +
-                "hypes," +
-                "popularity," +
-                "rating," +
-                "rating_count," +
-                "aggregated_rating," +
-                "aggregated_rating_count," +
-                "total_rating," +
-                "total_rating_count," +
-                "collection," +
-                "franchise," +
-                "time_to_beat," +
-                "developers," +
-                "game_modes," +
-                "genres," +
-                "player_perspectives," +
-                "websites," +
-                "status," +
-                "esrb," +
-                "pegi," +
-                "websites," +
-                "external," +
-                "cover," +
-                "screenshots";
-        HttpResponse<GameJson[]> jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/games/")
-                .header("accept", "application/json")
-                .header("user-key", token)
-                .queryString("fields", gamesFields)
-                .queryString("limit", "50")
-                .asObject(GameJson[].class);
-
-        ArrayList<GameJson> gameJsons = new ArrayList<>(Arrays.asList(jsonResponse.getBody()));
-        GameJsonToGameConverter gameJsonToGameConverter = new GameJsonToGameConverter();
-        gameJsons.forEach( x ->{
-            gamesDatabaseRepository.persistGame(gameJsonToGameConverter.convert(x) );
-            gameJsonRationializer.rationalizeGameJson(x);
-        }  );
+        logger.info(" ===================== Persisting games starts. ===================== ");
+        final String urlForScroll = "https://api-2445582011268.apicast.io/games/";
+        final String scrollUrlForGames;
+        final long requiredRequestsNumb;
+        final HttpResponse<GameJson[]> jsonResponse;
+        try {
+            jsonResponse = getScrollFromIGDB(urlForScroll, getGameFields()).asObject(GameJson[].class);
+            scrollUrlForGames = jsonResponse.getHeaders().get("X-Next-Page").get(0);
+            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
+            logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForGames).toString());
+            logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" collections. ").toString());
+            logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());
+            gameJsonToNormalFormCacher.persistNormalFormOfSetOFGameJsons(Arrays.asList(jsonResponse.getBody()) );
+            for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
+                try {
+                    gameJsonToNormalFormCacher.persistNormalFormOfSetOFGameJsons(  Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForGames).asObject(GameJson[].class).getBody()));
+                } catch (UnirestException e) {
+                    logger.info(new StringBuilder().append(" Got to the end of the games scroll! ").toString());
+                }
+            }
+        } catch (UnirestException e) {
+            logger.error(new StringBuilder().append(" Couldnt get the scroll for games ").append(e.getMessage()).toString());
+        }
     }
 
     protected void saveSetOfDevelopers(Iterable<Developer> developers ){
         developers.forEach( x -> {
-            if (x.getName().length() >= 100) x.setName(x.getName().substring(0, 98));
+            if (x.getName().length() >= 100){
+                x.setName(x.getName().substring(0, 98));
+                logger.warn( "Name " + x.getName() + " is too long, saving truncated version." );
+            }
             Optional.ofNullable(x.getUrl()).ifPresent(y -> {
-                if (y.length() >= 100) x.setUrl(x.getUrl().substring(0, 98));
+                if (y.length() >= 100){
+                    x.setUrl(x.getUrl().substring(0, 98));
+                    logger.warn( "Url " + x.getUrl() + " is too long, saving truncated version." );
+                }
             });
             Optional.ofNullable(x.getDeveloperImageCloudinaryId()).ifPresent(y -> {
-                if (y.length() >= 100)
+                if (y.length() >= 100){
                     x.setDeveloperImageCloudinaryId((x.getDeveloperImageCloudinaryId().substring(0, 98)));
+                    logger.warn( "Url " + x.getDeveloperImageCloudinaryId() + " is too long, saving truncated version." );
+                }
             });
-            logger.info(new StringBuilder().append("Persisting Developer: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getStartDate()).toString());
             gameFieldsDatabaseRepository.persistDeveloper(x);
         });
     }
@@ -276,11 +266,18 @@ public class InternetGameDatabaseCacher {
 
     protected void saveSetOfCollections(Iterable<Collection> collections) {
         collections.forEach(x -> {
-            if (x.getName().length() >= 150) x.setName(x.getName().substring(0, 148));
+            if (x.getName().length() >= 150){
+                x.setName(x.getName().substring(0, 148));
+                logger.warn(new StringBuilder().append("Name of").append(x.getId()).append(" ")
+                        .append(x.getName()).append("is too long! Saving shortened version").append(x.getName()) );
+            }
             Optional.ofNullable(x.getUrl()).ifPresent(y -> {
-                if (y.length() >= 100) x.setUrl(x.getUrl().substring(0, 98));
+                if (y.length() >= 100){
+                    x.setUrl(x.getUrl().substring(0, 98));
+                    logger.warn(new StringBuilder().append("URL of").append(x.getId()).append(" ")
+                            .append(x.getName()).append("is too long! Saving shortened version").append(x.getUrl()) );
+                }
             });
-            logger.info(new StringBuilder().append("Persisting Collection: ").append(x.getId()).append(" ").append(x.getName()).append(": ").append(x.getUrl()).append(" ").append(x.getCreatedAt()).toString());
             gameFieldsDatabaseRepository.persistCollection(x);
         });
     }
@@ -309,6 +306,41 @@ public class InternetGameDatabaseCacher {
                 "url," +
                 "created_at," +
                 "updated_at";
+    }
+
+    private String getGameFields() {
+        return "id," +
+                "name," +
+                "slug," +
+                "url," +
+                "created_at," +
+                "updated_at," +
+                "summary," +
+                "storyline," +
+                "first_release_date," +
+                "hypes," +
+                "popularity," +
+                "rating," +
+                "rating_count," +
+                "aggregated_rating," +
+                "aggregated_rating_count," +
+                "total_rating," +
+                "total_rating_count," +
+                "collection," +
+                "franchise," +
+                "time_to_beat," +
+                "developers," +
+                "game_modes," +
+                "genres," +
+                "player_perspectives," +
+                "websites," +
+                "status," +
+                "esrb," +
+                "pegi," +
+                "websites," +
+                "external," +
+                "cover," +
+                "screenshots";
     }
 
     public static String getToken() {

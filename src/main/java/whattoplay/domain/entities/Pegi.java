@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import whattoplay.domain.dto.PegiRating;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Embeddable
 public class Pegi {
+    @Enumerated(EnumType.STRING)
     private PegiRating pegiRating;
     private String pegiSynopsis;
 
