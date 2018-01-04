@@ -19,9 +19,9 @@ import whattoplay.services.domain.UserToUserDtoConverter;
  */
 @Service
 public class UserDatabaseService {
-    private UserDatabaseRepository userDatabaseRepository;
-    private UserToUserDtoConverter userToUserDtoConverter;
-    private UserDtoToUserEntityConverter userDtoToUserEntityConverter;
+    private final UserDatabaseRepository userDatabaseRepository;
+    private final UserToUserDtoConverter userToUserDtoConverter;
+    private final UserDtoToUserEntityConverter userDtoToUserEntityConverter;
     private PasswordEncoder passwordEncoder;
     
     @Autowired

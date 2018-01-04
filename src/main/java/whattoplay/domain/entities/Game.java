@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "Games")
@@ -54,11 +53,13 @@ public class Game implements Serializable {
     @Column( name="total_rating_count", nullable = true)
     private int totalRatingCount;
 
-    @Column( name="collection_id", nullable = true)
-    private long collectionId;
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Collection collectionId;
 
-    @Column( name="franchise_id", nullable = true)
-    private long franchiseId;
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Franchise franchiseId;
 
     @Column( name="created_at", nullable = true)
     private LocalDate createdAt;
@@ -93,7 +94,7 @@ public class Game implements Serializable {
 
     public Game(long id, String name, String slug, String url, String summary, String storyline, int hypes,
                 double popularity, double rating, int ratingCount, double aggregatedRating, int aggregatedRatingCount,
-                double totalRating, int totalRatingCount, long collectionId, long franchiseId, LocalDate createdAt,
+                double totalRating, int totalRatingCount, Collection collectionId, Franchise franchiseId, LocalDate createdAt,
                 LocalDate updatedAt, LocalDate firstReleaseDate, Status status, TimeToBeat timeToBeat, Esrb esrb,
                 Pegi pegi, External external, ImageInfo cover) {
         this.id = id;
@@ -235,19 +236,19 @@ public class Game implements Serializable {
         this.totalRatingCount = totalRatingCount;
     }
 
-    public long getCollectionId() {
+    public Collection getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(long collectionId) {
+    public void setCollectionId(Collection collectionId) {
         this.collectionId = collectionId;
     }
 
-    public long getFranchiseId() {
+    public Franchise getFranchiseId() {
         return franchiseId;
     }
 
-    public void setFranchiseId(long franchiseId) {
+    public void setFranchiseId(Franchise franchiseId) {
         this.franchiseId = franchiseId;
     }
 

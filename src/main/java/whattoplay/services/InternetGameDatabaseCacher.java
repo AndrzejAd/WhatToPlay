@@ -26,8 +26,8 @@ import java.util.Optional;
 public class InternetGameDatabaseCacher {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
     private static Logger logger = LogManager.getLogger();
-    private GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
-    private GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
+    private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
+    private final GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
 
     @Autowired
     public InternetGameDatabaseCacher(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,

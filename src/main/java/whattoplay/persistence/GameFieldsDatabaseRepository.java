@@ -8,6 +8,8 @@ public interface GameFieldsDatabaseRepository {
     List<GameMode> getAllGameModes();
     List<Genre> getAllGenres();
     List<Developer> getAllDevelopers();
+    Collection findCollectionById(long id);
+    Franchise findFranchiseById(long id);
     void persistField(Object genre);
     void persistGameMode(GameMode gameMode);
     void persistPlayerPerspective(PlayerPerspective playerPerspective);

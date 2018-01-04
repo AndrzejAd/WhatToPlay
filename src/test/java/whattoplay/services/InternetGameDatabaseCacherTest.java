@@ -6,25 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import whattoplay.domain.entities.Developer;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
-import whattoplay.persistence.GamesDatabaseRepository;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-/**
- * Created by Andrzej on 2017-12-19.
- */
-
 
 class InternetGameDatabaseCacherTest {
     static InternetGameDatabaseCacher internetGameDatabaseCacher;
-    @Mock
-    static GamesDatabaseRepository databaseMock;
 
     @Mock
     static GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
@@ -34,7 +22,7 @@ class InternetGameDatabaseCacherTest {
 
     @BeforeAll
     static void setInternetGameDatabaseService(){
-        //internetGameDatabaseCacher = new InternetGameDatabaseCacher(databaseMock, gameFieldsDatabaseRepository, gameJsonToNormalFormCacher);
+        internetGameDatabaseCacher = new InternetGameDatabaseCacher(gameFieldsDatabaseRepository, gameJsonToNormalFormCacher);
     }
 
     @Test
@@ -47,7 +35,10 @@ class InternetGameDatabaseCacherTest {
                 "website," +
                 "start_date";
         try {
-            assertEquals( internetGameDatabaseCacher.getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", developersFields  ).asObject(Developer[].class).getStatus(), 200);
+            assertEquals( internetGameDatabaseCacher
+                    .getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", developersFields  )
+                    .asObject(Developer[].class)
+                    .getStatus(), 200);
         } catch (UnirestException e) {
             assertTrue(false);
         }

@@ -49,9 +49,9 @@ public class GameJson implements Serializable {
 
     public GameJson() {
         developersIds = new ArrayList<>();
-        playerPerspectivesIds = new ArrayList<Short>();
-        gameModesIds = new ArrayList<Short>();
-        genresIds = new ArrayList<Short>();
+        playerPerspectivesIds = new ArrayList<>();
+        gameModesIds = new ArrayList<>();
+        genresIds = new ArrayList<>();
         websites = new ArrayList<>();
         screenshots = new ArrayList<>();
         status = Status.RELEASED;

@@ -6,6 +6,7 @@
 package whattoplay.persistence;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import whattoplay.domain.entities.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
 
     @Override
     public void persistGame(Game game) {
-            entityManager.persist(game);
+        entityManager.persist(game);
     }
 
     @Override

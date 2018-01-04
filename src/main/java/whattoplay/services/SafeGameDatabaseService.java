@@ -10,6 +10,7 @@ import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToGameEntityConverter;
 
+import javax.persistence.PersistenceException;
 import java.util.Optional;
 
 /**

@@ -120,4 +120,14 @@ public class MsSqlGameFieldsDatabaseRepository implements GameFieldsDatabaseRepo
                 .createQuery("SELECT count(1) FROM Developer a")
                 .getSingleResult();
     }
+
+    @Override
+    public Collection findCollectionById(long id) {
+        return entityManager.find(Collection.class, id);
+    }
+
+    @Override
+    public Franchise findFranchiseById(long id) {
+        return entityManager.find(Franchise.class, id);
+    }
 }

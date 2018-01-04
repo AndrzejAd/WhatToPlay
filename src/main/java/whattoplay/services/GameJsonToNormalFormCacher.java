@@ -17,9 +17,9 @@ import whattoplay.services.domain.GameJsonToGameConverter;
 
 @Service
 public class GameJsonToNormalFormCacher {
-    private GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
-    private SafeGameDatabaseService safeGameDatabaseService;
-    private GameJsonToGameConverter gameJsonToGameConverter;
+    private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
+    private final SafeGameDatabaseService safeGameDatabaseService;
+    private final GameJsonToGameConverter gameJsonToGameConverter;
 
     @Autowired
     public GameJsonToNormalFormCacher(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
@@ -32,7 +32,7 @@ public class GameJsonToNormalFormCacher {
 
 
     public void persistNormalFormOfGameJson(GameJson gameJson) {
-        safeGameDatabaseService.persistGame(gameJsonToGameConverter.convertRelationalFields(gameJson));
+        safeGameDatabaseService.persistGame(gameJsonToGameConverter.convert(gameJson));
         long id = gameJson.getId();
         gameJson.getDevelopersIds()
                 .forEach(developerId -> gameFieldsDatabaseRepository.persistGameDeveloper(new GameDeveloper(id, developerId)));
