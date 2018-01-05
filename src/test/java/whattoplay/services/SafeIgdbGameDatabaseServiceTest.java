@@ -7,15 +7,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import whattoplay.domain.entities.Game;
+import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.MsSqlGameDatabase;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class SafeGameDatabaseServiceTest {
+class SafeIgdbGameDatabaseServiceTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -28,15 +26,17 @@ class SafeGameDatabaseServiceTest {
 
     @Test
     void persistGameShouldChangeCollectionIdIfConstraintVioliationOccurs() {
-        Game game = new Game();
-        game.setId(5);
-        game.setName("AAA");
-        //game.setCollectionId(999999999);
-        game.setSlug("AA");
-        msSqlGameDatabase.persistGame(game);
-        //assertEquals(0, msSqlGameDatabase.getGameById(5).getCollectionId());
+        IgdbGame igdbGame = new IgdbGame();
+        igdbGame.setId(5);
+        igdbGame.setName("AAA");
+        //igdbGame.setCollection(999999999);
+        igdbGame.setSlug("AA");
+        msSqlGameDatabase.persistGame(igdbGame);
+        //assertEquals(0, msSqlGameDatabase.getGameById(5).getCollection());
         //assertEquals(1, msSqlGameDatabase.getNumberOfRows());
         System.out.println(msSqlGameDatabase.getGameById(5));
     }
+
+
 
 }

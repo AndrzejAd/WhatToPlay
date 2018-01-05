@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Games")
-public class Game implements Serializable {
+public class IgdbGame implements Serializable {
     @Id
     @Column( name ="id", nullable = false)
     private long id;
@@ -53,13 +53,10 @@ public class Game implements Serializable {
     @Column( name="total_rating_count", nullable = true)
     private int totalRatingCount;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Collection collectionId;
+    private long collectionId;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Franchise franchiseId;
+    private long franchiseId;
+
 
     @Column( name="created_at", nullable = true)
     private LocalDate createdAt;
@@ -89,14 +86,13 @@ public class Game implements Serializable {
     @Embedded
     private ImageInfo cover;
 
-    public Game() {
+    public IgdbGame() {
     }
-
-    public Game(long id, String name, String slug, String url, String summary, String storyline, int hypes,
-                double popularity, double rating, int ratingCount, double aggregatedRating, int aggregatedRatingCount,
-                double totalRating, int totalRatingCount, Collection collectionId, Franchise franchiseId, LocalDate createdAt,
-                LocalDate updatedAt, LocalDate firstReleaseDate, Status status, TimeToBeat timeToBeat, Esrb esrb,
-                Pegi pegi, External external, ImageInfo cover) {
+    public IgdbGame(long id, String name, String slug, String url, String summary, String storyline, int hypes,
+                    double popularity, double rating, int ratingCount, double aggregatedRating, int aggregatedRatingCount,
+                    double totalRating, int totalRatingCount, long collectionId, long franchiseId, LocalDate createdAt,
+                    LocalDate updatedAt, LocalDate firstReleaseDate, Status status,
+                    TimeToBeat timeToBeat, Esrb esrb, Pegi pegi, External external, ImageInfo cover) {
         this.id = id;
         this.name = name;
         this.slug = slug;
@@ -236,22 +232,6 @@ public class Game implements Serializable {
         this.totalRatingCount = totalRatingCount;
     }
 
-    public Collection getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(Collection collectionId) {
-        this.collectionId = collectionId;
-    }
-
-    public Franchise getFranchiseId() {
-        return franchiseId;
-    }
-
-    public void setFranchiseId(Franchise franchiseId) {
-        this.franchiseId = franchiseId;
-    }
-
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -326,7 +306,7 @@ public class Game implements Serializable {
 
     @Override
     public String toString() {
-        return "Game{" +
+        return "IgdbGame{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", slug='" + slug + '\'' +
@@ -341,8 +321,6 @@ public class Game implements Serializable {
                 ", aggregatedRatingCount=" + aggregatedRatingCount +
                 ", totalRating=" + totalRating +
                 ", totalRatingCount=" + totalRatingCount +
-                ", collectionId=" + collectionId +
-                ", franchiseId=" + franchiseId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", firstReleaseDate=" + firstReleaseDate +
@@ -355,41 +333,61 @@ public class Game implements Serializable {
                 '}';
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Game)) return false;
-        Game game = (Game) o;
-        return id == game.id &&
-                hypes == game.hypes &&
-                Double.compare(game.popularity, popularity) == 0 &&
-                Double.compare(game.rating, rating) == 0 &&
-                ratingCount == game.ratingCount &&
-                Double.compare(game.aggregatedRating, aggregatedRating) == 0 &&
-                aggregatedRatingCount == game.aggregatedRatingCount &&
-                Double.compare(game.totalRating, totalRating) == 0 &&
-                totalRatingCount == game.totalRatingCount &&
-                collectionId == game.collectionId &&
-                franchiseId == game.franchiseId &&
-                Objects.equals(name, game.name) &&
-                Objects.equals(slug, game.slug) &&
-                Objects.equals(url, game.url) &&
-                Objects.equals(summary, game.summary) &&
-                Objects.equals(storyline, game.storyline) &&
-                Objects.equals(createdAt, game.createdAt) &&
-                Objects.equals(updatedAt, game.updatedAt) &&
-                Objects.equals(firstReleaseDate, game.firstReleaseDate) &&
-                status == game.status &&
-                Objects.equals(timeToBeat, game.timeToBeat) &&
-                Objects.equals(esrb, game.esrb) &&
-                Objects.equals(pegi, game.pegi) &&
-                Objects.equals(external, game.external) &&
-                Objects.equals(cover, game.cover);
+        if (!(o instanceof IgdbGame)) return false;
+        IgdbGame igdbGame = (IgdbGame) o;
+        return id == igdbGame.id &&
+                hypes == igdbGame.hypes &&
+                Double.compare(igdbGame.popularity, popularity) == 0 &&
+                Double.compare(igdbGame.rating, rating) == 0 &&
+                ratingCount == igdbGame.ratingCount &&
+                Double.compare(igdbGame.aggregatedRating, aggregatedRating) == 0 &&
+                aggregatedRatingCount == igdbGame.aggregatedRatingCount &&
+                Double.compare(igdbGame.totalRating, totalRating) == 0 &&
+                totalRatingCount == igdbGame.totalRatingCount &&
+                collectionId == igdbGame.collectionId &&
+                franchiseId == igdbGame.franchiseId &&
+                Objects.equals(name, igdbGame.name) &&
+                Objects.equals(slug, igdbGame.slug) &&
+                Objects.equals(url, igdbGame.url) &&
+                Objects.equals(summary, igdbGame.summary) &&
+                Objects.equals(storyline, igdbGame.storyline) &&
+                Objects.equals(createdAt, igdbGame.createdAt) &&
+                Objects.equals(updatedAt, igdbGame.updatedAt) &&
+                Objects.equals(firstReleaseDate, igdbGame.firstReleaseDate) &&
+                status == igdbGame.status &&
+                Objects.equals(timeToBeat, igdbGame.timeToBeat) &&
+                Objects.equals(esrb, igdbGame.esrb) &&
+                Objects.equals(pegi, igdbGame.pegi) &&
+                Objects.equals(external, igdbGame.external) &&
+                Objects.equals(cover, igdbGame.cover);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, slug, url, summary, storyline, hypes, popularity, rating, ratingCount, aggregatedRating, aggregatedRatingCount, totalRating, totalRatingCount, collectionId, franchiseId, createdAt, updatedAt, firstReleaseDate, status, timeToBeat, esrb, pegi, external, cover);
+        return Objects.hash(id, name, slug, url, summary, storyline, hypes, popularity, rating, ratingCount,
+                aggregatedRating, aggregatedRatingCount, totalRating, totalRatingCount, collectionId,
+                franchiseId, createdAt, updatedAt, firstReleaseDate, status,
+                timeToBeat, esrb, pegi, external, cover);
+    }
+
+    public long getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(long collectionId) {
+        this.collectionId = collectionId;
+    }
+
+    public long getFranchiseId() {
+        return franchiseId;
+    }
+
+    public void setFranchiseId(long franchiseId) {
+        this.franchiseId = franchiseId;
     }
 }

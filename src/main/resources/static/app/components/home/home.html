@@ -68,18 +68,18 @@ and open the template in the editor.
         <div>
             <div class="row">
                 <div id="GameBlock">
-                    <div ng-repeat="game in games track by $index">
+                    <div ng-repeat="igdbGame in games track by $index">
                         <div class="col-sm-3 col-md-4" style="padding-bottom: 15px">
                             <div class="thumbnail">
                                 <div class="caption">
-                                    <h2 class="text-center">{{ game.gameName }}</h2>
+                                    <h2 class="text-center">{{ igdbGame.gameName }}</h2>
                                     <div class="GameImageWrapper" >
-                                        <img class="GameImage btn" ng-click="goToTheGameDetails(game.gameId)" data-ng-src="{{ game.gameImage }}">
+                                        <img class="GameImage btn" ng-click="goToTheGameDetails(igdbGame.gameId)" data-ng-src="{{ igdbGame.gameImage }}">
                                     </div>
-                                    <h3 class="text-center">Genre: {{ game.genre }}</h3>
-                                    <h3 class="text-center">Price: {{ game.price }}$</h3>
+                                    <h3 class="text-center">Genre: {{ igdbGame.genre }}</h3>
+                                    <h3 class="text-center">Price: {{ igdbGame.price }}$</h3>
                                     <h3 >
-                                        <a class="btn btn-primary center-block" id="details" ng-click="goToTheGameDetails(game.gameId)" >
+                                        <a class="btn btn-primary center-block" id="details" ng-click="goToTheGameDetails(igdbGame.gameId)" >
                                             <span class="glyphicon glyphicon-triangle-right" /></span> Details
                                         </a>
                                     </h3>

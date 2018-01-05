@@ -5,8 +5,6 @@
  */
 package whattoplay.persistence;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
 import whattoplay.domain.entities.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +23,14 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     @PersistenceContext
     private EntityManager entityManager;
     private CriteriaBuilder gameEntityBuilder;
-    private CriteriaQuery<Game> gameEntityQuery;
-    private Root<Game> gameEntityGame;
+    private CriteriaQuery<IgdbGame> gameEntityQuery;
+    private Root<IgdbGame> gameEntityGame;
 
     public MsSqlGameDatabase(EntityManager entityManager) {
         this.entityManager = entityManager;
         gameEntityBuilder = entityManager.getCriteriaBuilder();
-        gameEntityQuery = gameEntityBuilder.createQuery(Game.class);
-        gameEntityGame = gameEntityQuery.from(Game.class);
+        gameEntityQuery = gameEntityBuilder.createQuery(IgdbGame.class);
+        gameEntityGame = gameEntityQuery.from(IgdbGame.class);
     }
 
     public void setEntityManager(EntityManager entityManager) {
@@ -40,45 +38,45 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public void persistGame(Game game) {
-        entityManager.persist(game);
+    public void persistGame(IgdbGame igdbGame) {
+        entityManager.persist(igdbGame);
     }
 
     @Override
     public long getNumberOfRows() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-        criteria.select(builder.count(criteria.from(Game.class)));
-        Long value = entityManager.createQuery(criteria).getSingleResult();
+        criteria.select(builder.count(criteria.from(IgdbGame.class)));
+        Long value = entityManager.createQuery(criteria).getSingleResult().longValue();
         return 1;
     }
 
     @Override
-    public Game deleteGameByGameName(String gameName) {
+    public IgdbGame deleteGameByGameName(String gameName) {
         gameEntityQuery.select(gameEntityGame).
                 where(gameEntityBuilder.equal(gameEntityGame.get("name"), gameName));
-        TypedQuery<Game> tq = entityManager.createQuery(gameEntityQuery);
-        Game searchedGame = tq.getSingleResult();
-        Optional.ofNullable( searchedGame ).ifPresent( entityManager::remove );
-        return searchedGame;
+        TypedQuery<IgdbGame> tq = entityManager.createQuery(gameEntityQuery);
+        IgdbGame searchedIgdbGame = tq.getSingleResult();
+        Optional.ofNullable(searchedIgdbGame).ifPresent( entityManager::remove );
+        return searchedIgdbGame;
     }
 
     @Override
-    public Game getGameById(long gameId) {
-        return entityManager.find(Game.class, gameId);
+    public IgdbGame getGameById(long gameId) {
+        return entityManager.find(IgdbGame.class, gameId);
     }
 
     /** TODO **/
     @Override
-    public Game updateGame(Game updatedGame) {
-//        Game game = entityManager.find(Game.class, updatedGame.getGameId());
-//        Optional.ofNullable(updatedGame.getName()).ifPresent(game::getName);
-//        Optional.ofNullable(updatedGame.getProducer()).ifPresent(game::setProducer);
-//        Optional.ofNullable(updatedGame.getPublisher()).ifPresent(game::setPublisher);
-//        Optional.ofNullable(updatedGame.getGenre()).ifPresent(game::setGenre);
-//        Optional.ofNullable(updatedGame.getDatePublished()).ifPresent(game::setDatePublished);
-//        Optional.ofNullable(updatedGame.getPrice()).ifPresent(game::setPrice);
-//        Optional.ofNullable(updatedGame.getImagePath()).ifPresent(game::setImagePath);
+    public IgdbGame updateGame(IgdbGame updatedIgdbGame) {
+//        IgdbGame game = entityManager.find(IgdbGame.class, updatedIgdbGame.getGameId());
+//        Optional.ofNullable(updatedIgdbGame.getName()).ifPresent(game::getName);
+//        Optional.ofNullable(updatedIgdbGame.getProducer()).ifPresent(game::setProducer);
+//        Optional.ofNullable(updatedIgdbGame.getPublisher()).ifPresent(game::setPublisher);
+//        Optional.ofNullable(updatedIgdbGame.getGenre()).ifPresent(game::setGenre);
+//        Optional.ofNullable(updatedIgdbGame.getDatePublished()).ifPresent(game::setDatePublished);
+//        Optional.ofNullable(updatedIgdbGame.getPrice()).ifPresent(game::setPrice);
+//        Optional.ofNullable(updatedIgdbGame.getImagePath()).ifPresent(game::setImagePath);
 //        return entityManager.merge(game);
         return null;
     }
@@ -94,8 +92,8 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public List<Game> getRandomGames(int numberOfGames) {
-        List<Game> gamesList = new ArrayList<>();
+    public List<IgdbGame> getRandomGames(int numberOfGames) {
+        List<IgdbGame> gamesList = new ArrayList<>();
         getRandomIdsFromGameTable(numberOfGames).forEach(id -> {
             gamesList.add(getGameById(id));
         });
@@ -103,18 +101,18 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public List<Game> getGamesByGenre(String genre) {
+    public List<IgdbGame> getGamesByGenre(String genre) {
         gameEntityQuery.select(gameEntityGame).
                 where(gameEntityBuilder.equal(gameEntityGame.get("genre"), genre));
-        TypedQuery<Game> tq = entityManager.createQuery(gameEntityQuery);
+        TypedQuery<IgdbGame> tq = entityManager.createQuery(gameEntityQuery);
         return tq.getResultList();
     }
 
     @Override
-    public List<Game> getGamesByName(String gameName) {
+    public List<IgdbGame> getGamesByName(String gameName) {
         gameEntityQuery.select(gameEntityGame)
                 .where( gameEntityBuilder.like(gameEntityGame.get("gameName"), gameName + "%" ));
-        TypedQuery<Game> tq = entityManager.createQuery(gameEntityQuery);
+        TypedQuery<IgdbGame> tq = entityManager.createQuery(gameEntityQuery);
         return tq.getResultList();
     }
 

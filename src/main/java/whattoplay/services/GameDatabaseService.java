@@ -4,7 +4,7 @@ import whattoplay.domain.dto.GameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import whattoplay.domain.entities.Game;
+import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToGameEntityConverter;
@@ -41,11 +41,11 @@ public class GameDatabaseService {
         }
     }
 
-    public void persistGame(Game game) {
-        gamesDatabaseRepository.persistGame(game);
+    public void persistGame(IgdbGame igdbGame) {
+        gamesDatabaseRepository.persistGame(igdbGame);
     }
 
-    public void persistSetOfGames(Iterable<Game> games){
+    public void persistSetOfGames(Iterable<IgdbGame> games){
         games.forEach( x -> gamesDatabaseRepository.persistGame(x));
     }
 
@@ -61,7 +61,7 @@ public class GameDatabaseService {
         }
     }
 
-    public Game updateGame(final GameDto gameDto) {
+    public IgdbGame updateGame(final GameDto gameDto) {
         return gamesDatabaseRepository.updateGame(gameDtoToGameEntityConverter.convert(gameDto));
     }
 

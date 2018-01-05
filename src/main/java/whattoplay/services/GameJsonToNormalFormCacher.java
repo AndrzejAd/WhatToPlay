@@ -7,12 +7,12 @@ import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.services.domain.GameJsonToGameConverter;
 
 /**
- * Since GameJson object send by Internet Game Database API is a json
+ * Since GameJson object send by Internet IgdbGame Database API is a json
  * containing lists of ids and objects, it doesn't fit relational  database which I prefer to use.
  * This class converts those jsons object to third normal form GameJson object
  * and fills {@link whattoplay.domain.entities.GameDeveloper}, {@link whattoplay.domain.entities.GameGameModes},
  * etc. tables with needed data.
- * @see <a href="https://igdb.github.io/api/endpoints/game/">IGDB Game Endpoint</a>
+ * @see <a href="https://igdb.github.io/api/endpoints/game/">IGDB IgdbGame Endpoint</a>
  */
 
 @Service

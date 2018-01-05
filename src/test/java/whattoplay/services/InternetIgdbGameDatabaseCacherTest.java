@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class InternetGameDatabaseCacherTest {
+class InternetIgdbGameDatabaseCacherTest {
     static InternetGameDatabaseCacher internetGameDatabaseCacher;
 
     @Mock

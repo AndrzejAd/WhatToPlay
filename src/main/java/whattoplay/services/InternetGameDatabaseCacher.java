@@ -18,8 +18,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * Through REST requests this class caches Internet Game Database on local rational database.
- * @see <a href="https://igdb.github.io/api">Internet Game Database</a>
+ * Through REST requests this class caches Internet IgdbGame Database on local rational database.
+ * @see <a href="https://igdb.github.io/api">Internet IgdbGame Database</a>
  */
 
 @Service
@@ -102,7 +102,7 @@ public class InternetGameDatabaseCacher {
                 .queryString("limit", "50")
                 .asObject(GameMode[].class);
         Arrays.asList(genresJson.getBody()).forEach(x -> {
-            logger.info("Persisting Game Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
+            logger.info("Persisting IgdbGame Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
         });
     }
 

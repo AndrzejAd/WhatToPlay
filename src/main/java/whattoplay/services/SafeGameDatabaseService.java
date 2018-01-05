@@ -4,13 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import whattoplay.domain.dto.GameDto;
-import whattoplay.domain.entities.Game;
+import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToGameEntityConverter;
 
-import javax.persistence.PersistenceException;
 import java.util.Optional;
 
 /**
@@ -27,47 +25,47 @@ public class SafeGameDatabaseService extends GameDatabaseService {
         super(databaseRepository, gameToGameDtoConverter, gameDtoToGameEntityConverter);
     }
 
-    public void persistGame(Game game) {
-        logger.info(new StringBuilder().append("Persisting ").append(game.getName()).append(" id: ")
-                .append(game.getId()).append(" collection id : ").append(game.getCollectionId()).append(" franchise id : ")
-                .append(game.getFranchiseId()).toString() );
-        if (game.getName().length() > 100) {
-            game.setName(game.getName().substring(0, 99));
-            logger.warn("Name " + game.getName() + " is too long, saving truncated version. ID: " + game.getId());
+    public void persistGame(IgdbGame igdbGame) {
+        logger.info(new StringBuilder().append("Persisting ").append(igdbGame.getName()).append(" id: ")
+                .append(igdbGame.getId()).append(" collection id : ").append(igdbGame.getCollectionId()).append(" franchise id : ")
+                .append(igdbGame.getFranchiseId()).toString() );
+        if (igdbGame.getName().length() > 100) {
+            igdbGame.setName(igdbGame.getName().substring(0, 99));
+            logger.warn("Name " + igdbGame.getName() + " is too long, saving truncated version. ID: " + igdbGame.getId());
         }
-        if (game.getSlug().length() > 150) {
-            game.setSlug(game.getSlug().substring(0, 149));
-            logger.warn("Slug " + game.getSlug() + " is too long, saving truncated version. ID: " + game.getId());
+        if (igdbGame.getSlug().length() > 150) {
+            igdbGame.setSlug(igdbGame.getSlug().substring(0, 149));
+            logger.warn("Slug " + igdbGame.getSlug() + " is too long, saving truncated version. ID: " + igdbGame.getId());
         }
-        Optional.ofNullable(game.getUrl()).ifPresent(x -> {
+        Optional.ofNullable(igdbGame.getUrl()).ifPresent(x -> {
             if (x.length() > 150){
-                game.setUrl(game.getUrl().substring(0, 149));
-                logger.warn("Url " + game.getUrl() + " is too long, saving truncated version. ID: " + game.getId());
+                igdbGame.setUrl(igdbGame.getUrl().substring(0, 149));
+                logger.warn("Url " + igdbGame.getUrl() + " is too long, saving truncated version. ID: " + igdbGame.getId());
             }
         });
-        Optional.ofNullable(game.getExternal()).ifPresent(x -> {
+        Optional.ofNullable(igdbGame.getExternal()).ifPresent(x -> {
             if (x.getSteam().length() > 150){
                 x.setSteam(x.getSteam().substring(0, 149));
                 logger.warn("Steam " + x.getSteam() + " is too long, saving truncated version. ID: "
-                        + game.getId());
+                        + igdbGame.getId());
             }
         });
-        Optional.ofNullable(game.getCover()).ifPresent(x -> {
+        Optional.ofNullable(igdbGame.getCover()).ifPresent(x -> {
             if (x.getImageUrl().length() > 150) {
                 x.setImageUrl(x.getImageUrl().substring(0, 149));
                 logger.warn("Image url " + x.getImageUrl() + " is too long, saving truncated version. ID: "
-                        + game.getId());
+                        + igdbGame.getId());
             }
             if (x.getCloudinaryId().length() > 50){
                 x.setCloudinaryId(x.getCloudinaryId().substring(0, 49));
                 logger.warn("Cloudinary id " + x.getCloudinaryId() + " is too long, saving truncated version. ID: "
-                        + game.getId());
+                        + igdbGame.getId());
             }
         });
-        gamesDatabaseRepository.persistGame(game);
+        gamesDatabaseRepository.persistGame(igdbGame);
     }
 
-    public void saveSetOfGames(Iterable<Game> games) {
+    public void saveSetOfGames(Iterable<IgdbGame> games) {
         games.forEach(x -> gamesDatabaseRepository.persistGame(x));
     }
 

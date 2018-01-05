@@ -1,7 +1,7 @@
 package whattoplay.services.domain;
 
 import whattoplay.domain.dto.BaseGameDto;
-import whattoplay.domain.entities.Game;
+import whattoplay.domain.entities.IgdbGame;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class GameToGameDtoConverter implements GameDtoConverter {
 
     @Override
-    public BaseGameDto convert(Game game) {
+    public BaseGameDto convert(IgdbGame igdbGame) {
         return new BaseGameDto();
     }
     

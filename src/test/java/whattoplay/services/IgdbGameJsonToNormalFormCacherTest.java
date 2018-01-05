@@ -1,25 +1,21 @@
-package whattoplay.services.domain;
+package whattoplay.services;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import whattoplay.domain.entities.GameJson;
-import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.persistence.MsSqlGameFieldsDatabaseRepository;
+import whattoplay.services.domain.GameJsonToGameConverter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class GameJsonToGameConverterTest {
+class IgdbGameJsonToNormalFormCacherTest {
     @Autowired
     TestEntityManager entityManager;
 
@@ -28,6 +24,9 @@ class GameJsonToGameConverterTest {
 
     @Autowired
     MsSqlGameFieldsDatabaseRepository gameFieldsDatabaseRepository;
+
+    @Autowired
+    SafeGameDatabaseService safeGameDatabaseService;
 
     @Test
     void gameJsonToGameConverterShouldNotBeNull() {
@@ -40,17 +39,12 @@ class GameJsonToGameConverterTest {
     }
 
     @Test
-    void shouldConvertCollection() {
-        GameJson gameJson = new GameJson();
-        gameJson.setCollectionId(1);
-        assertEquals( "Bioshock" , gameJsonToGameConverter.convert(gameJson).getCollectionId().getName().trim());
+    void safeGameDatabaseServiceShouldNotBeNull() {
+        assertNotNull( safeGameDatabaseService);
     }
 
     @Test
-    void shouldConvertFranchise() {
-        GameJson gameJson = new GameJson();
-        gameJson.setFranchiseId(1);
-        assertEquals( "Star Wars" , gameJsonToGameConverter.convert(gameJson).getFranchiseId().getName().trim());
+    void ShouldPersistNormalFormOfGameJson() {
+        //gameJsonToGameConverter.convert();
     }
-
 }

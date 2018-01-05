@@ -15,7 +15,7 @@ import java.time.ZoneId;
  * Created by Andrzej on 2017-12-12.
  */
 @Entity
-@Table(name = "[Game Modes]")
+@Table(name = "[IgdbGame Modes]")
 public class GameMode {
     @Id
     @Column(name ="id", nullable = false)
