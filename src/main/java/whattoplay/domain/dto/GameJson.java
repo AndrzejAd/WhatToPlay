@@ -1,8 +1,9 @@
-package whattoplay.domain.entities;
+package whattoplay.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import whattoplay.domain.dto.Status;
+import whattoplay.domain.entities.*;
 
 import java.io.Serializable;
 import java.time.Instant;

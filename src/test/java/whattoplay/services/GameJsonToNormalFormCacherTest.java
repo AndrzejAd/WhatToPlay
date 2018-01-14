@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.MsSqlGameFieldsDatabaseRepository;
 import whattoplay.services.domain.GameJsonToGameConverter;
 import whattoplay.services.persistance.SafeGameDatabaseService;
@@ -45,6 +46,6 @@ class GameJsonToNormalFormCacherTest {
 
     @Test
     void ShouldPersistNormalFormOfGameJson() {
-        //gameJsonToGameConverter.convert();
+        IgdbGame igdbGame = new IgdbGame();
     }
 }

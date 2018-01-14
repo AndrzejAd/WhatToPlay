@@ -3,7 +3,7 @@ package whattoplay.services.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.IgdbGame;
-import whattoplay.domain.entities.GameJson;
+import whattoplay.domain.dto.GameJson;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
 
 import java.util.Collection;

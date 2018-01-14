@@ -1,6 +1,7 @@
 package whattoplay.domain.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -8,6 +9,7 @@ import java.util.Objects;
 public class GamePlayerPerspectives {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @NotNull
     private long id;
     private long gameId;
     private short player_perspective_id;

@@ -3,6 +3,7 @@ package whattoplay.domain.entities;
 import whattoplay.domain.dto.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -12,9 +13,11 @@ import java.util.Objects;
 public class IgdbGame implements Serializable {
     @Id
     @Column( name ="id", nullable = false)
+    @NotNull
     private long id;
 
     @Column( name="name", nullable = false)
+    @NotNull
     private String name;
 
     @Column( name="slug", nullable = true)

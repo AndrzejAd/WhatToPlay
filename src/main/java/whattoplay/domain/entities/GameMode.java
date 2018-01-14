@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -19,9 +20,11 @@ import java.time.ZoneId;
 public class GameMode {
     @Id
     @Column(name ="id", nullable = false)
+    @NotNull
     private long id;
 
     @Column(name ="name", nullable = false)
+    @NotNull
     private String name;
 
     @Column(name ="url", nullable = true)

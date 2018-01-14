@@ -3,11 +3,11 @@ package whattoplay.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import whattoplay.domain.dto.GameJson;
 import whattoplay.domain.entities.*;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.services.domain.GameJsonToGameConverter;
 import whattoplay.services.persistance.GameDatabaseService;
-import whattoplay.services.persistance.SafeGameDatabaseService;
 
 /**
  * Since GameJson object send by Internet IgdbGame Database API is a json

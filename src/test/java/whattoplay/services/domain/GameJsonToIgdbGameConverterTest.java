@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import whattoplay.domain.entities.GameJson;
 import whattoplay.persistence.MsSqlGameFieldsDatabaseRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

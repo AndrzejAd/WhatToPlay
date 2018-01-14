@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -17,9 +18,11 @@ import java.time.ZoneId;
 public class Genre {
     @Id
     @Column(name ="id", nullable = false)
+    @NotNull
     private long id;
 
     @Column(name ="name", nullable = false)
+    @NotNull
     private String name;
 
     @Column(name ="url", nullable = true)
