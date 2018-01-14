@@ -17,13 +17,11 @@ import java.util.stream.Collectors;
  */
 @FunctionalInterface
 public interface UserDtoConverter {
-    public UserDto convert(UserEntity from);
+    UserDto convert(UserEntity from);
  
-    default public Collection<UserDto> convertAll(Collection<UserEntity> fElements){
-        Collection<UserDto> convertedElement =
-                fElements.stream()
-                        .map(element -> convert(element))
-                        .collect(Collectors.toList());
-        return convertedElement;
+    default Collection<UserDto> convertAll(Collection<UserEntity> fElements){
+        return fElements.stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 }

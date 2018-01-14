@@ -13,14 +13,12 @@ import java.util.stream.Collectors;
 
 @FunctionalInterface
 public interface GameDtoConverter {
-    public GameDto convert(IgdbGame from);
+    GameDto convert(IgdbGame from);
  
-    default public Collection<GameDto> convertAll(Collection<IgdbGame> fElements){
-        Collection<GameDto> convertedElement =
-                fElements.stream()
-                        .map(element -> convert(element))
+    default Collection<GameDto> convertAll(Collection<IgdbGame> fElements){
+        return fElements.stream()
+                        .map(this::convert)
                         .collect(Collectors.toList());
-        return convertedElement;
     }
     
     

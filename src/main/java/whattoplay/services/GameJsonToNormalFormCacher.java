@@ -11,8 +11,8 @@ import whattoplay.services.persistance.GameDatabaseService;
 
 /**
  * Since GameJson object send by Internet IgdbGame Database API is a json
- * containing lists of ids and objects, it doesn't fit relational  database which I prefer to use.
- * This class converts those jsons object to third normal form GameJson object
+ * containing lists of ids and objects, it doesn't fit relational database which I prefer to use.
+ * This class converts those jsons objects to third normal form GameJson objects
  * and fills {@link whattoplay.domain.entities.GameDeveloper}, {@link whattoplay.domain.entities.GameGameModes},
  * etc. tables with needed data.
  * @see <a href="https://igdb.github.io/api/endpoints/game/">IGDB IgdbGame Endpoint</a>
@@ -53,7 +53,7 @@ public class GameJsonToNormalFormCacher {
     }
 
     public void persistNormalFormOfSetOFGameJsons(Iterable<GameJson> gameJsons) {
-        gameJsons.forEach( x -> persistNormalFormOfGameJson(x));
+        gameJsons.forEach( this::persistNormalFormOfGameJson);
     }
 
 }

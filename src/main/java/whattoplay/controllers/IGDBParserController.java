@@ -28,11 +28,7 @@ public class IGDBParserController {
 
     @RequestMapping(path = "/parseGames", method = RequestMethod.POST)
     public ResponseEntity<String> parseGames(){
-        try {
-            internetGameDatabaseCacher.saveAllGames();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+        internetGameDatabaseCacher.saveAllGames();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 

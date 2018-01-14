@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameJsonToGameConverter {
-
-    private GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
+    private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
 
     @Autowired
     public GameJsonToGameConverter(GameFieldsDatabaseRepository gameFieldsDatabaseRepository) {
@@ -31,7 +30,7 @@ public class GameJsonToGameConverter {
 
     public Collection<IgdbGame> convertAll(Collection<GameJson> fElements){
         return fElements.stream()
-                .map(element -> convert(element))
+                .map(this::convert)
                 .collect(Collectors.toList());
     }
 }

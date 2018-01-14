@@ -20,6 +20,7 @@ import java.util.Optional;
 
 /**
  * Through REST requests this class caches Internet IgdbGame Database on local rational database.
+ *
  * @see <a href="https://igdb.github.io/api">Internet IgdbGame Database</a>
  */
 
@@ -58,14 +59,14 @@ public class InternetGameDatabaseCacher {
         this.gameJsonToNormalFormCacher = gameJsonToNormalFormCacher;
     }
 
-
     /**
      * This method returns scroll url to allow pagination of IGDB responses.
      * Without it, its not possible to cache all reponses.
-     * @see <a href="https://igdb.github.io/api/references/pagination/">IGDB Pagination Page</a>
-     * @param url and url to the endpoint
+     *
+     * @param url    and url to the endpoint
      * @param fields fields of the needed object
      * @return HttpRequest containing set of non-casted objects
+     * @see <a href="https://igdb.github.io/api/references/pagination/">IGDB Pagination Page</a>
      */
     protected HttpRequest getScrollFromIGDB(String url, String fields) {
         return Unirest.get(url)
@@ -82,6 +83,12 @@ public class InternetGameDatabaseCacher {
                 .header("user-key", token);
     }
 
+    /**
+     * This method sends request to cache all of the available data.
+     *
+     *
+     * @throws UnirestException  if there is a communication problem with IGDB.
+     */
     public void saveAllGenres() throws UnirestException {
         HttpResponse<Genre[]> genresJson = Unirest.get("https://api-2445582011268.apicast.io/genres/")
                 .header("accept", "application/json")
@@ -102,9 +109,9 @@ public class InternetGameDatabaseCacher {
                 .queryString("fields", getBasicFields())
                 .queryString("limit", "50")
                 .asObject(GameMode[].class);
-        Arrays.asList(genresJson.getBody()).forEach(x -> {
-            logger.info("Persisting IgdbGame Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-        });
+        Arrays.asList(genresJson.getBody()).forEach(x ->
+            logger.info("Persisting IgdbGame Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt())
+        );
     }
 
     public void saveAllPlayerPerspectives() throws UnirestException {
@@ -134,15 +141,15 @@ public class InternetGameDatabaseCacher {
             logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlFranchises).toString());
             logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" franchsises. ").toString());
             logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());
-            for ( int i = 0; i <= requiredRequestsNumb + 1; i++ ){
+            for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
                 saveSetOfFranchises(scrollUrlFranchises);
             }
         } catch (UnirestException e) {
-            logger.error(new StringBuilder().append(" Couldnt get the scroll for Franchises ").append(e.getMessage()).toString() );
+            logger.error(new StringBuilder().append(" Couldnt get the scroll for Franchises ").append(e.getMessage()).toString());
         }
     }
 
-    public boolean saveAllDevelopers() {
+    public void saveAllDevelopers() {
         logger.info(" ===================== Persisting developers starts. ===================== ");
         final String urlForScroll = "https://api-2445582011268.apicast.io/companies/";
         final String scrollUrlForDevelopers;
@@ -159,14 +166,12 @@ public class InternetGameDatabaseCacher {
             for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
                 saveSetOfDevelopers(scrollUrlForDevelopers);
             }
-            return true;
         } catch (UnirestException e) {
             logger.error(new StringBuilder().append(" Couldnt get the scroll for Developers ").append(e.getMessage()).toString());
         }
-        return false;
     }
 
-    public boolean saveAllCollections() {
+    public void saveAllCollections() {
         logger.info(" ===================== Persisting collections starts. ===================== ");
         final String urlForScroll = "https://api-2445582011268.apicast.io/collections/";
         final String scrollUrlForDevelopers;
@@ -183,14 +188,12 @@ public class InternetGameDatabaseCacher {
             for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
                 saveSetOfCollections(scrollUrlForDevelopers);
             }
-            return true;
         } catch (UnirestException e) {
             logger.error(new StringBuilder().append(" Couldnt get the scroll for collections ").append(e.getMessage()).toString());
         }
-        return false;
     }
 
-    public void saveAllGames() throws UnirestException {
+    public void saveAllGames(){
         logger.info(" ===================== Persisting games starts. ===================== ");
         final String urlForScroll = "https://api-2445582011268.apicast.io/games/";
         final String scrollUrlForGames;
@@ -203,10 +206,10 @@ public class InternetGameDatabaseCacher {
             logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForGames).toString());
             logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" collections. ").toString());
             logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());
-            gameJsonToNormalFormCacher.persistNormalFormOfSetOFGameJsons(Arrays.asList(jsonResponse.getBody()) );
+            gameJsonToNormalFormCacher.persistNormalFormOfSetOFGameJsons(Arrays.asList(jsonResponse.getBody()));
             for (int i = 0; i <= requiredRequestsNumb + 1; i++) {
                 try {
-                    gameJsonToNormalFormCacher.persistNormalFormOfSetOFGameJsons(  Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForGames).asObject(GameJson[].class).getBody()));
+                    gameJsonToNormalFormCacher.persistNormalFormOfSetOFGameJsons(Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForGames).asObject(GameJson[].class).getBody()));
                 } catch (UnirestException e) {
                     logger.info(new StringBuilder().append(" Got to the end of the games scroll! ").toString());
                 }
@@ -216,22 +219,22 @@ public class InternetGameDatabaseCacher {
         }
     }
 
-    protected void saveSetOfDevelopers(Iterable<Developer> developers ){
-        developers.forEach( x -> {
-            if (x.getName().length() >= 100){
+    protected void saveSetOfDevelopers(Iterable<Developer> developers) {
+        developers.forEach(x -> {
+            if (x.getName().length() >= 100) {
                 x.setName(x.getName().substring(0, 98));
-                logger.warn( "Name " + x.getName() + " is too long, saving truncated version." );
+                logger.warn("Name " + x.getName() + " is too long, saving truncated version.");
             }
             Optional.ofNullable(x.getUrl()).ifPresent(y -> {
-                if (y.length() >= 100){
+                if (y.length() >= 100) {
                     x.setUrl(x.getUrl().substring(0, 98));
-                    logger.warn( "Url " + x.getUrl() + " is too long, saving truncated version." );
+                    logger.warn("Url " + x.getUrl() + " is too long, saving truncated version.");
                 }
             });
             Optional.ofNullable(x.getDeveloperImageCloudinaryId()).ifPresent(y -> {
-                if (y.length() >= 100){
+                if (y.length() >= 100) {
                     x.setDeveloperImageCloudinaryId((x.getDeveloperImageCloudinaryId().substring(0, 98)));
-                    logger.warn( "Url " + x.getDeveloperImageCloudinaryId() + " is too long, saving truncated version." );
+                    logger.warn("Url " + x.getDeveloperImageCloudinaryId() + " is too long, saving truncated version.");
                 }
             });
             gameFieldsDatabaseRepository.persistDeveloper(x);
@@ -240,7 +243,7 @@ public class InternetGameDatabaseCacher {
 
     protected void saveSetOfDevelopers(String scrollUrlForDevelopers) {
         try {
-            saveSetOfDevelopers( Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForDevelopers).asObject(Developer[].class).getBody()) );
+            saveSetOfDevelopers(Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForDevelopers).asObject(Developer[].class).getBody()));
         } catch (UnirestException e) {
             logger.info(new StringBuilder().append(" Got to the end of the scroll! ").toString());
         }
@@ -259,7 +262,7 @@ public class InternetGameDatabaseCacher {
 
     protected void saveSetOfFranchises(String scrollUrlForFranchises) {
         try {
-            saveSetOfFranchises(  Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForFranchises).asObject(Franchise[].class).getBody()));
+            saveSetOfFranchises(Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForFranchises).asObject(Franchise[].class).getBody()));
         } catch (UnirestException e) {
             logger.info(new StringBuilder().append(" Got to the end of the franchises scroll! ").toString());
         }
@@ -267,16 +270,16 @@ public class InternetGameDatabaseCacher {
 
     protected void saveSetOfCollections(Iterable<Collection> collections) {
         collections.forEach(x -> {
-            if (x.getName().length() >= 150){
+            if (x.getName().length() >= 150) {
                 x.setName(x.getName().substring(0, 148));
                 logger.warn(new StringBuilder().append("Name of").append(x.getId()).append(" ")
-                        .append(x.getName()).append("is too long! Saving shortened version").append(x.getName()) );
+                        .append(x.getName()).append("is too long! Saving shortened version").append(x.getName()));
             }
             Optional.ofNullable(x.getUrl()).ifPresent(y -> {
-                if (y.length() >= 100){
+                if (y.length() >= 100) {
                     x.setUrl(x.getUrl().substring(0, 98));
                     logger.warn(new StringBuilder().append("URL of").append(x.getId()).append(" ")
-                            .append(x.getName()).append("is too long! Saving shortened version").append(x.getUrl()) );
+                            .append(x.getName()).append("is too long! Saving shortened version").append(x.getUrl()));
                 }
             });
             gameFieldsDatabaseRepository.persistCollection(x);
@@ -285,7 +288,7 @@ public class InternetGameDatabaseCacher {
 
     protected void saveSetOfCollections(String scrollUrlForCollections) {
         try {
-            saveSetOfCollections(  Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForCollections).asObject(Collection[].class).getBody()));
+            saveSetOfCollections(Arrays.asList(getSetOfObjectsFromIGDB(scrollUrlForCollections).asObject(Collection[].class).getBody()));
         } catch (UnirestException e) {
             logger.info(new StringBuilder().append(" Got to the end of the collection scroll! ").toString());
         }

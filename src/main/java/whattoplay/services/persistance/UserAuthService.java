@@ -15,7 +15,7 @@ import whattoplay.services.persistance.UserDatabaseService;
  */
 @Service
 public class UserAuthService implements UserDetailsService {
-    private UserDatabaseService userDatabaseService;
+    private  UserDatabaseService userDatabaseService;
     
     public UserAuthService(){
         super();
@@ -32,8 +32,7 @@ public class UserAuthService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        SecurityUser u = new SecurityUser(user);
-        return u;
+        return new SecurityUser(user);
     }
     
     

@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Service
 public class SafeGameDatabaseService extends GameDatabaseService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Autowired
     public SafeGameDatabaseService(GamesDatabaseRepository databaseRepository,
@@ -67,7 +67,7 @@ public class SafeGameDatabaseService extends GameDatabaseService {
     }
 
     public void saveSetOfGames(Iterable<IgdbGame> games) {
-        games.forEach(x -> gamesDatabaseRepository.persistGame(x));
+        games.forEach(gamesDatabaseRepository::persistGame);
     }
 
 }

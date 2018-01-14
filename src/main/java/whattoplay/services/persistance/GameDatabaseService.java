@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameDatabaseService {
-    protected GamesDatabaseRepository gamesDatabaseRepository;
-    protected GameDtoConverter gameToGameDtoConverter;
-    protected GameDtoToGameEntityConverter gameDtoToGameEntityConverter;
+    protected final GamesDatabaseRepository gamesDatabaseRepository;
+    protected final GameDtoConverter gameToGameDtoConverter;
+    protected final GameDtoToGameEntityConverter gameDtoToGameEntityConverter;
 
     @Autowired
     public GameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository, GameDtoConverter gameToGameDtoConverter,
@@ -46,19 +46,15 @@ public class GameDatabaseService {
     }
 
     public void persistSetOfGames(Iterable<IgdbGame> games){
-        games.forEach( x -> gamesDatabaseRepository.persistGame(x));
+        games.forEach( gamesDatabaseRepository::persistGame);
     }
 
     public boolean deleteGameFromDatabase(String gameName){
-        return Optional.ofNullable(gamesDatabaseRepository.deleteGameByGameName(gameName)).map(x -> true ).orElse(false);
+        return Optional.ofNullable(gamesDatabaseRepository.deleteGameByGameName(gameName)).isPresent();
     }
 
     public GameDto getGameById(final long gameId) {
-        try {
-            return gameToGameDtoConverter.convert(gamesDatabaseRepository.getGameById(gameId));
-        } catch (EmptyResultDataAccessException exc) {
-            throw exc;
-        }
+        return gameToGameDtoConverter.convert(gamesDatabaseRepository.getGameById(gameId));
     }
 
     public IgdbGame updateGame(final GameDto gameDto) {
@@ -66,11 +62,9 @@ public class GameDatabaseService {
     }
 
     public List<GameDto> getRandomGames(final int gameId) {
-        return gameToGameDtoConverter.
+        return new ArrayList<>(gameToGameDtoConverter.
                 convertAll(gamesDatabaseRepository
-                        .getRandomGames(gameId))
-                .stream()
-                .collect(Collectors.toList());
+                        .getRandomGames(gameId)));
     }
 
     public List<GameDto> getGamesByGenre(final String gameGenre) {
