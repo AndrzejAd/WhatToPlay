@@ -3,19 +3,19 @@ package whattoplay.services;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import whattoplay.persistence.MsSqlGameFieldsDatabaseRepository;
 import whattoplay.services.domain.GameJsonToGameConverter;
+import whattoplay.services.persistance.SafeGameDatabaseService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-class IgdbGameJsonToNormalFormCacherTest {
+class GameJsonToNormalFormCacherTest {
     @Autowired
     TestEntityManager entityManager;
 

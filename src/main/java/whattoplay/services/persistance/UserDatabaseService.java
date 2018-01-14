@@ -1,4 +1,4 @@
-package whattoplay.services;
+package whattoplay.services.persistance;
 
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.exception.ConstraintViolationException;

@@ -1,4 +1,4 @@
-package whattoplay.services;
+package whattoplay.services.persistance;
 
 import whattoplay.domain.dto.GameDto;
 import org.springframework.beans.factory.annotation.Autowired;

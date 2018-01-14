@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.MsSqlGameDatabase;
+import whattoplay.services.persistance.SafeGameDatabaseService;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

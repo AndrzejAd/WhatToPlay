@@ -10,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import whattoplay.exceptions.NotValidPasswordException;
-import whattoplay.services.UserDatabaseService;
+import whattoplay.services.persistance.UserDatabaseService;
 
 /**
  * @author Andrzej

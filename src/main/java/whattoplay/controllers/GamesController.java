@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import whattoplay.domain.dto.GameDto;
-import whattoplay.services.GameDatabaseService;
+import whattoplay.services.persistance.GameDatabaseService;
 
 import java.io.File;
 import java.io.IOException;

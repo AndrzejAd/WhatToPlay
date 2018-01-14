@@ -1,4 +1,4 @@
-package whattoplay.services;
+package whattoplay.services.persistance;
 
 import whattoplay.domain.SecurityUser;
 import whattoplay.domain.entities.UserEntity;
@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import whattoplay.services.persistance.UserDatabaseService;
 
 /**
  *

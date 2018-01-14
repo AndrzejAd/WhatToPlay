@@ -1,4 +1,4 @@
-package whattoplay.services;
+package whattoplay.services.persistance;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +8,7 @@ import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToGameEntityConverter;
+import whattoplay.services.persistance.GameDatabaseService;
 
 import java.util.Optional;
 

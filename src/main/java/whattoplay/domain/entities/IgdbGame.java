@@ -57,7 +57,6 @@ public class IgdbGame implements Serializable {
 
     private long franchiseId;
 
-
     @Column( name="created_at", nullable = true)
     private LocalDate createdAt;
 

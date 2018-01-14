@@ -17,7 +17,7 @@ angular.module('addGame').service( 'PostGameThroughHttpService', function($http,
                     },
                     function(response){
                         console.log("Couldnt add game.");
-                });
+                    });
         };
     }
 

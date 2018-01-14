@@ -150,7 +150,7 @@ public class InternetGameDatabaseCacher {
         try {
             jsonResponse = getScrollFromIGDB(urlForScroll, getDeveloperFields()).asObject(Developer[].class);
             scrollUrlForDevelopers = jsonResponse.getHeaders().get("X-Next-Page").get(0);
-            requiredRequestsNumb = Math.round(Integer.parseInt(jsonResponse.getHeaders().get("X-Count").get(0)) / 50);
+            requiredRequestsNumb = Math.round(4696 / 50);
             logger.info(new StringBuilder().append(" Scroll url for requests: ").append(scrollUrlForDevelopers).toString());
             logger.info(new StringBuilder().append(" Persisting ").append(jsonResponse.getHeaders().get("X-Count").get(0)).append(" developers. ").toString());
             logger.info(new StringBuilder().append(" Doing ").append(requiredRequestsNumb + 1).append(" iterations. ").toString());

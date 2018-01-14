@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import whattoplay.config.rest.RESTLogoutSuccessHandler;
-import whattoplay.services.UserAuthService;
+import whattoplay.services.persistance.UserAuthService;
 import whattoplay.config.rest.RESTAuthenticationEntryPoint;
 import whattoplay.config.rest.RESTAuthenticationFailureHandler;
 import whattoplay.config.rest.RESTAuthenticationSuccessHandler;
