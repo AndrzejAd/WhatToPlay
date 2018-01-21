@@ -11,9 +11,15 @@ angular.module('updateGame').controller('searchForGameCtrl', function($scope, $l
             UpdateGameThroughHttpService.searchForGame($scope.searchQuery).then( function(games) {
                 allGames = games;
                 var gameNames = [];
-                angular.forEach(games, function(game){
-                    gameNames.push(game.gameName);
-                });
+                if ( games.length > 10 ){
+                    for ( var i = 0; i < 10; i++ ) {
+                        gameNames.push(games[i].name);
+                    }
+                } else{
+                    for ( var i = 0; i < games.length; i++ ) {
+                        gameNames.push(games[i].name);
+                    }
+                }
                 $scope.gameNames = gameNames;
             });
             $scope.showDropdown = true;
@@ -25,14 +31,9 @@ angular.module('updateGame').controller('searchForGameCtrl', function($scope, $l
     $scope.updateInputWithGameData = function (name) {
         angular.forEach(allGames, function(game){
             if ( name === game.gameName ){
-                $scope.gameId  = game.gameId;
-                $scope.gameName = game.gameName;
-                $scope.genre = game.genre;
-                $scope.producer = game.producer;
-                $scope.publisher = game.publisher;
-                $scope.datePublished = game.datePublished;
-                $scope.price = game.price;
-                $scope.imagePath = game.imagePath;
+                $scope.gameId  = game.id;
+                $scope.gameName = game.name;
+                $scope.genre = game.slug;
                 return;
             }
         });

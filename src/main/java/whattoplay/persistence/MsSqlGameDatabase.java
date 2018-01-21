@@ -81,14 +81,6 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public List<Long> getRandomIdsFromGameTable(int numbOfGames) {
-        String query = "SELECT g.id FROM IgdbGame g ORDER BY id";
-        Query q = entityManager.createQuery(query);
-        q.setMaxResults(numbOfGames);
-        return q.getResultList();
-    }
-
-    @Override
     public List<IgdbGame> getRandomGames(int numberOfGames) {
         long rowNumber = getNumberOfRows();
         long lowerBound = 1 + (long) (Math.random() * (rowNumber - 1));
@@ -101,19 +93,11 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     }
 
     @Override
-    public List<IgdbGame> getGamesByGenre(String genre) {
-        gameEntityQuery.select(gameEntityGame).
-                where(gameEntityBuilder.equal(gameEntityGame.get("genre"), genre));
-        TypedQuery<IgdbGame> tq = entityManager.createQuery(gameEntityQuery);
-        return tq.getResultList();
-    }
-
-    @Override
     public List<IgdbGame> getGamesByName(String gameName) {
-        gameEntityQuery.select(gameEntityGame)
-                .where( gameEntityBuilder.like(gameEntityGame.get("gameName"), gameName + "%" ));
-        TypedQuery<IgdbGame> tq = entityManager.createQuery(gameEntityQuery);
-        return tq.getResultList();
+        gameEntityQuery
+                .select(gameEntityGame)
+                .where( gameEntityBuilder.like(gameEntityGame.get("name"), gameName + "%" ));
+        return entityManager.createQuery(gameEntityQuery).getResultList();
     }
 
     @Deprecated

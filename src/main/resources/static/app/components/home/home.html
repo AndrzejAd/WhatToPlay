@@ -74,7 +74,7 @@ and open the template in the editor.
                                 <div class="caption">
                                     <h2 class="text-center">{{ game.name }}</h2>
                                     <div class="GameImageWrapper" >
-                                        <img class="GameImage btn" ng-click="goToTheGameDetails(igdbGame.id)" data-ng-src="{{ game.gameImage }}">
+                                        <img class="GameImage btn" ng-click="goToTheGameDetails(game.id)" data-ng-src="{{ game.gameImage }}">
                                     </div>
                                     <h3 class="text-center">Rating: {{ game.rating }}</h3>
                                     <h3 class="text-center">First Release Date: {{ game.firstReleaseDate }}</h3>

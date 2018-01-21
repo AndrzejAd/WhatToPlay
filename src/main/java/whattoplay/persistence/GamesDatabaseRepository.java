@@ -15,8 +15,6 @@ public interface GamesDatabaseRepository {
     IgdbGame deleteGameByGameName(String gameName);
     IgdbGame getGameById(long gameId);
     IgdbGame updateGame(IgdbGame updatedIgdbGame);
-    List getRandomIdsFromGameTable(int numbOfGames);
     List<IgdbGame> getRandomGames(int numberOfGames);
-    List<IgdbGame> getGamesByGenre(String genre);
     List<IgdbGame> getGamesByName(String gameName);
 }

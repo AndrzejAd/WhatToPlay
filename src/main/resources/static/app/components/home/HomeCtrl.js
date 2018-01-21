@@ -54,7 +54,6 @@ angular.module('home').controller('HomeCtrl', function($scope, $http, $location,
     
     $scope.goToTheGameDetails = function(gameId){
         $window.sessionStorage.setItem( "currentGame", JSON.stringify(gameId));
-
         GetGamesService.getGameById( gameId, $http).then( function() {
             var completeUrl = "/app/components/gameDetails/gameDetails.html";
             window.location.replace(completeUrl);

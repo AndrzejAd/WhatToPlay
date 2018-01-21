@@ -66,9 +66,10 @@ public class GameDatabaseService {
     }
 
     public List<BaseGameDto> getGamesByGenre(final String gameGenre) {
-        return new ArrayList<>(gameToGameDtoConverter
+        /*return new ArrayList<>(gameToGameDtoConverter
                 .convertAll(gamesDatabaseRepository
-                        .getGamesByGenre(gameGenre)));
+                        .getGamesByGenre(gameGenre)));*/
+        return null;
     }
 
     public List<BaseGameDto> getGamesByGameName(final String gameName) {
