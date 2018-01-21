@@ -19,8 +19,6 @@ class IgdbGameDatabaseCacherTest {
     @Autowired
     IgdbRequesterService igdbRequesterService;
 
-
-
     @Test
     void responseStatusOfGenericScrollShouldBe200(){
         String developersFields = "id," +
@@ -60,7 +58,7 @@ class IgdbGameDatabaseCacherTest {
     }
 
     @Test
-    void shouldnyThrowExceptions(){
+    void shouldntThrowExceptions(){
         igdbRequesterService.saveAllCollections();
     }
 

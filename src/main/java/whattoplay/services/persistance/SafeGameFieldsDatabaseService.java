@@ -98,4 +98,38 @@ public class SafeGameFieldsDatabaseService implements GameFieldsDaoService {
         });
     }
 
+    @Override
+    public void saveField(Object genre) {
+        gameFieldsDatabaseRepository.persistField(genre);
+    }
+
+    @Override
+    public void saveGameMode(GameMode gameMode) {
+        gameFieldsDatabaseRepository.persistGameMode(gameMode);
+    }
+
+    @Override
+    public void savePlayerPerspective(PlayerPerspective playerPerspective) {
+        gameFieldsDatabaseRepository.persistPlayerPerspective(playerPerspective);
+    }
+
+    @Override
+    public void saveDeveloper(Developer developer) {
+        gameFieldsDatabaseRepository.persistDeveloper(developer);
+    }
+
+    @Override
+    public void saveGenre(Genre genre) {
+        gameFieldsDatabaseRepository.persistGenre(genre);
+    }
+
+    @Override
+    public void saveFranchise(Franchise franchise) {
+        gameFieldsDatabaseRepository.persistFranchise(franchise);
+    }
+
+    @Override
+    public void saveCollection(Collection collection) {
+        gameFieldsDatabaseRepository.persistCollection(collection);
+    }
 }

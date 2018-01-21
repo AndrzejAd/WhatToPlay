@@ -28,15 +28,11 @@ import java.util.Arrays;
 public class IgdbRequesterService {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
     private static Logger logger = LogManager.getLogger();
-    private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
     private final GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
     private final GameFieldsDaoService gameFieldsDaoService;
 
-
-
     @Autowired
-    public IgdbRequesterService(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
-                                GameJsonToNormalFormCacher gameJsonToNormalFormCacher,
+    public IgdbRequesterService(GameJsonToNormalFormCacher gameJsonToNormalFormCacher,
                                 GameFieldsDaoService gameFieldsDatabaseService) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
@@ -59,7 +55,6 @@ public class IgdbRequesterService {
                 }
             }
         });
-        this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
         this.gameJsonToNormalFormCacher = gameJsonToNormalFormCacher;
         this.gameFieldsDaoService = gameFieldsDatabaseService;
     }
@@ -108,7 +103,7 @@ public class IgdbRequesterService {
         }
         Arrays.asList(genresJson.getBody()).forEach(x -> {
             logger.info("Persisting genre:" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gameFieldsDatabaseRepository.persistGenre(x);
+            gameFieldsDaoService.saveGenre(x);
         });
         return genresJson.getBody().length;
     }
@@ -128,7 +123,7 @@ public class IgdbRequesterService {
         }
         Arrays.asList(genresJson.getBody()).forEach(x ->{
             logger.info("Persisting IgdbGame Mode" + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gameFieldsDatabaseRepository.persistGameMode(x);
+            gameFieldsDaoService.saveGameMode(x);
         });
         return genresJson.getBody().length;
     }
@@ -148,7 +143,7 @@ public class IgdbRequesterService {
         }
         Arrays.asList(genresJson.getBody()).forEach(x -> {
             logger.info("Persisting Player Perspective: " + x.getId() + " " + x.getName() + ": " + x.getUrl() + " " + x.getCreatedAt());
-            gameFieldsDatabaseRepository.persistPlayerPerspective(x);
+            gameFieldsDaoService.savePlayerPerspective(x);
         });
         return genresJson.getBody().length;
     }

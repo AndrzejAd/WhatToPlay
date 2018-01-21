@@ -11,4 +11,11 @@ public interface GameFieldsDaoService {
     void saveGameGameModes(GameGameModes gameGameModes);
     void saveGamePlayerPerspectives(GamePlayerPerspectives gamePlayerPerspectives);
     void saveGameWebsite(GameWebsites website);
+    void saveField(Object genre);
+    void saveGameMode(GameMode gameMode);
+    void savePlayerPerspective(PlayerPerspective playerPerspective);
+    void saveDeveloper(Developer developer);
+    void saveGenre(Genre genre);
+    void saveFranchise(Franchise franchise);
+    void saveCollection(Collection collection);
 }

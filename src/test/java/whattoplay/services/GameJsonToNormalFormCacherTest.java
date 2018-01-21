@@ -27,7 +27,7 @@ class GameJsonToNormalFormCacherTest {
     MsSqlGameFieldsDatabaseRepository gameFieldsDatabaseRepository;
 
     @Autowired
-    SafeGameDatabaseService safeGameDatabaseService;
+    GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
 
     @Test
     void gameJsonToGameConverterShouldNotBeNull() {
@@ -40,8 +40,8 @@ class GameJsonToNormalFormCacherTest {
     }
 
     @Test
-    void safeGameDatabaseServiceShouldNotBeNull() {
-        assertNotNull( safeGameDatabaseService);
+    void gameJsonToNormalFormCacherShouldNotBeNull() {
+        assertNotNull( gameJsonToNormalFormCacher);
     }
 
     @Test
