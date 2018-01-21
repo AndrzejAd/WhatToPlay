@@ -90,11 +90,14 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
 
     @Override
     public List<IgdbGame> getRandomGames(int numberOfGames) {
-        List<IgdbGame> gamesList = new ArrayList<>();
-        getRandomIdsFromGameTable(numberOfGames).forEach(id -> {
-            gamesList.add(getGameById(id));
-        });
-        return gamesList;
+        long rowNumber = getNumberOfRows();
+        long lowerBound = 1 + (long) (Math.random() * (rowNumber - 1));
+        return entityManager
+                .createQuery("SELECT game FROM IgdbGame game WHERE game.id BETWEEN :lowerBound AND :rowNumber")
+                .setParameter("lowerBound", lowerBound)
+                .setParameter("rowNumber", rowNumber)
+                .setMaxResults(numberOfGames)
+                .getResultList();
     }
 
     @Override

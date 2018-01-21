@@ -48,7 +48,7 @@ public class GamesController {
     @RequestMapping( path="/getGamePhoto/{gamePath}", method= RequestMethod.GET)
     public ResponseEntity<byte[]> getGameImageByImagePath(@PathVariable("gamePath") String gamePath ) throws IOException {
         Random rand = new Random();
-        gamePath = Integer.toString(rand.nextInt(5));
+        gamePath = Integer.toString(rand.nextInt(4) + 1);
         final Resource fileResource = resourceLoader.getResource("classpath:static/assets/img/gameImages/" + gamePath + ".jpg");
         File file = fileResource.getFile();
         byte[] image = Files.readAllBytes(file.toPath());

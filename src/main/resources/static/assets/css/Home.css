@@ -29,7 +29,6 @@
 }
 
 .thumbnail{
-    height: 450px;
     color: #EEEEEE;
 }
 
@@ -41,6 +40,8 @@
     background-color: grey;
 }
 
-#HeaderText{
-
+#details{
+    background-color: #5d4037;
+    border-color: #080808;
+    position: relative;
 }

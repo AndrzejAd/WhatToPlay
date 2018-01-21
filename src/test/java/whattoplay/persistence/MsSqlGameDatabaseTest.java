@@ -44,4 +44,23 @@ class MsSqlGameDatabaseTest {
         entityManager.getEntityManager().persist(igdbGame1);
         assertEquals(2,msSqlGameDatabase.getNumberOfRows() );
     }
+
+    @Test
+    void shouldReturnRandomGames(){
+        // Given
+        for ( int i = 0; i < 100; i++ ){
+            IgdbGame igdbGame = new IgdbGame();
+            igdbGame.setId(i);
+            igdbGame.setName("test");
+            igdbGame.setCover(new ImageInfo("a", "b", 100, 100));
+            entityManager.getEntityManager().persist(igdbGame);
+        }
+        // When
+        msSqlGameDatabase.getRandomGames(9).forEach(System.out::println);
+
+        // Then
+
+        assertEquals(9, msSqlGameDatabase.getRandomGames(9).size());
+    }
+
 }

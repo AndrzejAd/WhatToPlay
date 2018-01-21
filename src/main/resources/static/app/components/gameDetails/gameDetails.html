@@ -44,17 +44,16 @@
             </ul>
         </div>
     </nav>
-
+s
         <div class="col-sm-3 col-md-6 col-md-offset-3" style="padding-bottom: 15px">
             <div class="thumbnail text-center center-block">
                 <div class="caption" >
                     <img height="360" width="600" data-ng-src="{{x.gameImageUrl}}">
-                    <h1>Title: {{ x.gameName }}</h1>
-                    <h2>Genre: {{ x.genre }}</h2>
-                    <h2>Price: {{ x.price }} USD</h2>
-                    <h2>Producer: {{ x.producer }}</h2>
-                    <h2>Publisher: {{ x.publisher }}</h2>
-                    <h2>Date Published: {{ x.datePublished | date }}</h2>
+                    <h1>Title: {{ x.name }}</h1>
+                    <h2>Rating: {{ x.rating }}</h2>
+                    <h2>First Release Date: {{ x.firstReleaseDate | date  }}</h2>
+                    <h2>Steam: {{ x.steam }}</h2>
+                    <h2>Status: {{ x.status }}</h2>
                 </div>
             </div>
         </div>
