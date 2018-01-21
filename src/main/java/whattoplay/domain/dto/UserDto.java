@@ -8,7 +8,6 @@ import java.util.Collection;
 @JsonDeserialize( as = BaseUserDto.class)
 public interface UserDto {
     String getFirstName() ;
-
     void setFirstName(String firstName);
     String getLastName();
     void setLastName(String lastName);

@@ -18,11 +18,9 @@ public class UserDtoToUserEntityConverter {
     }
     
     public Collection<UserEntity> convertAll(Collection<UserDto> fElements){
-        Collection<UserEntity> convertedElement =
-                fElements.stream()
-                        .map(element -> convert(element))
-                        .collect(Collectors.toList());
-        return convertedElement;
+        return fElements.stream()
+                .map(element -> convert(element))
+                .collect(Collectors.toList());
     }
     
 }

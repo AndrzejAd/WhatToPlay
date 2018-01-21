@@ -82,7 +82,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
 
     @Override
     public List<Long> getRandomIdsFromGameTable(int numbOfGames) {
-        String query = "SELECT g.id FROM Game g ORDER BY id";
+        String query = "SELECT g.id FROM IgdbGame g ORDER BY id";
         Query q = entityManager.createQuery(query);
         q.setMaxResults(numbOfGames);
         return q.getResultList();

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import whattoplay.domain.dto.GameJson;
 import whattoplay.domain.entities.IgdbGame;
+import whattoplay.domain.entities.ImageInfo;
 import whattoplay.persistence.MsSqlGameFieldsDatabaseRepository;
 import whattoplay.services.domain.GameJsonToGameConverter;
 import whattoplay.services.persistance.SafeGameDatabaseService;
@@ -45,7 +47,33 @@ class GameJsonToNormalFormCacherTest {
     }
 
     @Test
-    void ShouldPersistNormalFormOfGameJson() {
-        IgdbGame igdbGame = new IgdbGame();
+    void shouldPersistBasicNormalFormOfGameJson() {
+        // Given
+        long numberOfGames
+                = (long) entityManager.getEntityManager()
+                .createQuery("Select count (x.id) from IgdbGame x").getSingleResult();
+        GameJson jsonGame = new GameJson();
+        jsonGame.setId(0);
+        jsonGame.setName("Test Game");
+        jsonGame.setSlug("Test-Game");
+        jsonGame.setCover(new ImageInfo("", "", 200, 300));
+        System.out.println(numberOfGames);
+        // When
+
+        gameJsonToNormalFormCacher.persistNormalFormOfGameJson(jsonGame);
+
+        // Then
+        long numberOfGamesAfterAddition
+                = (long) entityManager.getEntityManager()
+                .createQuery("Select count (x.id) from IgdbGame x").getSingleResult();
+        assertEquals(numberOfGames + 1, numberOfGamesAfterAddition );
     }
+
+    private class RandomJsonCreater{
+        public GameJson returnRandomGameJson(){
+            GameJson jsonGame = new GameJson();
+            return jsonGame;
+        }
+    }
+
 }

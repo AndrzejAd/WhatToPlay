@@ -1,22 +1,14 @@
 package whattoplay.services.domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.IgdbGame;
 import whattoplay.domain.dto.GameJson;
-import whattoplay.persistence.GameFieldsDatabaseRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
 public class GameJsonToGameConverter {
-    private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
-
-    @Autowired
-    public GameJsonToGameConverter(GameFieldsDatabaseRepository gameFieldsDatabaseRepository) {
-        this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
-    }
 
     public IgdbGame convert(GameJson from){
         return new IgdbGame(from.getId(), from.getName(), from.getSlug(), from.getUrl(), from.getSummary(), from.getStoryline(),

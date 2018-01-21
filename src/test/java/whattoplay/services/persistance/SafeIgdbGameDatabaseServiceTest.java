@@ -1,4 +1,4 @@
-package whattoplay.services;
+package whattoplay.services.persistance;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

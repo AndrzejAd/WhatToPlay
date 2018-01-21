@@ -9,13 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import whattoplay.domain.dto.GameDto;
+import whattoplay.domain.dto.BaseGameDto;
 import whattoplay.services.persistance.GameDatabaseService;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 public class GamesController {
@@ -29,7 +30,7 @@ public class GamesController {
     }
 
     @RequestMapping(path = "/getGame/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<GameDto> getGameDetailsById(@PathVariable("gameId") final long gameId) throws EmptyResultDataAccessException {
+    public ResponseEntity<BaseGameDto> getGameDetailsById(@PathVariable("gameId") final long gameId) throws EmptyResultDataAccessException {
         try{
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("Server", "Tomcat");
@@ -40,12 +41,14 @@ public class GamesController {
     }
 
     @RequestMapping( path = "/getGames", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<List<GameDto>> getRandomGames(){
+    public ResponseEntity<List<BaseGameDto>> getRandomGames(){
         return new ResponseEntity<>(gameDatabaseService.getRandomGames(9), HttpStatus.OK);
     }
 
     @RequestMapping( path="/getGamePhoto/{gamePath}", method= RequestMethod.GET)
-    public ResponseEntity<byte[]> getGameImageByImagePath(@PathVariable("gamePath") final String gamePath ) throws IOException {
+    public ResponseEntity<byte[]> getGameImageByImagePath(@PathVariable("gamePath") String gamePath ) throws IOException {
+        Random rand = new Random();
+        gamePath = Integer.toString(rand.nextInt(5));
         final Resource fileResource = resourceLoader.getResource("classpath:static/assets/img/gameImages/" + gamePath + ".jpg");
         File file = fileResource.getFile();
         byte[] image = Files.readAllBytes(file.toPath());
@@ -56,19 +59,19 @@ public class GamesController {
     }
 
     @RequestMapping(path="/getGameByGenre/{gameGenre}", method= RequestMethod.GET)
-    public ResponseEntity<List<GameDto>> getGamesByGenre(@PathVariable("gameGenre") final String genre ){
+    public ResponseEntity<List<BaseGameDto>> getGamesByGenre(@PathVariable("gameGenre") final String genre ){
         return new ResponseEntity<>(gameDatabaseService.getGamesByGenre(genre), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/getGamesByGameName/{gameName}", method = RequestMethod.GET)
-    public ResponseEntity<List<GameDto>> getGamesByGameName(@PathVariable("gameName") final String gameName){
+    public ResponseEntity<List<BaseGameDto>> getGamesByGameName(@PathVariable("gameName") final String gameName){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return new ResponseEntity<>(gameDatabaseService.getGamesByGameName(gameName), responseHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/addGame", method = RequestMethod.POST)
-    public ResponseEntity<String>  addGameToDatabaseController(@RequestBody final GameDto game){
+    public ResponseEntity<String>  addGameToDatabaseController(@RequestBody final BaseGameDto game){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);
         if ( gameDatabaseService.persistGame(game) ) {
@@ -90,7 +93,7 @@ public class GamesController {
     }
 
     @RequestMapping(path = "/updateGame", method = RequestMethod.POST)
-    public ResponseEntity<String> updateGame(@RequestBody final GameDto game){
+    public ResponseEntity<String> updateGame(@RequestBody final BaseGameDto game){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_PLAIN);
         if ( gameDatabaseService.updateGame(game) != null ){

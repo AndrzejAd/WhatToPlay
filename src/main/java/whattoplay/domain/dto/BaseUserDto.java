@@ -1,9 +1,5 @@
 package whattoplay.domain.dto;
 
-import whattoplay.domain.entities.RoleEntity;
-
-import java.util.Collection;
-
 public class BaseUserDto implements UserDto{
     private long userId;
     private String firstName;

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.Developer;
 import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.GamesDatabaseRepository;
-import whattoplay.services.domain.GameDtoConverter;
 import whattoplay.services.domain.GameDtoToIgdbGameConverter;
+import whattoplay.services.domain.IgdbGameToGameDtoConverter;
 
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class SafeGameDatabaseService extends GameDatabaseService {
 
     @Autowired
     public SafeGameDatabaseService(GamesDatabaseRepository databaseRepository,
-                                   GameDtoConverter gameToGameDtoConverter,
+                                   IgdbGameToGameDtoConverter gameToGameDtoConverter,
                                    GameDtoToIgdbGameConverter gameDtoToIgdbGameConverter) {
         super(databaseRepository, gameToGameDtoConverter, gameDtoToIgdbGameConverter);
     }
