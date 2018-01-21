@@ -8,6 +8,7 @@ import whattoplay.domain.entities.*;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.services.domain.GameJsonToGameConverter;
 import whattoplay.services.persistance.GameDatabaseService;
+import whattoplay.services.persistance.GameFieldsDaoService;
 
 /**
  * Since GameJson object send by Internet IgdbGame Database API is a json
@@ -20,17 +21,17 @@ import whattoplay.services.persistance.GameDatabaseService;
 
 @Service
 public class GameJsonToNormalFormCacher {
-    private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
     private final GameDatabaseService safeGameDatabaseService;
     private final GameJsonToGameConverter gameJsonToGameConverter;
+    private final GameFieldsDaoService gameFieldsDaoService;
 
     @Autowired
-    public GameJsonToNormalFormCacher(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
+    public GameJsonToNormalFormCacher( @Qualifier("safeGameFieldsDatabaseService") GameFieldsDaoService gameFieldsDaoService,
                                       @Qualifier("safeGameDatabaseService") GameDatabaseService safeGameDatabaseService,
                                       GameJsonToGameConverter gameJsonToGameConverter) {
-        this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
         this.safeGameDatabaseService = safeGameDatabaseService;
         this.gameJsonToGameConverter = gameJsonToGameConverter;
+        this.gameFieldsDaoService = gameFieldsDaoService;
     }
 
 
@@ -38,16 +39,16 @@ public class GameJsonToNormalFormCacher {
         safeGameDatabaseService.persistGame(gameJsonToGameConverter.convert(gameJson));
         final long id = gameJson.getId();
         gameJson.getDevelopersIds()
-                .forEach(developerId -> gameFieldsDatabaseRepository.persistGameDeveloper(new GameDeveloper(id, developerId)));
+                .forEach(developerId -> gameFieldsDaoService.saveGameDeveloper(new GameDeveloper(id, developerId)));
         gameJson.getGameModesIds()
-                .forEach( gameModeId -> gameFieldsDatabaseRepository.persistGameGameModes( new GameGameModes( id, gameModeId) ));
+                .forEach( gameModeId -> gameFieldsDaoService.saveGameGameModes( new GameGameModes( id, gameModeId) ));
         gameJson.getGenresIds()
-                .forEach( genreId -> gameFieldsDatabaseRepository.persistGameGenres( new GameGenres(id, genreId))  );
+                .forEach( genreId -> gameFieldsDaoService.saveGameGenres( new GameGenres(id, genreId))  );
         gameJson.getPlayerPerspectivesIds()
-                .forEach( playerPerspectiveId -> gameFieldsDatabaseRepository.persistGamePlayerPerspectives( new GamePlayerPerspectives(id, playerPerspectiveId))  );
+                .forEach( playerPerspectiveId -> gameFieldsDaoService.saveGamePlayerPerspectives( new GamePlayerPerspectives(id, playerPerspectiveId))  );
         gameJson.getWebsites()
                 .forEach( website ->
-                    gameFieldsDatabaseRepository.persistGameWebsites(
+                        gameFieldsDaoService.saveGameWebsite(
                             new GameWebsites (id, new Website(website.getWebsiteCategory(), website.getUrl().length() > 150 ? website.getUrl().substring(0, 149) : website.getUrl()  ) ) ));
 
     }

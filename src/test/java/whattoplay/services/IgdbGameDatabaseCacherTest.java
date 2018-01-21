@@ -1,18 +1,12 @@
 package whattoplay.services;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import whattoplay.domain.entities.Developer;
-import whattoplay.persistence.GameFieldsDatabaseRepository;
-import whattoplay.services.persistance.GameFieldsDaoService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 class IgdbGameDatabaseCacherTest {
     @Autowired
-    InternetGameDatabaseCacher internetGameDatabaseCacher;
+    IgdbRequesterService igdbRequesterService;
 
 
 
@@ -37,7 +31,7 @@ class IgdbGameDatabaseCacherTest {
                 "website," +
                 "start_date";
         try {
-            assertEquals( internetGameDatabaseCacher
+            assertEquals( igdbRequesterService
                     .getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", developersFields  )
                     .asObject(Developer[].class)
                     .getStatus(), 200);
@@ -50,7 +44,7 @@ class IgdbGameDatabaseCacherTest {
     void shouldBeAbleToCastDevelopers(){
         ArrayList<Developer> developers;
         try {
-            developers = new ArrayList<>( Arrays.asList( (internetGameDatabaseCacher
+            developers = new ArrayList<>( Arrays.asList( (igdbRequesterService
                     .getScrollFromIGDB( "https://api-2445582011268.apicast.io/companies/", "id," +
                             "logo," +
                             "name," +
@@ -67,7 +61,7 @@ class IgdbGameDatabaseCacherTest {
 
     @Test
     void shouldnyThrowExceptions(){
-        internetGameDatabaseCacher.saveAllCollections();
+        igdbRequesterService.saveAllCollections();
     }
 
 }

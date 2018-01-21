@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 
 @Service
-public class InternetGameDatabaseCacher {
+public class IgdbRequesterService {
     private static final String token = "8dcd2a959fef891fbac266d5046e0414";
     private static Logger logger = LogManager.getLogger();
     private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
@@ -35,9 +35,9 @@ public class InternetGameDatabaseCacher {
 
 
     @Autowired
-    public InternetGameDatabaseCacher(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
-                                      GameJsonToNormalFormCacher gameJsonToNormalFormCacher,
-                                      GameFieldsDaoService gameFieldsDatabaseService) {
+    public IgdbRequesterService(GameFieldsDatabaseRepository gameFieldsDatabaseRepository,
+                                GameJsonToNormalFormCacher gameJsonToNormalFormCacher,
+                                GameFieldsDaoService gameFieldsDatabaseService) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
                     = new com.fasterxml.jackson.databind.ObjectMapper();

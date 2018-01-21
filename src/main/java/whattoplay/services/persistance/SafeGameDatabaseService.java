@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import whattoplay.domain.entities.Developer;
 import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
@@ -67,6 +68,10 @@ public class SafeGameDatabaseService extends GameDatabaseService {
 
     public void saveSetOfGames(Iterable<IgdbGame> games) {
         games.forEach(gamesDatabaseRepository::persistGame);
+    }
+
+    public void saveDeveloper(Developer developer){
+
     }
 
 }

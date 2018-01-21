@@ -6,12 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import whattoplay.services.InternetGameDatabaseCacher;
+import whattoplay.services.IgdbRequesterService;
 
 
 @RestController
 public class IGDBParserController {
-    InternetGameDatabaseCacher internetGameDatabaseCacher;
+    IgdbRequesterService igdbRequesterService;
 
     private class Pair<T,R>{
         private final T x;
@@ -24,31 +24,31 @@ public class IGDBParserController {
     }
 
     @Autowired
-    public IGDBParserController(InternetGameDatabaseCacher internetGameDatabaseCacher) {
-        this.internetGameDatabaseCacher = internetGameDatabaseCacher;
+    public IGDBParserController(IgdbRequesterService igdbRequesterService) {
+        this.igdbRequesterService = igdbRequesterService;
     }
 
     @RequestMapping(path = "/parseDevelopers", method = RequestMethod.POST)
     public ResponseEntity<String> parseDevelopers(){
-        internetGameDatabaseCacher.saveAllDevelopers();
+        igdbRequesterService.saveAllDevelopers();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/parseGames", method = RequestMethod.POST)
     public ResponseEntity<String> parseGames(){
-        internetGameDatabaseCacher.saveAllGames();
+        igdbRequesterService.saveAllGames();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/parseCollections", method = RequestMethod.POST)
     public ResponseEntity<String> parseCollections(){
-        internetGameDatabaseCacher.saveAllCollections();
+        igdbRequesterService.saveAllCollections();
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/parseGameModes", method = RequestMethod.POST)
     public ResponseEntity<Pair<String, Long>> parseGameModes(){
-        Long numbOfParsedGameModes = internetGameDatabaseCacher.saveAllGameModes();
+        Long numbOfParsedGameModes = igdbRequesterService.saveAllGameModes();
         if ( numbOfParsedGameModes != -1 ){
             return new ResponseEntity<>( new Pair<>("Succesfully parsed game modes!", numbOfParsedGameModes) , HttpStatus.OK);
         } else{
@@ -59,7 +59,7 @@ public class IGDBParserController {
 
     @RequestMapping(path = "/parseGenres", method = RequestMethod.POST)
     public ResponseEntity<Pair<String, Long>> parseGenres(){
-        Long numbOfParsedGameModes = internetGameDatabaseCacher.saveAllGenres();
+        Long numbOfParsedGameModes = igdbRequesterService.saveAllGenres();
         if ( numbOfParsedGameModes != -1 ){
             return new ResponseEntity<>( new Pair<>("Succesfully parsed genres!", numbOfParsedGameModes) , HttpStatus.OK);
         } else{

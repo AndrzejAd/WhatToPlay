@@ -4,22 +4,47 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import whattoplay.domain.entities.Collection;
-import whattoplay.domain.entities.Developer;
-import whattoplay.domain.entities.Franchise;
+import whattoplay.domain.entities.*;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
+
 import java.util.Optional;
 
 @Service
-public class GameFieldsDatabaseService implements GameFieldsDaoService{
+public class SafeGameFieldsDatabaseService implements GameFieldsDaoService {
     private final GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
     private static Logger logger = LogManager.getLogger();
 
     @Autowired
-    public GameFieldsDatabaseService(GameFieldsDatabaseRepository gameFieldsDatabaseRepository) {
+    public SafeGameFieldsDatabaseService(GameFieldsDatabaseRepository gameFieldsDatabaseRepository) {
         this.gameFieldsDatabaseRepository = gameFieldsDatabaseRepository;
     }
 
+    @Override
+    public void saveGameDeveloper(GameDeveloper gameDeveloper) {
+        gameFieldsDatabaseRepository.persistGameDeveloper(gameDeveloper);
+    }
+
+    @Override
+    public void saveGameGenres(GameGenres gameGenres) {
+        gameFieldsDatabaseRepository.persistGameGenres(gameGenres);
+    }
+
+    @Override
+    public void saveGameGameModes(GameGameModes gameGameModes) {
+        gameFieldsDatabaseRepository.persistGameGameModes(gameGameModes);
+    }
+
+    @Override
+    public void saveGamePlayerPerspectives(GamePlayerPerspectives gamePlayerPerspectives) {
+        gameFieldsDatabaseRepository.persistGamePlayerPerspectives(gamePlayerPerspectives);
+    }
+
+    @Override
+    public void saveGameWebsite(GameWebsites website) {
+        gameFieldsDatabaseRepository.persistGameWebsites(website);
+    }
+
+    @Override
     public void saveSetOfDevelopers(Iterable<Developer> developers) {
         developers.forEach(x -> {
             if (x.getName().length() >= 100) {
@@ -42,6 +67,7 @@ public class GameFieldsDatabaseService implements GameFieldsDaoService{
         });
     }
 
+    @Override
     public void saveSetOfFranchises(Iterable<Franchise> franchises) {
         franchises.forEach(x -> {
             if (x.getName().length() >= 150) x.setName(x.getName().substring(0, 148));
@@ -53,6 +79,7 @@ public class GameFieldsDatabaseService implements GameFieldsDaoService{
         });
     }
 
+    @Override
     public void saveSetOfCollections(Iterable<Collection> collections) {
         collections.forEach(x -> {
             if (x.getName().length() >= 150) {
@@ -70,6 +97,5 @@ public class GameFieldsDatabaseService implements GameFieldsDaoService{
             gameFieldsDatabaseRepository.persistCollection(x);
         });
     }
-
 
 }

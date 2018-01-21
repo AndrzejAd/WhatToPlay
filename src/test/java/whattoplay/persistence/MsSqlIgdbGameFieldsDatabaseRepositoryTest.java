@@ -15,7 +15,7 @@ import whattoplay.domain.entities.Developer;
 import whattoplay.domain.entities.Franchise;
 import whattoplay.domain.entities.GameMode;
 import whattoplay.domain.entities.Genre;
-import whattoplay.services.InternetGameDatabaseCacher;
+import whattoplay.services.IgdbRequesterService;
 
 import java.util.Optional;
 
@@ -56,7 +56,7 @@ class MsSqlIgdbGameFieldsDatabaseRepositoryTest {
         try {
             jsonResponse = Unirest.get("https://api-2445582011268.apicast.io/franchises/")
                     .header("accept", "application/json")
-                    .header("user-key", InternetGameDatabaseCacher.getToken())
+                    .header("user-key", IgdbRequesterService.getToken())
                     .queryString("fields", "id")
                     .queryString("limit", "50")
                     .queryString("scroll", 1)
