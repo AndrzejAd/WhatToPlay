@@ -16,21 +16,16 @@ import java.time.ZoneId;
 @Table(name = "Game_Modes")
 public class GameMode {
     @Id
-    @Column(name ="id", nullable = false)
+    @Column(nullable = false)
     @NotNull
     private long id;
 
-    @Column(name ="name", nullable = false)
+    @Column( nullable = false)
     @NotNull
     private String name;
 
-    @Column(name ="url", nullable = true)
     private String url;
-
-    @Column(name ="created_at", nullable = true)
     private LocalDate createdAt;
-
-    @Column(name ="updated_at", nullable = true)
     private LocalDate updatedAt;
 
     public long getId() {

@@ -16,24 +16,16 @@ import java.time.ZoneId;
 @Table(name = "Developers")
 public class Developer {
     @Id
-    @Column(name ="id", nullable = false)
+    @Column(nullable = false)
     @NotNull
     private long id;
 
-    @Column(name ="name", nullable = false)
+    @Column(nullable = false)
     @NotNull
     private String name;
-
-    @Column(name ="url", nullable = true )
     private String url;
-
-    @Column(name ="description", nullable = true )
     private String description;
-
-    @Column(name ="website", nullable = true )
     private String website;
-
-    @Column(name ="start_date", nullable = true )
     private LocalDate startDate;
 
     @Column(name ="image_url", nullable = true )

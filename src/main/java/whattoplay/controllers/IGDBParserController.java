@@ -11,7 +11,7 @@ import whattoplay.services.IgdbRequesterService;
 
 @RestController
 public class IGDBParserController {
-    IgdbRequesterService igdbRequesterService;
+    private final IgdbRequesterService igdbRequesterService;
 
     private class Pair<T,R>{
         private final T x;

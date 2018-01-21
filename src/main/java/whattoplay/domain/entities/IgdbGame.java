@@ -12,64 +12,31 @@ import java.util.Objects;
 @Table(name = "Games")
 public class IgdbGame implements Serializable {
     @Id
-    @Column( name ="id", nullable = false)
+    @Column(nullable = false)
     @NotNull
     private long id;
 
-    @Column( name="name", nullable = false)
+    @Column(nullable = false)
     @NotNull
     private String name;
-
-    @Column( name="slug", nullable = true)
     private String slug;
-
-    @Column( name="url", nullable = true)
     private String url;
-
-    @Column( name="summary", nullable = true)
     private String summary;
-
-    @Column( name="storyline", nullable = true)
     private String storyline;
-
-    @Column( name="hypes", nullable = true)
     private int hypes;
-
-    @Column( name="popularity", nullable = true)
     private double popularity;
-
-    @Column( name="rating", nullable = true)
     private double rating;
-
-    @Column( name="rating_count", nullable = true)
     private int ratingCount;
-
-    @Column( name="aggregated_rating", nullable = true)
     private double aggregatedRating;
-
-    @Column( name="aggregated_rating_count", nullable = true)
     private int aggregatedRatingCount;
-
-    @Column( name="total_rating", nullable = true)
     private double totalRating;
-
-    @Column( name="total_rating_count", nullable = true)
     private int totalRatingCount;
-
     private long collectionId;
-
     private long franchiseId;
-
-    @Column( name="created_at", nullable = true)
     private LocalDate createdAt;
-
-    @Column( name="updated_at", nullable = true)
     private LocalDate updatedAt;
-
-    @Column( name="first_release_date", nullable = true)
     private LocalDate firstReleaseDate;
 
-    @Column( name="status", nullable = true)
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -90,6 +57,7 @@ public class IgdbGame implements Serializable {
 
     public IgdbGame() {
     }
+
     public IgdbGame(long id, String name, String slug, String url, String summary, String storyline, int hypes,
                     double popularity, double rating, int ratingCount, double aggregatedRating, int aggregatedRatingCount,
                     double totalRating, int totalRatingCount, long collectionId, long franchiseId, LocalDate createdAt,

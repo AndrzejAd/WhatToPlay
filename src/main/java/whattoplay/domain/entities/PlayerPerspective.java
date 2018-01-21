@@ -15,21 +15,16 @@ import java.time.ZoneId;
 @Table(name = "Player_Perspectives")
 public class PlayerPerspective {
     @Id
-    @Column(name ="id", nullable = false)
+    @Column(nullable = false)
     @NotNull
     private long id;
 
-    @Column(name ="name", nullable = false)
+    @Column( nullable = false)
     @NotNull
     private String name;
 
-    @Column(name ="url", nullable = true)
     private String url;
-
-    @Column(name ="created_At", nullable = true)
     private LocalDate createdAt;
-
-    @Column(name ="updated_At", nullable = true)
     private LocalDate updatedAt;
 
     public long getId() {
