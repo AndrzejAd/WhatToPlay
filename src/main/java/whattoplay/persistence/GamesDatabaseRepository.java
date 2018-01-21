@@ -9,10 +9,6 @@ import whattoplay.domain.entities.*;
 
 import java.util.List;
 
-/**
- *
- * @author Andrzej
- */
 public interface GamesDatabaseRepository {
     void persistGame(IgdbGame igdbGame);
     long getNumberOfRows();

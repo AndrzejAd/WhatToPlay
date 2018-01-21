@@ -6,7 +6,7 @@ import whattoplay.domain.dto.EsrbRating;
 import javax.persistence.*;
 
 @Embeddable
-public class Esrb {
+public class Esrb{
 
     @Enumerated(EnumType.STRING)
     private EsrbRating esrbRating;

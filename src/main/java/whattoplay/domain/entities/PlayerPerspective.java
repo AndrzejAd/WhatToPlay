@@ -12,14 +12,14 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 @Entity
-@Table(name = "[Player Perspectives]")
+@Table(name = "Player_Perspectives")
 public class PlayerPerspective {
     @Id
-    @Column(name ="[Player Perspective Id]", nullable = false)
+    @Column(name ="id", nullable = false)
     @NotNull
     private long id;
 
-    @Column(name ="[Player Perspective Name]", nullable = false)
+    @Column(name ="name", nullable = false)
     @NotNull
     private String name;
 

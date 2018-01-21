@@ -50,6 +50,7 @@ class MsSqlIgdbGameFieldsDatabaseRepositoryTest {
     }
 
     @Test
+    @Disabled
     void rowNumbOfFranchisesTableShouldBeEqualToThatOfIGDB(){
         final HttpResponse<Franchise[]> jsonResponse;
         try {
