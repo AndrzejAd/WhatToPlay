@@ -3,27 +3,29 @@ package whattoplay.services;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import whattoplay.domain.entities.Developer;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
+import whattoplay.services.persistance.GameFieldsDaoService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class InternetIgdbGameDatabaseCacherTest {
-    static InternetGameDatabaseCacher internetGameDatabaseCacher;
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+class IgdbGameDatabaseCacherTest {
+    @Autowired
+    InternetGameDatabaseCacher internetGameDatabaseCacher;
 
-    @Mock
-    static GameFieldsDatabaseRepository gameFieldsDatabaseRepository;
 
-    @Mock
-    static GameJsonToNormalFormCacher gameJsonToNormalFormCacher;
-
-    @BeforeAll
-    static void setInternetGameDatabaseService(){
-        internetGameDatabaseCacher = new InternetGameDatabaseCacher(gameFieldsDatabaseRepository, gameJsonToNormalFormCacher);
-    }
 
     @Test
     void responseStatusOfGenericScrollShouldBe200(){
@@ -61,6 +63,11 @@ class InternetIgdbGameDatabaseCacherTest {
         } catch (UnirestException e) {
             assertTrue(false);
         }
+    }
+
+    @Test
+    void shouldnyThrowExceptions(){
+        internetGameDatabaseCacher.saveAllCollections();
     }
 
 }

@@ -47,8 +47,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         criteria.select(builder.count(criteria.from(IgdbGame.class)));
-        Long value = entityManager.createQuery(criteria).getSingleResult().longValue();
-        return 1;
+        return entityManager.createQuery(criteria).getSingleResult();
     }
 
     @Override
@@ -83,12 +82,10 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
 
     @Override
     public List<Long> getRandomIdsFromGameTable(int numbOfGames) {
-        List<Long> gameIds;
         String query = "SELECT g.id FROM Game g ORDER BY id";
         Query q = entityManager.createQuery(query);
         q.setMaxResults(numbOfGames);
-        gameIds = q.getResultList();
-        return gameIds;
+        return q.getResultList();
     }
 
     @Override
@@ -119,8 +116,7 @@ public class MsSqlGameDatabase implements GamesDatabaseRepository {
     @Deprecated
     public List<Long> returnUniqueRandomIntegers(int numberOfIntegers, Long max) {
         long arr[] = ThreadLocalRandom.current().longs(1, max).distinct().limit(numberOfIntegers).toArray();
-        List<Long> list = Arrays.stream(arr).boxed().collect(Collectors.toList());
-        return list;
+        return Arrays.stream(arr).boxed().collect(Collectors.toList());
     }
 
 }

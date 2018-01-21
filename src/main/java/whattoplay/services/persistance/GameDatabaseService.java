@@ -2,17 +2,15 @@ package whattoplay.services.persistance;
 
 import whattoplay.domain.dto.GameDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import whattoplay.domain.entities.IgdbGame;
 import whattoplay.persistence.GamesDatabaseRepository;
 import whattoplay.services.domain.GameDtoConverter;
-import whattoplay.services.domain.GameDtoToGameEntityConverter;
+import whattoplay.services.domain.GameDtoToIgdbGameConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author Andrzej
@@ -22,21 +20,21 @@ import java.util.stream.Collectors;
 public class GameDatabaseService {
     protected final GamesDatabaseRepository gamesDatabaseRepository;
     protected final GameDtoConverter gameToGameDtoConverter;
-    protected final GameDtoToGameEntityConverter gameDtoToGameEntityConverter;
+    protected final GameDtoToIgdbGameConverter gameDtoToIgdbGameConverter;
 
     @Autowired
     public GameDatabaseService(GamesDatabaseRepository gamesDatabaseRepository, GameDtoConverter gameToGameDtoConverter,
-                               GameDtoToGameEntityConverter gameDtoToGameEntityConverter) {
+                               GameDtoToIgdbGameConverter gameDtoToIgdbGameConverter) {
         this.gamesDatabaseRepository = gamesDatabaseRepository;
         this.gameToGameDtoConverter = gameToGameDtoConverter;
-        this.gameDtoToGameEntityConverter = gameDtoToGameEntityConverter;
+        this.gameDtoToIgdbGameConverter = gameDtoToIgdbGameConverter;
     }
 
     public boolean persistGame(final GameDto game) {
         if ( gamesDatabaseRepository.getGameById(game.getGameId()) != null ){
             return false;
         } else{
-            gamesDatabaseRepository.persistGame(gameDtoToGameEntityConverter.convert(game));
+            gamesDatabaseRepository.persistGame(gameDtoToIgdbGameConverter.convert(game));
             return true;
         }
     }
@@ -58,7 +56,7 @@ public class GameDatabaseService {
     }
 
     public IgdbGame updateGame(final GameDto gameDto) {
-        return gamesDatabaseRepository.updateGame(gameDtoToGameEntityConverter.convert(gameDto));
+        return gamesDatabaseRepository.updateGame(gameDtoToIgdbGameConverter.convert(gameDto));
     }
 
     public List<GameDto> getRandomGames(final int gameId) {

@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
  * @author Andrzej
  */
 @Service
-/** TODO **/
-public class GameDtoToGameEntityConverter {
+public class GameDtoToIgdbGameConverter {
     public IgdbGame convert(GameDto game){
         return new IgdbGame();
     }
@@ -22,7 +21,7 @@ public class GameDtoToGameEntityConverter {
     public Collection<IgdbGame> convertAll(Collection<GameDto> fElements){
         Collection<IgdbGame> convertedElement =
                 fElements.stream()
-                        .map(element -> convert(element))
+                        .map(this::convert)
                         .collect(Collectors.toList());
         return convertedElement;
     }

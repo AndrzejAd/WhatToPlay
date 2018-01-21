@@ -16,6 +16,16 @@ public class ImageInfo {
         return imageUrl;
     }
 
+    public ImageInfo() {
+    }
+
+    public ImageInfo(String imageUrl, String cloudinaryId, int width, int height) {
+        this.imageUrl = imageUrl;
+        this.cloudinaryId = cloudinaryId;
+        this.width = width;
+        this.height = height;
+    }
+
     @JsonSetter("url")
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;

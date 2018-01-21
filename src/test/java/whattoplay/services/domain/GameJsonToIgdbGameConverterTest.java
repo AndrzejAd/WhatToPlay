@@ -35,14 +35,5 @@ class GameJsonToIgdbGameConverterTest {
         assertNotNull( gameFieldsDatabaseRepository);
     }
 
-    @Test
-    void shouldConvertCollection() {
-    }
-
-    @Test
-    void shouldConvertFranchise() {
-    }
-
-
 
 }
