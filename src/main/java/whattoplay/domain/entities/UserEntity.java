@@ -46,7 +46,7 @@ public class UserEntity implements Serializable {
     @Column(name ="Enabled", nullable = false)
     private boolean enabled;
     
-    private UserEntity(){}
+    public UserEntity(){}
 
     public String getFirstName() {
         return firstName;

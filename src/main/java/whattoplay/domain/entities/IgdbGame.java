@@ -19,6 +19,7 @@ public class IgdbGame implements Serializable {
     @Column(nullable = false)
     @NotNull
     private String name;
+
     private String slug;
     private String url;
     private String summary;
