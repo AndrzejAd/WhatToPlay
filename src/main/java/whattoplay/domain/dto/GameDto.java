@@ -4,10 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 
-/**
- *
- * @author Andrzej
- */
 @JsonDeserialize( as = BaseGameDto.class)
 public interface GameDto {
     long getGameId();

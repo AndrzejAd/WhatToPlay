@@ -17,10 +17,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-/**
- * Created by Andrzej on 2017-11-07.
- */
-
 @RestController
 public class GamesController {
     private ResourceLoader resourceLoader;

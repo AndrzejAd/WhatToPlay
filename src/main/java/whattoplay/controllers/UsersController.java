@@ -12,11 +12,6 @@ import org.springframework.http.ResponseEntity;
 import whattoplay.exceptions.NotValidPasswordException;
 import whattoplay.services.persistance.UserDatabaseService;
 
-/**
- * @author Andrzej
- */
-
-
 @RestController
 public class UsersController {
     private UserDatabaseService userDatabaseService;

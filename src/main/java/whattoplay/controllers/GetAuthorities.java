@@ -12,9 +12,6 @@ import whattoplay.persistence.UserDatabaseRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Andrzej on 2017-11-04.
- */
 @RestController
 public class GetAuthorities {
     @Autowired

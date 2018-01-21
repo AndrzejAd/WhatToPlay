@@ -3,7 +3,6 @@ package whattoplay.domain.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 @Entity
 @Table(name = "Roles")
 public class RoleEntity implements Serializable {

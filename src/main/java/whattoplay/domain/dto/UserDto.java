@@ -5,10 +5,6 @@ import whattoplay.domain.entities.RoleEntity;
 
 import java.util.Collection;
 
-/**
- *
- * @author Andrzej
- */
 @JsonDeserialize( as = BaseUserDto.class)
 public interface UserDto {
     String getFirstName() ;

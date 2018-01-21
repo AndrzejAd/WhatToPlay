@@ -19,11 +19,6 @@ import whattoplay.config.rest.RESTAuthenticationEntryPoint;
 import whattoplay.config.rest.RESTAuthenticationFailureHandler;
 import whattoplay.config.rest.RESTAuthenticationSuccessHandler;
 
-/**
- *
- * @author Andrzej
- */
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

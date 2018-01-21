@@ -1,9 +1,5 @@
 package whattoplay.exceptions;
 
-/**
- *
- * @author Andrzej
- */
 public class NotValidPasswordException extends RuntimeException {
 
     public NotValidPasswordException() {

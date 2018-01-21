@@ -6,11 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- *
- * @author Andrzej
- */
-
 @Repository("userRepository")
 public interface UserDatabaseRepository extends JpaRepository<UserEntity, Long> {
     @Override UserEntity save(UserEntity user);

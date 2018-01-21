@@ -12,9 +12,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Andrzej on 2017-12-05.
- */
 public class GameJson implements Serializable {
     private long id;
     private String name;

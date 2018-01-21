@@ -2,10 +2,6 @@ package whattoplay.domain.dto;
 
 import java.util.Date;
 
-/**
- *
- * @author Andrzej
- */
 public class BaseGameDto implements GameDto{
     private long gameId;
     private String gameName;

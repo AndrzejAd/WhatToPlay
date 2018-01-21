@@ -36,7 +36,7 @@ public class GameJsonToNormalFormCacher {
 
     public void persistNormalFormOfGameJson(GameJson gameJson) {
         safeGameDatabaseService.persistGame(gameJsonToGameConverter.convert(gameJson));
-        long id = gameJson.getId();
+        final long id = gameJson.getId();
         gameJson.getDevelopersIds()
                 .forEach(developerId -> gameFieldsDatabaseRepository.persistGameDeveloper(new GameDeveloper(id, developerId)));
         gameJson.getGameModesIds()

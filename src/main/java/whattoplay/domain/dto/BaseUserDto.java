@@ -4,10 +4,6 @@ import whattoplay.domain.entities.RoleEntity;
 
 import java.util.Collection;
 
-/**
- *
- * @author Andrzej
- */
 public class BaseUserDto implements UserDto{
     private long userId;
     private String firstName;

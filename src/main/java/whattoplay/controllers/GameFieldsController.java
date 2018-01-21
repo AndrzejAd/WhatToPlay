@@ -24,17 +24,17 @@ public class GameFieldsController {
     }
 
     @RequestMapping(path = "/getAllGameModes", method = RequestMethod.GET)
-    public ResponseEntity<List<GameMode>> getAllGameModes(){
+    public ResponseEntity<List<GameMode>> getAllGameModes() {
         return new ResponseEntity<>(gameFieldsDatabaseRepository.getAllGameModes(), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/getAllGenres", method = RequestMethod.GET)
-    public ResponseEntity<List<Genre>> getAllGenres(){
+    public ResponseEntity<List<Genre>> getAllGenres() {
         return new ResponseEntity<>(gameFieldsDatabaseRepository.getAllGenres(), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/getAllDevelopers", method = RequestMethod.GET)
-    public ResponseEntity<List<Developer>> getAllDevelopers(){
+    public ResponseEntity<List<Developer>> getAllDevelopers() {
         return new ResponseEntity<>(gameFieldsDatabaseRepository.getAllDevelopers(), HttpStatus.OK);
     }
 

@@ -13,10 +13,6 @@ import whattoplay.persistence.UserDatabaseRepository;
 import whattoplay.services.domain.UserDtoToUserEntityConverter;
 import whattoplay.services.domain.UserToUserDtoConverter;
 
-/**
- *
- * @author Andrzej
- */
 @Service
 public class UserDatabaseService {
     private final UserDatabaseRepository userDatabaseRepository;

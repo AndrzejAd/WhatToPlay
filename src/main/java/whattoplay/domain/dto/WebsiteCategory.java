@@ -1,8 +1,5 @@
 package whattoplay.domain.dto;
 
-/**
- * Created by Andrzej on 2017-12-11.
- */
 public enum WebsiteCategory {
     OFFICIAL (1),
     WIKIA (2),

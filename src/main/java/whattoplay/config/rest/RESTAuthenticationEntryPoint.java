@@ -11,12 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- *
- * @author Andrzej
- */
-
-
 @Component
 public class RESTAuthenticationEntryPoint extends BasicAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	

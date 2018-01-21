@@ -14,7 +14,6 @@ import whattoplay.domain.dto.GameJson;
 import whattoplay.domain.entities.*;
 import whattoplay.persistence.GameFieldsDatabaseRepository;
 import whattoplay.services.persistance.GameFieldsDaoService;
-import whattoplay.services.persistance.GameFieldsDatabaseService;
 
 import java.io.IOException;
 import java.util.Arrays;

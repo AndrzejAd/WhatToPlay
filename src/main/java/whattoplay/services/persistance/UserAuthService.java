@@ -9,10 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import whattoplay.services.persistance.UserDatabaseService;
 
-/**
- *
- * @author Andrzej
- */
 @Service
 public class UserAuthService implements UserDetailsService {
     private  UserDatabaseService userDatabaseService;

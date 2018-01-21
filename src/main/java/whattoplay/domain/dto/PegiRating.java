@@ -1,8 +1,5 @@
 package whattoplay.domain.dto;
 
-/**
- * Created by Andrzej on 2017-12-11.
- */
 public enum PegiRating {
     THREE(1), SEVEN(2), TWELVE(3), SIXTEEN(4), EIGHTEEN(5);
 
